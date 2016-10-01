@@ -1,0 +1,12 @@
+{% extends 'ScheduleBundle:Schedule:layout.html.twig' %}
+{% set title = 'title.schedule.default' %}
+
+{% block content %}
+    <div class="schedule_form container">
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_widget(form) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

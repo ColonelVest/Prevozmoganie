@@ -1,0 +1,6 @@
+title.default: 'Добро пожаловать!'
+title.schedule.default: Расписание
+href.mainpage: Главная
+label.period.duration: Длительность
+placeholder.period.duratuon: Длительность периода
+label.schedule.startTime: Время начала
