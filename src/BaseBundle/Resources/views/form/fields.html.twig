@@ -1,0 +1,66 @@
+{% block form_label %}
+    {% spaceless %}
+        {% if label is not sameas(false) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' control-label col-sm-2')|trim}) %}
+
+            <label {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain)|raw }}{% if required %}&nbsp;<span class="required-star text-danger">*</span>{% endif %}</label>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_label %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="form-group {% if errors|length > 0 %} has-error{% endif %}">
+            {{ form_label(form) }}
+
+            <div class="col-sm-6">
+                {{ form_widget(form) }}
+            </div>
+            <div class="col-sm-4">
+                {% if errors|length > 0 %}
+                    <span class="text-danger text-left input-errors">{{ form_errors(form) }}</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block time_widget %}
+    {% spaceless %}
+        <div class="form-group">
+            {% if widget == 'single_text' %}
+                {{ block('field_widget') }}
+            {% else %}
+                {{ form_widget(form.hour, { 'attr': { 'size': '1', 'class' : 'form-control' } }) }}:{{ form_widget(form.minute, { 'attr': { 'size': '1', 'class' : 'form-control' } }) }}{% if with_seconds %}:{{ form_widget(form.second, { 'attr': { 'size': '1', 'class' : 'form-control' } }) }}{% endif %}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block textarea_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control input-sm')|trim}) %}
+        <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+    {% endspaceless %}
+{% endblock textarea_widget %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message|raw }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}

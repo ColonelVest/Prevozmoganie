@@ -1,3 +1,8 @@
+notes:
+    resource: "@NotesBundle/Controller/"
+    type:     annotation
+    prefix:   /notes
+
 base:
     resource: "@BaseBundle/Controller/"
     type:     annotation

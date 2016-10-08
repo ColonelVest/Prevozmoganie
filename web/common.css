@@ -1,0 +1,10 @@
+select[multiple], select[size] {
+    width: 4.5em;
+    height: 2.4em;
+    display: inline;
+    margin:  0.5em;
+}
+
+div#schedule div.form-group {
+    margin-bottom: 0;
+}

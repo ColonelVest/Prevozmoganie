@@ -4,3 +4,5 @@ href.mainpage: Главная
 label.period.duration: Длительность
 placeholder.period.duratuon: Длительность периода
 label.schedule.startTime: Время начала
+label.schedule.period: Период
+exception.invalid_date_string: Не надо вместо строки даты писать ересь, пожалуйста.

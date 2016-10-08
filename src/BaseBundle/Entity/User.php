@@ -13,6 +13,8 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\Loggable
  */
 class User extends BaseUser
 {
@@ -20,19 +22,7 @@ class User extends BaseUser
     {
         parent::__construct();
     }
-    /**
-     * @return mixed
-     */
-    public function getId() {
-        return $this->id;
-    }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id) {
-        $this->id = $id;
-    }
     /**
      * @var integer
      * @ORM\Id
@@ -57,4 +47,18 @@ class User extends BaseUser
      * updates createdBy, updatedBy fields
      */
     use BlameableEntity;
+
+    /**
+     * @return mixed
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
 }

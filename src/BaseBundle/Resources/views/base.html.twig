@@ -7,6 +7,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        {% if form is defined %}
+            {% form_theme form 'BaseBundle:form:fields.html.twig' %}
+        {% endif %}
+        <link rel="stylesheet" href="{{ asset('common.css') }}">
         {% block stylesheets %}
             {#
             {% stylesheets filter="scssphp" output="css/app.css"

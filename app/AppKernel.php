@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new ScheduleBundle\ScheduleBundle(),
             new BaseBundle\BaseBundle(),
+            new NotesBundle\NotesBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

@@ -53,11 +53,6 @@ class Period extends BaseEntity
      */
     private $internalNumber;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Schedule", inversedBy="periods", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="dayId", referencedColumnName="id")
-     */
-    private $schedule;
 
     /**
      * @return mixed
@@ -71,20 +66,6 @@ class Period extends BaseEntity
      */
     public function setInternalNumber($internalNumber) {
         $this->internalNumber = $internalNumber;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSchedule() {
-        return $this->schedule;
-    }
-
-    /**
-     * @param $schedule
-     */
-    public function setSchedule($schedule) {
-        $this->schedule = $schedule;
     }
 
     /**

@@ -41,8 +41,10 @@ class Schedule extends BaseEntity
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="Period",  mappedBy="day")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\ManyToMany(targetEntity="Period")
+     * @ORM\JoinTable(name="schedule_periods",
+     *      joinColumns={@ORM\JoinColumn(name="schedule_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="period_id", referencedColumnName="id", unique=true)})
      */
     private $periods;
 
