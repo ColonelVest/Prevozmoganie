@@ -1,5 +1,5 @@
 schedule_bundle_task:
     type: rest
     prefix: /v1
-    resource: "\ScheduleBundle\Controller\TaskController"
+    resource: "\TaskBundle\Controller\TaskController"
     name_prefix:  api_v1_

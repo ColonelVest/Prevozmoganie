@@ -1,8 +1,8 @@
 <?php
 
-namespace ScheduleBundle\Form;
+namespace TaskBundle\Form;
 
-use ScheduleBundle\Entity\Period;
+use TaskBundle\Entity\Period;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -39,7 +39,7 @@ class ScheduleType extends AbstractType
         $resolver->setDefaults(
             array(
                 'allow_extra_fields' => true,
-                'data_class' => 'ScheduleBundle\Entity\Schedule',
+                'data_class' => 'TaskBundle\Entity\Schedule',
                 'attr' => [
                     'class' => 'form-horizontal'
                 ]

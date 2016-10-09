@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\Tests\Controller;
+namespace TaskBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

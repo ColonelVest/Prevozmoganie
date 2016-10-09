@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\DataFixtures;
+namespace TaskBundle\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

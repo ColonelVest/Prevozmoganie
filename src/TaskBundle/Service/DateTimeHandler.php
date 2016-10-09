@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\Service;
+namespace TaskBundle\Service;
 
 class DateTimeHandler
 {

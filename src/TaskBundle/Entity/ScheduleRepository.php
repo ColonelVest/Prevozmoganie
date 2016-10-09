@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\Entity;
+namespace TaskBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 

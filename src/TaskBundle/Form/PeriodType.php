@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\Form;
+namespace TaskBundle\Form;
 
 use Doctrine\DBAL\Types\IntegerType;
 use Symfony\Component\Form\AbstractType;

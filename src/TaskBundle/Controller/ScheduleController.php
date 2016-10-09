@@ -1,12 +1,12 @@
 <?php
 
-namespace ScheduleBundle\Controller;
+namespace TaskBundle\Controller;
 
 use BaseBundle\Entity\Day;
 use BaseBundle\Entity\DayRepository;
-use ScheduleBundle\Entity\Schedule;
-use ScheduleBundle\Entity\Task;
-use ScheduleBundle\Form\ScheduleType;
+use TaskBundle\Entity\Schedule;
+use TaskBundle\Entity\Task;
+use TaskBundle\Form\ScheduleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DefaultController
- * @package ScheduleBundle\Controller
+ * @package TaskBundle\Controller
  * @Route("/schedule")
  */
 class ScheduleController extends Controller

@@ -9,7 +9,7 @@ base:
     prefix:   /
 
 schedule:
-    resource: "@ScheduleBundle/Controller/"
+    resource: "@TaskBundle/Controller/"
     type:     annotation
     prefix:   /
 
@@ -19,7 +19,7 @@ fos_user:
 schedule_api:
     type: rest
     prefix: /api
-    resource: "@ScheduleBundle/Resources/config/routes.yml"
+    resource: "@TaskBundle/Resources/config/routes.yml"
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"

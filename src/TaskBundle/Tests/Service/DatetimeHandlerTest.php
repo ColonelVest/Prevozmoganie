@@ -1,8 +1,8 @@
 <?php
 
-namespace ScheduleBundle\Tests\Service;
+namespace TaskBundle\Tests\Service;
 
-use ScheduleBundle\Service\DateTimeHandler;
+use TaskBundle\Service\DateTimeHandler;
 
 
 class DatetimeHandlerTest extends \PHPUnit_Framework_TestCase

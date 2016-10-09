@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\Controller;
+namespace TaskBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -17,7 +17,7 @@ class TaskController extends FOSRestController
      *  @ApiDoc(
      *   resource = true,
      *   description = "Gets a Task for a given id",
-     *   output = "ScheduleBundle\Entity\Task",
+     *   output = "TaskBundle\Entity\Task",
      *   statusCodes = {
      *     200 = "Returned when successful",
      *     404 = "Returned when the page is not found"
@@ -27,7 +27,7 @@ class TaskController extends FOSRestController
     public function getTaskAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        return $em->getRepository('ScheduleBundle:Task')->find($id);
+        return $em->getRepository('TaskBundle:Task')->find($id);
     }
 
     /**
@@ -36,7 +36,7 @@ class TaskController extends FOSRestController
     public function getTasksAction()
     {
         $em = $this->getDoctrine()->getManager();
-        return $em->getRepository('ScheduleBundle:Task')->findAll();
+        return $em->getRepository('TaskBundle:Task')->findAll();
     }
 
 

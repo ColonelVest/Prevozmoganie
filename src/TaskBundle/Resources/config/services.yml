@@ -1,7 +1,7 @@
 services:
     datetime_handler:
-        class: ScheduleBundle\Service\DateTimeHandler
+        class: TaskBundle\Service\DateTimeHandler
 
 #    schedule.example:
-#        class: ScheduleBundle\Example
+#        class: TaskBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]

@@ -1,6 +1,6 @@
 <?php
 
-namespace ScheduleBundle\Entity;
+namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;

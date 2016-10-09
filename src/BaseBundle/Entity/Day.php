@@ -37,7 +37,7 @@ class Day extends BaseEntity
     use BlameableEntity;
 
     /**
-     * @ORM\OneToOne(targetEntity="ScheduleBundle\Entity\Schedule")
+     * @ORM\OneToOne(targetEntity="TaskBundle\Entity\Schedule")
      */
     private $schedule;
 
