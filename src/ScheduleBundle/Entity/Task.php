@@ -9,6 +9,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="tasks")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)"
+ * @Gedmo\Loggable()
+ */
 class Task extends BaseEntity
 {
 

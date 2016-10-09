@@ -5,6 +5,7 @@ namespace ScheduleBundle\Controller;
 use BaseBundle\Entity\Day;
 use BaseBundle\Entity\DayRepository;
 use ScheduleBundle\Entity\Schedule;
+use ScheduleBundle\Entity\Task;
 use ScheduleBundle\Form\ScheduleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class DefaultController
  * @package ScheduleBundle\Controller
- * @Route("/")
+ * @Route("/schedule")
  */
 class ScheduleController extends Controller
 {
@@ -25,7 +26,13 @@ class ScheduleController extends Controller
      */
     public function indexAction()
     {
-
+//        $em = $this->getDoctrine()->getManager();
+//        $task = new Task();
+//        $task->setBody('taskBody first');
+//        $task->setTitle('task1');
+//        $em->persist($task);
+//        $em->flush();
+        return [];
     }
 
     /**

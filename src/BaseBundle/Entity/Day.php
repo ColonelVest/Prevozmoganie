@@ -13,7 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="BaseBundle\Entity\DayRepository")
  * @ORM\Table(name="days")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)"
  * @Gedmo\Loggable
  */
 class Day extends BaseEntity
@@ -42,6 +42,7 @@ class Day extends BaseEntity
     private $schedule;
 
     /**
+     * @Gedmo\Versioned()
      * @ORM\Column(type="date")
      */
     private $date;

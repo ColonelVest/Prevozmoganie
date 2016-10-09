@@ -11,7 +11,16 @@ base:
 schedule:
     resource: "@ScheduleBundle/Controller/"
     type:     annotation
-    prefix:   /schedule
+    prefix:   /
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+schedule_api:
+    type: rest
+    prefix: /api
+    resource: "@ScheduleBundle/Resources/config/routes.yml"
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc

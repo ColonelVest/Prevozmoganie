@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="ScheduleRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)"
  * @ORM\Table(name="schedules")
+ * @Gedmo\Loggable
  */
 class Schedule extends BaseEntity
 {
@@ -50,6 +52,7 @@ class Schedule extends BaseEntity
 
     /**
      * @ORM\Column()
+     * @Gedmo\Versioned()
      */
     private $description;
 
