@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="fos_user")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable
@@ -49,6 +49,12 @@ class User extends BaseUser
     use BlameableEntity;
 
     /**
+     * @var string
+     * @ORM\Column()
+     */
+    private $displayedName;
+
+    /**
      * @return mixed
      */
     public function getId() {
@@ -60,5 +66,19 @@ class User extends BaseUser
      */
     public function setId($id) {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDisplayedName() {
+        return $this->displayedName;
+    }
+
+    /**
+     * @param mixed $displayedName
+     */
+    public function setDisplayedName($displayedName) {
+        $this->displayedName = $displayedName;
     }
 }

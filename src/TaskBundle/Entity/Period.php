@@ -9,6 +9,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use TaskBundle\Entity\Task;
 
 /**
  * @ORM\Entity
@@ -53,6 +54,11 @@ class Period extends BaseEntity
      */
     private $internalNumber;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Task")
+     */
+    private $task;
+
 
     /**
      * @return mixed
@@ -95,7 +101,7 @@ class Period extends BaseEntity
     /**
      * @param int $realDuration
      */
-    public function setRealDuration(int $realDuration)
+    public function setRealDuration($realDuration)
     {
         $this->realDuration = $realDuration;
     }
@@ -111,9 +117,23 @@ class Period extends BaseEntity
     /**
      * @param string $description
      */
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTask() {
+        return $this->task;
+    }
+
+    /**
+     * @param mixed $task
+     */
+    public function setTask($task) {
+        $this->task = $task;
     }
 
 
