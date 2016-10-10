@@ -25,7 +25,7 @@ class LoadPeriodData extends AbstractFixture implements OrderedFixtureInterface,
             $period = new Period();
             $period->setTask($this->getReference('task'.$index));
             $period->setDuration($item[0]);
-            $period->setInternalNumber($item[$index]);
+            $period->setInternalNumber($index);
             $period->setRealDuration($item[1]);
             $period->setDescription($item[2]);
             $manager->persist($period);
