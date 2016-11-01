@@ -42,21 +42,22 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $fixturesUser2->addRole('ROLE_USER');
         $manager->persist($fixturesUser2);
 
-        $fixturesUser2 = new User();
-        $fixturesUser2->setUsername('kenedias');
-        $fixturesUser2->setDisplayedName('danya odmin');
-        $fixturesUser2->setEmail('faainttt@gmail.com');
+        $fixturesUser3 = new User();
+        $fixturesUser3->setUsername('kenedias');
+        $fixturesUser3->setDisplayedName('danya odmin');
+        $fixturesUser3->setEmail('faainttt@gmail.com');
         $encoder = $this->container->get('security.password_encoder');
-        $password = $encoder->encodePassword($fixturesUser2, $this->container->getParameter('fixtures_admin_password'));
-        $fixturesUser2->setPassword($password);
-        $fixturesUser2->setEnabled(true);
-        $fixturesUser2->addRole('ROLE_ADMIN');
-        $manager->persist($fixturesUser2);
+        $password = $encoder->encodePassword($fixturesUser3, $this->container->getParameter('fixtures_admin_password'));
+        $fixturesUser3->setPassword($password);
+        $fixturesUser3->setEnabled(true);
+        $fixturesUser3->addRole('ROLE_ADMIN');
+        $manager->persist($fixturesUser3);
 
         $manager->flush();
 
         $this->addReference('fixt_user', $fixturesUser);
         $this->addReference('fixt_user2', $fixturesUser2);
+        $this->addReference('fixt_admin', $fixturesUser3);
     }
 
     /**

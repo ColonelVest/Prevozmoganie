@@ -3,18 +3,21 @@
 namespace TaskBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Routing\ClassResourceInterface;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
+use TaskBundle\Entity\Task;
+use TaskBundle\Form\TaskType;
 
 class TaskController extends FOSRestController
 {
     /**
-     * @param $id
+     * @param Task $task
      * @return mixed
      * @Rest\View()
-     *  @ApiDoc(
+     * @ApiDoc(
      *   resource = true,
      *   description = "Gets a Task for a given id",
      *   output = "TaskBundle\Entity\Task",
@@ -24,10 +27,9 @@ class TaskController extends FOSRestController
      *   }
      * )
      */
-    public function getTaskAction($id)
+    public function getTaskAction(Task $task)
     {
-        $em = $this->getDoctrine()->getManager();
-        return $em->getRepository('TaskBundle:Task')->find($id);
+        return $task;
     }
 
     /**
@@ -38,6 +40,33 @@ class TaskController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         return $em->getRepository('TaskBundle:Task')->findAll();
     }
+
+    public function deleteTasksAction(Task $task)
+    {
+        $dm = $this->getDoctrine()->getManager();
+        $dm->remove($task);
+        $dm->flush();
+        return new View();
+    }
+
+    /**
+     * @Rest\View
+     * @param Request $request
+     * @return Task
+     */
+    public function postTasksAction(Request $request)
+    {
+        $task = new Task();
+        $form = $this->createForm(TaskType::class, $task);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $dm = $this->getDoctrine()->getManager();
+            $dm->persist($task);
+            $dm->flush();
+        }
+        return $task;
+    }
+
 
 
 }

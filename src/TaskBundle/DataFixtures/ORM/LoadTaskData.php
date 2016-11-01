@@ -18,11 +18,13 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         foreach ($this->tasks as $index => $item) {
             $task = new Task();
             $task->setTitle($item[0]);
             $task->setBody($item[1]);
+            $task->setUpdatedBy($this->getReference('fixt_user2'));
             $manager->persist($task);
             $this->addReference('task'.$index, $task);
         }
@@ -43,7 +45,8 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
      *
      * @return integer
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return 3;
     }
 }

@@ -4,6 +4,7 @@ namespace TaskBundle\Controller;
 
 use BaseBundle\Entity\Day;
 use BaseBundle\Entity\DayRepository;
+use Symfony\Component\HttpFoundation\Response;
 use TaskBundle\Entity\Schedule;
 use TaskBundle\Entity\Task;
 use TaskBundle\Form\ScheduleType;
@@ -65,6 +66,17 @@ class ScheduleController extends Controller
         /** @var DayRepository $dayRepository */
         $dayRepository = $this->getDoctrine()->getRepository('BaseBundle:Day');
         return $dayRepository->fetchOrCreate($date, $this->getUser());
+    }
+
+    /**
+     * @Route("/test")
+     */
+    public function testAction()
+    {
+        $dm = $this->getDoctrine()->getManager();
+        $repository = $dm->getRepository('TaskBundle:Task');
+
+        return new Response();
     }
 
 }

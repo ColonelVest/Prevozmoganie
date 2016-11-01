@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 trait ContentEntity
 {
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      * @Gedmo\Versioned
      */
