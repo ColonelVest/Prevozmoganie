@@ -2,81 +2,66 @@
 
 namespace TaskBundle\Controller;
 
-use BaseBundle\Entity\Day;
-use BaseBundle\Entity\DayRepository;
-use Symfony\Component\HttpFoundation\Response;
-use TaskBundle\Entity\Schedule;
-use TaskBundle\Entity\Task;
-use TaskBundle\Form\ScheduleType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
+use TaskBundle\Entity\Schedule;
+use TaskBundle\Entity\ScheduleRepository;
+use TaskBundle\Form\ScheduleType;
 
-/**
- * Class DefaultController
- * @package TaskBundle\Controller
- * @Route("/schedule")
- */
-class ScheduleController extends Controller
-{
+class ScheduleController extends FOSRestController {
     /**
-     * @Route("/", name="schedule_index")
-     * @Template()
+     * @Rest\View()
+     * @param $dateString
+     * @return Schedule
      */
-    public function indexAction()
+    public function getScheduleAction($dateString)
     {
-//        $em = $this->getDoctrine()->getManager();
-//        $task = new Task();
-//        $task->setBody('taskBody first');
-//        $task->setTitle('task1');
-//        $em->persist($task);
-//        $em->flush();
-        return [];
+        //TODO: Добавить проверку на корректность данных
+        $date = \DateTime::createFromFormat('dmY', $dateString);
+        /** @var ScheduleRepository $scheduleRepository */
+        $scheduleRepository = $this->getDoctrine()->getRepository('TaskBundle:Schedule');
+
+        return $scheduleRepository->fetchOrCreate($date, $this->getUser());
     }
 
     /**
-     * @Route("/{date}/new", name="schedule_new")
-     * @Route("/new", name="schedule_new_current_day")
-     * @Template()
-     * @param Request $request
-     * @param $date
-     * @return array
+     * @Rest\View
      */
-    public function newAction(Request $request, $date = null)
+    public function getSchedulesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        return $em->getRepository('TaskBundle:Schedule')->findAll();
+    }
+
+    /**
+     * @Rest\View()
+     * @param Request $request
+     * @return Schedule
+     */
+    public function postScheduleAction(Request $request)
     {
         $schedule = new Schedule();
+        //TODO: Создать трансформеры для этих данных
+        //TODO: Проверку на корректность
+        $date = \DateTime::createFromFormat('dmY', $request->request->get('date'));
+        $startTime = \DateTime::createFromFormat('H:i', $request->request->get('beginTime'));
+        $schedule
+            ->setBeginTime($startTime)
+            ->setDate($date);
         $form = $this->createForm(ScheduleType::class, $schedule);
-        $day = $this->getCurrentDay($date);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $day = $this->getCurrentDay($request);
+        if ($form->isValid()) {
+            $dm = $this->getDoctrine()->getManager();
+            $dm->persist($schedule);
+            $dm->flush();
+        } else {
+            $asda = $form->getErrors(true);
+            $sdfasdf = '';
         }
-        return [
-            'day' => $day,
-            'form' => $form->createView(),
-            'schedule' => $schedule
-        ];
-    }
 
-    private function getCurrentDay($dateString)
-    {
-        $date = $this->get('datetime_handler')->getDateFromString($dateString);
-        /** @var DayRepository $dayRepository */
-        $dayRepository = $this->getDoctrine()->getRepository('BaseBundle:Day');
-        return $dayRepository->fetchOrCreate($date, $this->getUser());
-    }
-
-    /**
-     * @Route("/test")
-     */
-    public function testAction()
-    {
-        $dm = $this->getDoctrine()->getManager();
-        $repository = $dm->getRepository('TaskBundle:Task');
-
-        return new Response();
+        return $schedule;
     }
 
 }

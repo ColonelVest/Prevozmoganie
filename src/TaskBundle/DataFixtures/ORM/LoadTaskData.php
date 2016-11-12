@@ -24,7 +24,6 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
             $task = new Task();
             $task->setTitle($item[0]);
             $task->setBody($item[1]);
-            $task->setUpdatedBy($this->getReference('fixt_user2'));
             $manager->persist($task);
             $this->addReference('task'.$index, $task);
         }

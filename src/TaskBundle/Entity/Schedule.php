@@ -57,43 +57,48 @@ class Schedule extends BaseEntity
     private $description;
 
     /**
-     * @ORM\OneToOne(targetEntity="BaseBundle\Entity\Day")
-     */
-    private $day;
-
-    /**
-     * @return mixed
-     */
-    public function getDay() {
-        return $this->day;
-    }
-
-    /**
      * @ORM\Column(type="time")
+     * @Assert\NotNull()
      */
-    private $startTime;
+    private $beginTime;
 
     /**
-     * @param mixed $day
+     * @ORM\Column(type="date")
      */
-    public function setDay($day) {
-        $this->day = $day;
-    }
+    private $date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="BaseBundle\Entity\User")
+     */
+    private $user;
 
     /**
      * @return mixed
      */
-    public function getStartTime() {
-        return $this->startTime;
+    public function getPeriods() {
+        return $this->periods;
     }
 
     /**
-     * @param mixed $startTime
+     * @param $period
+     * @return Schedule
      */
-    public function setStartTime($startTime) {
-        $this->startTime = $startTime;
+    public function addPeriod($period) {
+        $this->periods[] = $period;
+
+        return $this;
     }
 
+    /**
+     * @param Period $period
+     * @return Schedule
+     */
+    public function removePeriod(Period $period)
+    {
+        $this->periods->removeElement($period);
+
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -104,32 +109,60 @@ class Schedule extends BaseEntity
 
     /**
      * @param mixed $description
+     * @return Schedule
      */
     public function setDescription($description) {
         $this->description = $description;
-    }
-
-    /**
-     * @param Period $period
-     * @return $this
-     */
-    public function addPeriod(Period $period)
-    {
-        $this->periods[] = $period;
-
         return $this;
-    }
-
-    public function removePeriod(Period $period)
-    {
-        $this->periods->removeElement($period);
     }
 
     /**
      * @return mixed
      */
-    public function getPeriods() {
-        return $this->periods;
+    public function getBeginTime() {
+        return $this->beginTime;
+    }
+
+    /**
+     * @param mixed $beginTime
+     * @return Schedule
+     */
+    public function setBeginTime($beginTime) {
+        $this->beginTime = $beginTime;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate() {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     * @return Schedule
+     */
+    public function setDate($date) {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser() {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     * @return Schedule
+     */
+    public function setUser($user) {
+        $this->user = $user;
+        return $this;
     }
 
 }

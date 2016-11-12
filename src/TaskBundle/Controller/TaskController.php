@@ -38,6 +38,7 @@ class TaskController extends FOSRestController
     public function getTasksAction()
     {
         $em = $this->getDoctrine()->getManager();
+
         return $em->getRepository('TaskBundle:Task')->findAll();
     }
 
@@ -46,6 +47,7 @@ class TaskController extends FOSRestController
         $dm = $this->getDoctrine()->getManager();
         $dm->remove($task);
         $dm->flush();
+
         return new View();
     }
 
@@ -64,8 +66,10 @@ class TaskController extends FOSRestController
             $dm->persist($task);
             $dm->flush();
         }
+
         return $task;
     }
+
 
 
 

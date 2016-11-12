@@ -29,6 +29,7 @@ class LoadPeriodData extends AbstractFixture implements OrderedFixtureInterface,
             $period->setRealDuration($item[1]);
             $period->setDescription($item[2]);
             $manager->persist($period);
+            $this->addReference('period'.$index, $period);
         }
         $manager->flush();
     }
@@ -49,6 +50,6 @@ class LoadPeriodData extends AbstractFixture implements OrderedFixtureInterface,
      */
     public function getOrder()
     {
-        return 5;
+        return 4;
     }
 }

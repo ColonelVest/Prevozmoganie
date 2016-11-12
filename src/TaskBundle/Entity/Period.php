@@ -55,7 +55,7 @@ class Period extends BaseEntity
     private $internalNumber;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Task")
+     * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
      */
     private $task;
 

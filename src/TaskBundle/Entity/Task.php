@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity()
  * @ORM\Table(name="tasks")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)"
  * @Gedmo\Loggable()
  */
 class Task extends BaseEntity
@@ -32,6 +31,7 @@ class Task extends BaseEntity
     /**
      * @ORM\Column(type="string")
      * @Gedmo\Versioned
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -51,6 +51,44 @@ class Task extends BaseEntity
      * @ORM\OneToMany(targetEntity="Task", mappedBy="parent", cascade={"persist", "remove"})
      */
     private $children;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Period", inversedBy="task")
+     *
+     */
+    private $period;
+
+    /**
+     * @return mixed
+     */
+    public function getChildren() {
+        return $this->children;
+    }
+
+    /**
+     * @param mixed $children
+     * @return Task
+     */
+    public function setChildren($children) {
+        $this->children = $children;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPeriod() {
+        return $this->period;
+    }
+
+    /**
+     * @param mixed $period
+     * @return Task
+     */
+    public function setPeriod($period) {
+        $this->period = $period;
+        return $this;
+    }
 
     public function removeChild(Task $task)
     {
@@ -88,7 +126,7 @@ class Task extends BaseEntity
     {
         $this->parent = $parent;
     }
-    
+
     /**
      * @return mixed
      */
@@ -98,10 +136,14 @@ class Task extends BaseEntity
 
     /**
      * @param mixed $title
+     * @return Task
      */
     public function setTitle($title) {
         $this->title = $title;
+
+        return $this;
     }
+
 
     /**
      * @return mixed
