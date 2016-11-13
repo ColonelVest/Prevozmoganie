@@ -63,7 +63,7 @@ class Schedule extends BaseEntity
     private $beginTime;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", unique=true, nullable=false)
      */
     private $date;
 

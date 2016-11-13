@@ -1,6 +1,7 @@
 services:
-    datetime_handler:
-        class: TaskBundle\Service\DateTimeHandler
+    schedule_service:
+        class: TaskBundle\Services\Schedule
+        arguments: ['@doctrine.orm.entity_manager']
 
 #    schedule.example:
 #        class: TaskBundle\Example

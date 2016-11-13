@@ -9,20 +9,16 @@ use TaskBundle\Entity\Schedule;
 use TaskBundle\Entity\ScheduleRepository;
 use TaskBundle\Form\ScheduleType;
 
-class ScheduleController extends FOSRestController {
+class ScheduleController extends FOSRestController
+{
     /**
      * @Rest\View()
      * @param $dateString
-     * @return Schedule
+     * @return null|object
      */
     public function getScheduleAction($dateString)
     {
-        //TODO: Добавить проверку на корректность данных
-        $date = \DateTime::createFromFormat('dmY', $dateString);
-        /** @var ScheduleRepository $scheduleRepository */
-        $scheduleRepository = $this->getDoctrine()->getRepository('TaskBundle:Schedule');
-
-        return $scheduleRepository->fetchOrCreate($date, $this->getUser());
+        return $this->container->get('schedule_service')->getSchedule($dateString);
     }
 
     /**
@@ -37,8 +33,6 @@ class ScheduleController extends FOSRestController {
 
     /**
      * @Rest\View()
-     * @param Request $request
-     * @return Schedule
      */
     public function postScheduleAction(Request $request)
     {
@@ -49,7 +43,8 @@ class ScheduleController extends FOSRestController {
         $startTime = \DateTime::createFromFormat('H:i', $request->request->get('beginTime'));
         $schedule
             ->setBeginTime($startTime)
-            ->setDate($date);
+            ->setDate($date)
+            ->setUser($this->getUser());
         $form = $this->createForm(ScheduleType::class, $schedule);
         $form->handleRequest($request);
         if ($form->isValid()) {

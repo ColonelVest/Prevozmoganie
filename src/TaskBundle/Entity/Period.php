@@ -40,7 +40,7 @@ class Period extends BaseEntity
      * @var int
      * @ORM\Column(type="integer")
      */
-    private $realDuration;
+    private $realDuration = 0;
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class Period extends BaseEntity
     /**
      * @ORM\Column(type="integer")
      */
-    private $internalNumber;
+    private $internalNumber = 0;
 
     /**
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
