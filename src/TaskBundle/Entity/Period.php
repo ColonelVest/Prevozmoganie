@@ -59,7 +59,6 @@ class Period extends BaseEntity
      */
     private $task;
 
-
     /**
      * @return mixed
      */

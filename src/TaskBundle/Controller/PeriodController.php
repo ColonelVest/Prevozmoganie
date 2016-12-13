@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
 use TaskBundle\Entity\Schedule;
 use TaskBundle\Form\PeriodType;
+use FOS\RestBundle\View\View;
 
 class PeriodController extends FOSRestController
 {
@@ -33,7 +34,7 @@ class PeriodController extends FOSRestController
     /**
      * @Rest\View()
      */
-    public function postPeriodAction(Request $request, $dateString)
+    public function postSchedulePeriodAction(Request $request, $dateString)
     {
         /** @var Schedule $schedule */
         $schedule = $this->container->get('schedule_service')->getSchedule($dateString);
@@ -54,5 +55,19 @@ class PeriodController extends FOSRestController
         }
 
         return $period;
+    }
+
+    /**
+     * @Rest\View()
+     */
+    public function deleteSchedulePeriodAction($dateString, Period $period)
+    {
+        /** @var Schedule $schedule */
+        $schedule = $this->container->get('schedule_service')->getSchedule($dateString);
+        $em = $this->getDoctrine()->getManager();
+        $schedule->removePeriod($period);
+        $em->flush();
+
+        return new View();
     }
 }

@@ -51,9 +51,6 @@ class ScheduleController extends FOSRestController
             $dm = $this->getDoctrine()->getManager();
             $dm->persist($schedule);
             $dm->flush();
-        } else {
-            $asda = $form->getErrors(true);
-            $sdfasdf = '';
         }
 
         return $schedule;
