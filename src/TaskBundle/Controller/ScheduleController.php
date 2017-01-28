@@ -6,19 +6,18 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Schedule;
-use TaskBundle\Entity\ScheduleRepository;
 use TaskBundle\Form\ScheduleType;
 
 class ScheduleController extends FOSRestController
 {
     /**
      * @Rest\View()
-     * @param $dateString
-     * @return null|object
+     * @param null $dateString
+     * @return array
      */
-    public function getScheduleAction($dateString)
+    public function getScheduleAction($dateString = null)
     {
-        return $this->container->get('schedule_service')->getSchedule($dateString);
+        return $this->get('schedule_service')->getScheduleResponse($dateString);
     }
 
     /**

@@ -16,12 +16,4 @@ class NotesController extends Controller
     {
     }
 
-    /**
-     * @Route("/test")
-     */
-    public function testAction()
-    {
-        $scheduleService = $this->container->get('schedule_service')->getSchedule('09112016');
-        dump($scheduleService);exit();
-    }
 }

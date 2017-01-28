@@ -1,7 +1,7 @@
 services:
     schedule_service:
         class: TaskBundle\Services\Schedule
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter']
 
 #    schedule.example:
 #        class: TaskBundle\Example

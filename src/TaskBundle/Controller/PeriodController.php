@@ -4,6 +4,7 @@ namespace TaskBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
 use TaskBundle\Entity\Schedule;
@@ -33,12 +34,13 @@ class PeriodController extends FOSRestController
 
     /**
      * @Rest\View()
+     * @ParamConverter("date", options={"format" : "dmY"})
      */
-    public function postSchedulePeriodAction(Request $request, $dateString)
+    public function postPeriodAction(Request $request, \DateTime $date)
     {
         /** @var Schedule $schedule */
-        $schedule = $this->container->get('schedule_service')->getSchedule($dateString);
-        //TODO: Добавить проверку на наличие расписания
+        $schedule = $this->container->get('schedule_service')->getSchedule($date);
+        //TODO: Добавить проверку ¡£ªº“‘øπ˚«æ§Ú¯˘$period‹
         $period = new Period();
         //TODO: Создать трансформеры для этих данных
         //TODO: Проверку на корректность
@@ -59,11 +61,12 @@ class PeriodController extends FOSRestController
 
     /**
      * @Rest\View()
+     * @ParamConverter("date", options={"format" : "dmY"})
      */
-    public function deleteSchedulePeriodAction($dateString, Period $period)
+    public function deleteSchedulePeriodAction(\DateTime $date, Period $period)
     {
         /** @var Schedule $schedule */
-        $schedule = $this->container->get('schedule_service')->getSchedule($dateString);
+        $schedule = $this->container->get('schedule_service')->getSchedule($date);
         $em = $this->getDoctrine()->getManager();
         $schedule->removePeriod($period);
         $em->flush();

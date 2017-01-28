@@ -50,28 +50,19 @@ class Period extends BaseEntity
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $internalNumber = 0;
-
-    /**
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
      */
     private $task;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="time")
      */
-    public function getInternalNumber() {
-        return $this->internalNumber;
-    }
+    private $start;
 
     /**
-     * @param mixed $internalNumber
+     * @ORM\Column(type="time")
      */
-    public function setInternalNumber($internalNumber) {
-        $this->internalNumber = $internalNumber;
-    }
+    private $end;
 
     /**
      * @return int
@@ -134,6 +125,40 @@ class Period extends BaseEntity
     public function setTask($task) {
         $this->task = $task;
     }
+    /**
+     * @return mixed
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
 
+    /**
+     * @param mixed $start
+     * @return Period
+     */
+    public function setStart($start)
+    {
+        $this->start = $start;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param mixed $end
+     * @return Period
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
+        return $this;
+    }
 
 }
