@@ -53,12 +53,13 @@ class Schedule extends BaseEntity
     /**
      * @ORM\Column()
      * @Gedmo\Versioned()
+     * @Assert\NotNull()
      */
     private $description;
 
     /**
      * @ORM\Column(type="time")
-     * @Assert\NotNull()
+     * @Assert\NotNull(message = "12")
      */
     private $beginTime;
 

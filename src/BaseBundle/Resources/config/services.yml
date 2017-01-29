@@ -1,6 +1,8 @@
 services:
-#    base.example:
-#        class: BaseBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
-    api_response_formatter:
-      class: BaseBundle\Services\ApiResponseFormatter
+  api_response_formatter:
+    class: BaseBundle\Services\ApiResponseFormatter
+    arguments: ['@error_message_handler']
+
+  error_message_handler:
+    class: BaseBundle\Models\ErrorMessageHandler
+    arguments: ['@monolog.logger']

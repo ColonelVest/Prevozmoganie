@@ -3,7 +3,7 @@
 namespace TaskBundle\Services;
 
 use BaseBundle\Entity\User;
-use BaseBundle\Models\ErrorsEnum;
+use BaseBundle\Models\ErrorMessageHandler;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
 use Doctrine\ORM\EntityManager;
@@ -37,14 +37,14 @@ class ScheduleHandler
         $result = new Result();
         $date = $this->getDateByString($date);
         if ($date === false) {
-            return $result->addError(ErrorsEnum::INCORRECT_DATE_FORMAT)
+            return $result->addError(ErrorMessageHandler::INCORRECT_DATE_FORMAT)
                 ->setIsSuccess(false);
         }
 
         $schedule = $this->em->getRepository('TaskBundle:Schedule')->findOneBy(['date' => $date]);
         if (is_null($schedule)) {
             return $result
-                ->addError(ErrorsEnum::REQUESTED_DATA_NOT_EXISTS)
+                ->addError(ErrorMessageHandler::REQUESTED_DATA_NOT_EXISTS)
                 ->setIsSuccess(false);
 
         }
@@ -63,18 +63,18 @@ class ScheduleHandler
     public function createSchedule($date, $beginTime, $description, ?User $user): Result
     {
         $result = new Result();
-        $schedule = new Schedule();
+
         $date = $this->getDateByString($date);
         if ($date === false) {
-            return $result->addError(ErrorsEnum::INCORRECT_DATE_FORMAT)
+            return $result->addError(ErrorMessageHandler::INCORRECT_DATE_FORMAT)
                 ->setIsSuccess(false);
         }
         $startTime = $this->getDateByString($beginTime, 'H:i');
         if ($startTime === false) {
-            return $result->addError(ErrorsEnum::INCORRECT_TIME_FORMAT)
+            return $result->addError(ErrorMessageHandler::INCORRECT_TIME_FORMAT)
                 ->setIsSuccess(false);
         }
-        $schedule
+        $schedule = (new Schedule())
             ->setBeginTime($startTime)
             ->setDate($date)
             ->setDescription($description)

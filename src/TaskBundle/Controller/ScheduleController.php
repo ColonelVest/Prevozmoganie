@@ -43,7 +43,8 @@ class ScheduleController extends FOSRestController
         $startTimeString = $request->request->get('beginTime');
         $description = $request->request->get('description');
         $user = $this->getUser();
-        $result = $this->get('schedule_handler')->createSchedule($dateString, $startTimeString, $description, $user);
+        $result = $this->get('schedule_handler')
+            ->createSchedule($dateString, $startTimeString, $description, $user);
 
         return $this->getResponseByResultObj($result);
     }

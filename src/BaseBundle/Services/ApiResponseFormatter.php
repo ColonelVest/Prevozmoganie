@@ -2,7 +2,7 @@
 
 namespace BaseBundle\Services;
 
-use BaseBundle\Models\ErrorsEnum;
+use BaseBundle\Models\ErrorMessageHandler;
 use BaseBundle\Models\Result;
 
 class ApiResponseFormatter
@@ -10,6 +10,13 @@ class ApiResponseFormatter
     /** @var  bool $isSuccess */
     private $isSuccess;
     private $response;
+    /** @var  ErrorMessageHandler $messageHandler */
+    private $messageHandler;
+
+    public function __construct(ErrorMessageHandler $messageHandler)
+    {
+        $this->messageHandler = $messageHandler;
+    }
 
     public function createSuccessResponse()
     {
@@ -34,7 +41,7 @@ class ApiResponseFormatter
     public function addResponseMessage(int $errorCode, $messageType = null)
     {
         $messageType = $messageType ? $messageType : ($this->isSuccess ? 'Warnings' : 'Errors');
-        $this->response[$messageType][] = ErrorsEnum::getErrorMessageByCode($errorCode);
+        $this->response[$messageType][] = $this->messageHandler->getErrorMessageByCode($errorCode);
 
         return $this;
     }
