@@ -27,13 +27,6 @@ class ScheduleHandler
         $this->responseFormatter = $responseFormatter;
     }
 
-//    public function getSchedule($dateString)
-//    {
-//        $date = $this->getDateByString($dateString);
-//
-//        return $schedule = $this->em->getRepository('TaskBundle:Schedule')->findOneBy(['date' => $date]);
-//    }
-
     public function getSchedule($date) : Result
     {
         $result = new Result();
@@ -56,6 +49,7 @@ class ScheduleHandler
 
     public function createSchedule($date, $beginTime, User $user)
     {
+
     }
 
     private function getDateByString($dateString)
