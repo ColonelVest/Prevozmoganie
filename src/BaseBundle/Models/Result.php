@@ -13,7 +13,6 @@ class Result
     private $isSuccess = true;
     /** @var array $errors */
     private $errors = [];
-
     private $data;
 
     /**

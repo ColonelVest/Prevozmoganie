@@ -2,11 +2,11 @@
 
 namespace TaskBundle\Controller;
 
+use BaseBundle\Models\Result;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Schedule;
-use TaskBundle\Form\ScheduleType;
 
 class ScheduleController extends FOSRestController
 {
@@ -19,7 +19,7 @@ class ScheduleController extends FOSRestController
     {
         $result = $this->get('schedule_handler')->getSchedule($dateString);
 
-        return $this->get('api_response_formatter')->createResponseFromResultObj($result);
+        return $this->getResponseByResultObj($result);
     }
 
     /**
@@ -27,9 +27,9 @@ class ScheduleController extends FOSRestController
      */
     public function getSchedulesAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $result = $this->get('schedule_handler')->getSchedules();
 
-        return $em->getRepository('TaskBundle:Schedule')->findAll();
+        return $this->getResponseByResultObj($result);
     }
 
     /**
@@ -39,24 +39,18 @@ class ScheduleController extends FOSRestController
      */
     public function postScheduleAction(Request $request)
     {
-        $schedule = new Schedule();
-        //TODO: Создать трансформеры для этих данных
-        //TODO: Проверку на корректность
-        $date = \DateTime::createFromFormat('dmY', $request->request->get('date'));
-        $startTime = \DateTime::createFromFormat('H:i', $request->request->get('beginTime'));
-        $schedule
-            ->setBeginTime($startTime)
-            ->setDate($date)
-            ->setUser($this->getUser());
-        $form = $this->createForm(ScheduleType::class, $schedule);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $dm = $this->getDoctrine()->getManager();
-            $dm->persist($schedule);
-            $dm->flush();
-        }
+        $dateString = $request->request->get('date');
+        $startTimeString = $request->request->get('beginTime');
+        $description = $request->request->get('description');
+        $user = $this->getUser();
+        $result = $this->get('schedule_handler')->createSchedule($dateString, $startTimeString, $description, $user);
 
-        return $schedule;
+        return $this->getResponseByResultObj($result);
+    }
+
+    private function getResponseByResultObj(Result $result)
+    {
+        return $this->get('api_response_formatter')->createResponseFromResultObj($result);
     }
 
 }

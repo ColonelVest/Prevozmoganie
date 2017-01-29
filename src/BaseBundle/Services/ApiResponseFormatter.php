@@ -46,11 +46,11 @@ class ApiResponseFormatter
         return $this;
     }
 
-    public function getDataNotExistsResponse()
+    public function setResponseData($data)
     {
-        return $this->createErrorResponse()
-            ->addResponseMessage(ErrorsEnum::REQUESTED_DATA_NOT_EXISTS)
-            ->getResponse();
+        $this->response['data'] = $data;
+
+        return $this;
     }
 
     public function createResponseFromResultObj(Result $result)
@@ -60,7 +60,7 @@ class ApiResponseFormatter
             $this->addResponseMessage($error);
         }
         if ($result->getData()) {
-            $this->addResponseData($result->getData());
+            $this->setResponseData($result->getData());
         }
 
         return $this->getResponse();
