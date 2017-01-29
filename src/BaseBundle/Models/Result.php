@@ -2,11 +2,15 @@
 
 namespace BaseBundle\Models;
 
-
+/**
+ * Модель для хранения абстрактных результатов функций
+ * Class Result
+ * @package BaseBundle\Models
+ */
 class Result
 {
     /** @var  bool $isSuccess */
-    private $isSuccess;
+    private $isSuccess = true;
     /** @var array $errors */
     private $errors = [];
 
@@ -24,7 +28,7 @@ class Result
      * @param mixed $isSuccess
      * @return Result
      */
-    public function setIsSuccess($isSuccess)
+    public function setIsSuccess($isSuccess): Result
     {
         $this->isSuccess = $isSuccess;
 
@@ -40,12 +44,12 @@ class Result
     }
 
     /**
-     * @param $error
+     * @param $errorCode
      * @return Result
      */
-    public function addError($error): Result
+    public function addError($errorCode): Result
     {
-        $this->errors[] = $error;
+        $this->errors[] = $errorCode;
 
         return $this;
     }
@@ -62,7 +66,7 @@ class Result
      * @param mixed $data
      * @return Result
      */
-    public function setData($data)
+    public function setData($data): Result
     {
         $this->data = $data;
 

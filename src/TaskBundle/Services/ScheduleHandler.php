@@ -2,10 +2,18 @@
 
 namespace TaskBundle\Services;
 
+use BaseBundle\Entity\User;
+use BaseBundle\Models\ErrorsEnum;
+use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
 use Doctrine\ORM\EntityManager;
 
-class Schedule
+/**
+ * Действия с расписанием
+ * Class Schedule
+ * @package TaskBundle\Services
+ */
+class ScheduleHandler
 {
     /** @var  EntityManager $em */
     private $em;
@@ -19,31 +27,35 @@ class Schedule
         $this->responseFormatter = $responseFormatter;
     }
 
-    public function getSchedule($dateString)
-    {
-        $date = $this->getDateByString($dateString);
+//    public function getSchedule($dateString)
+//    {
+//        $date = $this->getDateByString($dateString);
+//
+//        return $schedule = $this->em->getRepository('TaskBundle:Schedule')->findOneBy(['date' => $date]);
+//    }
 
-        return $schedule = $this->em->getRepository('TaskBundle:Schedule')->findOneBy(['date' => $date]);
-    }
-
-    public function getScheduleResponse($date)
+    public function getSchedule($date) : Result
     {
+        $result = new Result();
         $date = $this->getDateByString($date);
         if ($date === false) {
-            return $this->responseFormatter->createErrorResponse()
-                ->addResponseMessage(ApiResponseFormatter::INCORRECT_DATE_FORMAT)
-                ->getResponse();
+            return $result->addError(ErrorsEnum::INCORRECT_DATE_FORMAT)
+                ->setIsSuccess(false);
         }
 
         $schedule = $this->em->getRepository('TaskBundle:Schedule')->findOneBy(['date' => $date]);
         if (is_null($schedule)) {
-            return $this->responseFormatter->getDataNotExistsResponse();
+            return $result
+                ->addError(ErrorsEnum::REQUESTED_DATA_NOT_EXISTS)
+                ->setIsSuccess(false);
+
         }
 
-        return $this->responseFormatter
-            ->createSuccessResponse()
-            ->addResponseData($schedule, 'schedule')
-            ->getResponse();
+        return $result->setData($schedule);
+    }
+
+    public function createSchedule($date, $beginTime, User $user)
+    {
     }
 
     private function getDateByString($dateString)

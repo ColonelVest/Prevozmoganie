@@ -2,13 +2,14 @@
 
 namespace BaseBundle\Services;
 
+use BaseBundle\Models\ErrorsEnum;
+use BaseBundle\Models\Result;
+
 class ApiResponseFormatter
 {
+    /** @var  bool $isSuccess */
     private $isSuccess;
     private $response;
-
-    const REQUESTED_DATA_NOT_EXISTS = [1 => 'not_exist'];
-    const INCORRECT_DATE_FORMAT = [2 => 'incorrect_date'];
 
     public function createSuccessResponse()
     {
@@ -30,10 +31,10 @@ class ApiResponseFormatter
         return $this;
     }
 
-    public function addResponseMessage(array $message, $messageType = null)
+    public function addResponseMessage(int $errorCode, $messageType = null)
     {
         $messageType = $messageType ? $messageType : ($this->isSuccess ? 'Warnings' : 'Errors');
-        $this->response[$messageType][] = $message;
+        $this->response[$messageType][] = ErrorsEnum::getErrorMessageByCode($errorCode);
 
         return $this;
     }
@@ -48,8 +49,21 @@ class ApiResponseFormatter
     public function getDataNotExistsResponse()
     {
         return $this->createErrorResponse()
-            ->addResponseMessage(self::REQUESTED_DATA_NOT_EXISTS)
+            ->addResponseMessage(ErrorsEnum::REQUESTED_DATA_NOT_EXISTS)
             ->getResponse();
+    }
+
+    public function createResponseFromResultObj(Result $result)
+    {
+        $this->createResponse($result->getIsSuccess());
+        foreach ($result->getErrors() as $error) {
+            $this->addResponseMessage($error);
+        }
+        if ($result->getData()) {
+            $this->addResponseData($result->getData());
+        }
+
+        return $this->getResponse();
     }
 
     public function getResponse()

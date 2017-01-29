@@ -17,7 +17,7 @@ class ScheduleController extends FOSRestController
      */
     public function getScheduleAction($dateString = null)
     {
-        return $this->get('schedule_service')->getScheduleResponse($dateString);
+        return $this->get('schedule_api_request_handler')->getSchedule($dateString);
     }
 
     /**
@@ -32,6 +32,8 @@ class ScheduleController extends FOSRestController
 
     /**
      * @Rest\View()
+     * @param Request $request
+     * @return Schedule
      */
     public function postScheduleAction(Request $request)
     {
