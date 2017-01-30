@@ -2,13 +2,12 @@
 
 namespace TaskBundle\Controller;
 
-use BaseBundle\Models\Result;
+use BaseBundle\Controller\BaseApiController;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Schedule;
 
-class ScheduleController extends FOSRestController
+class ScheduleController extends BaseApiController
 {
     /**
      * @Rest\View()
@@ -17,7 +16,7 @@ class ScheduleController extends FOSRestController
      */
     public function getScheduleAction($dateString = null)
     {
-        $result = $this->get('schedule_handler')->getSchedule($dateString);
+        $result = $this->get('schedule_handler')->getScheduleByDateString($dateString);
 
         return $this->getResponseByResultObj($result);
     }
@@ -47,11 +46,6 @@ class ScheduleController extends FOSRestController
             ->createSchedule($dateString, $startTimeString, $description, $user);
 
         return $this->getResponseByResultObj($result);
-    }
-
-    private function getResponseByResultObj(Result $result)
-    {
-        return $this->get('api_response_formatter')->createResponseFromResultObj($result);
     }
 
 }

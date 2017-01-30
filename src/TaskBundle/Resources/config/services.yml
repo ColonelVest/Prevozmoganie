@@ -2,3 +2,7 @@ services:
     schedule_handler:
         class: TaskBundle\Services\ScheduleHandler
         arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+
+    task_handler:
+        class: TaskBundle\Services\TaskHandler
+        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']

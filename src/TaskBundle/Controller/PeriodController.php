@@ -2,8 +2,9 @@
 
 namespace TaskBundle\Controller;
 
+use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\Result;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
@@ -11,16 +12,18 @@ use TaskBundle\Entity\Schedule;
 use TaskBundle\Form\PeriodType;
 use FOS\RestBundle\View\View;
 
-class PeriodController extends FOSRestController
+class PeriodController extends BaseApiController
 {
     /**
      * @Rest\View()
-     * @param Period $period
+     * @param $periodId
      * @return Period
      */
-    public function getPeriodAction(Period $period)
+    public function getPeriodAction($periodId = null)
     {
-        return $period;
+        $result = $this->get('task_handler')->getPeriodById($periodId);
+
+        return $this->getResponseByResultObj($result);
     }
 
     /**
@@ -28,8 +31,9 @@ class PeriodController extends FOSRestController
      */
     public function getPeriodsAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        return $em->getRepository('TaskBundle:Period')->findAll();
+        $result = $this->get('task_handler')->getPeriods();
+
+        return $this->getResponseByResultObj($result);
     }
 
     /**
@@ -38,6 +42,7 @@ class PeriodController extends FOSRestController
      */
     public function postPeriodAction(Request $request, \DateTime $date)
     {
+        $result = new Result();
         /** @var Schedule $schedule */
         $schedule = $this->container->get('schedule_service')->getSchedule($date);
         //TODO: Добавить проверку ¡£ªº“‘øπ˚«æ§Ú¯˘$period‹

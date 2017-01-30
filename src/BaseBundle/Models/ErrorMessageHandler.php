@@ -17,12 +17,14 @@ class ErrorMessageHandler
     const INCORRECT_DATE_FORMAT = 2;
     const INCORRECT_TIME_FORMAT = 3;
     const INCORRECT_SCHEDULE_BEGIN_TIME = 4;
+    const PERIOD_ID_NOT_EXISTS = 5;
 
     public function getErrorMessageByCode($code)
     {
         if (self::$errors[$code]) {
             return self::$errors[$code];
         }
+        //TODO: Добавить всякой информации
         $this->logger->error('Unexpected error');
 
         return self::$errors[0];
@@ -32,6 +34,7 @@ class ErrorMessageHandler
         0 => 'unexpected_error',
         1 => 'not_exist',
         2 => 'incorrect_date',
-        3 => 'incorrect_time'
+        3 => 'incorrect_time',
+        4 => 'incorrect_schedule_begin_time'
     ];
 }
