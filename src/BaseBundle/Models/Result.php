@@ -15,6 +15,34 @@ class Result
     private $errors = [];
     private $data;
 
+    public static function createSuccessResult($data = null)
+    {
+        $result = new self();
+        if ($data) {
+            $result->setData($data);
+        }
+
+        return $result;
+    }
+
+    public static function createErrorResult($errorData = null)
+    {
+        $result = new Result();
+        if (!is_null($errorData)) {
+            if (is_array($errorData)) {
+                if (count($errorData) > 0) {
+                    foreach ($errorData as $error) {
+                        $result->addError($error);
+                    }
+                }
+            } else {
+                $result->addError($errorData);
+            }
+        }
+
+        return $result->setIsSuccess(false);
+    }
+
     /**
      * @return mixed
      */

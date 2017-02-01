@@ -17,11 +17,11 @@ class ErrorMessageHandler
     const INCORRECT_DATE_FORMAT = 2;
     const INCORRECT_TIME_FORMAT = 3;
     const INCORRECT_SCHEDULE_BEGIN_TIME = 4;
-    const PERIOD_ID_NOT_EXISTS = 5;
+    const REQUESTED_PERIOD_NOT_EXISTS = 5;
 
     public function getErrorMessageByCode($code)
     {
-        if (self::$errors[$code]) {
+        if (isset(self::$errors[$code])) {
             return self::$errors[$code];
         }
         //TODO: Добавить всякой информации
@@ -35,6 +35,7 @@ class ErrorMessageHandler
         1 => 'not_exist',
         2 => 'incorrect_date',
         3 => 'incorrect_time',
-        4 => 'incorrect_schedule_begin_time'
+        4 => 'incorrect_schedule_begin_time',
+        5 => 'period_not_exists'
     ];
 }
