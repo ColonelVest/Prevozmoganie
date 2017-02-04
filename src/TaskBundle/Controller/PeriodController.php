@@ -54,14 +54,14 @@ class PeriodController extends BaseApiController
 
     /**
      * @Rest\View()
-     * @param Period $period
+     * @param $periodId
+     * @param $date
      * @return View
      */
-    public function deleteSchedulePeriodAction(Period $period, $date)
+    public function deleteSchedulePeriodAction($periodId, $date)
     {
-        $this->get('period_handler')->deletePeriod()
-        $em->flush();
+        $result =  $this->get('period_handler')->deletePeriod($date, $periodId);
 
-        return new View();
+        return $this->getResponseByResultObj($result);
     }
 }

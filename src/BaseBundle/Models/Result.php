@@ -86,7 +86,11 @@ class Result
      */
     public function getData()
     {
-        return $this->data;
+        if ($this->isSuccess) {
+            return $this->data;
+        }
+
+        return null;
     }
 
     /**

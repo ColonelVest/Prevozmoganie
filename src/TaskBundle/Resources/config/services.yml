@@ -5,4 +5,4 @@ services:
 
     period_handler:
         class: TaskBundle\Services\PeriodHandler
-        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator', '@schedule_handler']

@@ -50,12 +50,6 @@ class Period extends BaseEntity
     private $description;
 
     /**
-     * @var Schedule
-     * @ORM\ManyToOne(targetEntity="TaskBundle\Entity\Schedule")
-     */
-    private $schedule;
-
-    /**
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
      */
     private $task;
@@ -69,24 +63,6 @@ class Period extends BaseEntity
      * @ORM\Column(type="time")
      */
     private $end;
-
-    /**
-     * @return Schedule
-     */
-    public function getSchedule(): Schedule
-    {
-        return $this->schedule;
-    }
-
-    /**
-     * @param Schedule $schedule
-     * @return Period
-     */
-    public function setSchedule(Schedule $schedule): Period
-    {
-        $this->schedule = $schedule;
-        return $this;
-    }
 
     /**
      * @return int

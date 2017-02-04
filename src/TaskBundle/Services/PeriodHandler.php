@@ -4,12 +4,24 @@ namespace TaskBundle\Services;
 
 use BaseBundle\Models\ErrorMessageHandler;
 use BaseBundle\Models\Result;
+use BaseBundle\Services\ApiResponseFormatter;
 use BaseBundle\Services\EntityHandler;
+use Doctrine\ORM\EntityManager;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 use TaskBundle\Entity\Period;
 use TaskBundle\Entity\Schedule;
 
 class PeriodHandler extends EntityHandler
 {
+    /** @var ScheduleHandler $scheduleHandler */
+    private $scheduleHandler;
+
+    public function __construct(EntityManager $em, ApiResponseFormatter $responseFormatter, RecursiveValidator $validator, ScheduleHandler $scheduleHandler)
+    {
+        parent::__construct($em, $responseFormatter, $validator);
+        $this->scheduleHandler = $scheduleHandler;
+    }
+
     public function getPeriodById($periodId)
     {
         $period = $this->em->find('TaskBundle:Period', $periodId);
@@ -37,14 +49,22 @@ class PeriodHandler extends EntityHandler
         return $this->validateEntityAndGetResult($period);
     }
 
-    public function deletePeriod($periodId)
+    public function deletePeriod(Period $period, Schedule $schedule)
     {
-        $periodResult = $this->getPeriodById($periodId);
-        if ($periodResult->getIsSuccess()) {
-            $this->em->remove($periodResult->getData());
-            $this->em->flush();
+        $schedule->removePeriod($period);
+        $this->em->flush();
+
+        return Result::createSuccessResult($period);
+    }
+
+    public function deletePeriodById($periodId, $dateString)
+    {
+        $result = $this->getPeriodById($periodId);
+        if ($result->getIsSuccess()) {
+            $scheduleResult = $this->scheduleHandler->getScheduleByDateString($dateString);
+            return $this->deletePeriod($result->getData(), $scheduleResult->getData());
         }
 
-        return Result::createSuccessResult($periodResult->getData());
+        return $result;
     }
 }
