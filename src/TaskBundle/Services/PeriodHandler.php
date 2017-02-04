@@ -16,8 +16,12 @@ class PeriodHandler extends EntityHandler
     /** @var ScheduleHandler $scheduleHandler */
     private $scheduleHandler;
 
-    public function __construct(EntityManager $em, ApiResponseFormatter $responseFormatter, RecursiveValidator $validator, ScheduleHandler $scheduleHandler)
-    {
+    public function __construct(
+        EntityManager $em,
+        ApiResponseFormatter $responseFormatter,
+        RecursiveValidator $validator,
+        ScheduleHandler $scheduleHandler
+    ) {
         parent::__construct($em, $responseFormatter, $validator);
         $this->scheduleHandler = $scheduleHandler;
     }
@@ -39,11 +43,18 @@ class PeriodHandler extends EntityHandler
         return Result::createSuccessResult($periods);
     }
 
-    public function createPeriod(Schedule $schedule, $duration, $description)
+    public function createPeriod(Schedule $schedule, $begin, $end, $description)
     {
         $period = new Period();
         $period->setDescription($description);
-        $period->setDuration($duration);
+        $beginTime = \DateTime::createFromFormat('H:i', $begin);
+        $endTime = \DateTime::createFromFormat('H:i', $end);
+
+        if (!($beginTime instanceof \DateTime) || !($endTime instanceof \DateTime)) {
+            //TODO: Что делать с такой ситуацией? ПРи нормальной работе такого не должно быть
+        }
+        $period->setBegin($beginTime);
+        $period->setEnd($endTime);
         $schedule->addPeriod($period);
 
         return $this->validateEntityAndGetResult($period);
@@ -54,7 +65,7 @@ class PeriodHandler extends EntityHandler
         $schedule->removePeriod($period);
         $this->em->flush();
 
-        return Result::createSuccessResult($period);
+        return Result::createSuccessResult($period->getId());
     }
 
     public function deletePeriodById($periodId, $dateString)
@@ -62,6 +73,7 @@ class PeriodHandler extends EntityHandler
         $result = $this->getPeriodById($periodId);
         if ($result->getIsSuccess()) {
             $scheduleResult = $this->scheduleHandler->getScheduleByDateString($dateString);
+
             return $this->deletePeriod($result->getData(), $scheduleResult->getData());
         }
 

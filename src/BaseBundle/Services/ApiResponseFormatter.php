@@ -32,7 +32,7 @@ class ApiResponseFormatter
     {
         $this->isSuccess = $isSuccess;
         $this->response = [
-            'success' => $isSuccess
+            'success' => $isSuccess,
         ];
 
         return $this;

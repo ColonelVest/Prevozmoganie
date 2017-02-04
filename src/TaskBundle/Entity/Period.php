@@ -30,19 +30,6 @@ class Period extends BaseEntity
     use BlameableEntity;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="expected_period_duration")
-     */
-    private $duration;
-
-    /**
-     * @var int
-     * @ORM\Column(type="integer")
-     */
-    private $realDuration = 0;
-
-    /**
      * @var string
      * Gedmo\Versioned
      * @ORM\Column(type="string")
@@ -57,44 +44,12 @@ class Period extends BaseEntity
     /**
      * @ORM\Column(type="time")
      */
-    private $start;
+    private $begin;
 
     /**
      * @ORM\Column(type="time")
      */
     private $end;
-
-    /**
-     * @return int
-     */
-    public function getDuration()
-    {
-        return $this->duration;
-    }
-
-    /**
-     * @param int $duration
-     */
-    public function setDuration($duration)
-    {
-        $this->duration = $duration;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRealDuration()
-    {
-        return $this->realDuration;
-    }
-
-    /**
-     * @param int $realDuration
-     */
-    public function setRealDuration($realDuration)
-    {
-        $this->realDuration = $realDuration;
-    }
 
     /**
      * @return string
@@ -125,21 +80,23 @@ class Period extends BaseEntity
     public function setTask($task) {
         $this->task = $task;
     }
+
     /**
      * @return mixed
      */
-    public function getStart()
+    public function getBegin()
     {
-        return $this->start;
+        return $this->begin;
     }
 
     /**
-     * @param mixed $start
+     * @param mixed $begin
      * @return Period
      */
-    public function setStart($start)
+    public function setBegin($begin)
     {
-        $this->start = $start;
+        $this->begin = $begin;
+
         return $this;
     }
 

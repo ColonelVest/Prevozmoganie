@@ -1,17 +1,5 @@
-schedule_bundle_task:
+schedule_bundle:
     type: rest
     prefix: /v1
-    resource: "\TaskBundle\Controller\TaskController"
+    resource: "@TaskBundle/Controller"
     name_prefix:  api_v1_
-
-schedule_bundle_period:
-    type: rest
-    prefix: /v1
-    resource: '\TaskBundle\Controller\PeriodController'
-    name_prefix:  api_v1_
-
-schedule_bundle_schedule:
-    type: rest
-    prefix: /v1
-    resource: '\TaskBundle\Controller\ScheduleController'
-    name_prefix: api_v1

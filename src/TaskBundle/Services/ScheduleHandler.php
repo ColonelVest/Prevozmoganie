@@ -50,7 +50,6 @@ class ScheduleHandler extends EntityHandler
         }
 
         $schedule = (new Schedule())
-            ->setBeginTime($startTime)
             ->setDate($date)
             ->setDescription($description)
             ->setUser($user);

@@ -58,12 +58,6 @@ class Schedule extends BaseEntity
     private $description;
 
     /**
-     * @ORM\Column(type="time")
-     * @Assert\NotNull(message = "12")
-     */
-    private $beginTime;
-
-    /**
      * @ORM\Column(type="date", unique=true, nullable=false)
      */
     private $date;
@@ -114,22 +108,6 @@ class Schedule extends BaseEntity
      */
     public function setDescription($description) {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBeginTime() {
-        return $this->beginTime;
-    }
-
-    /**
-     * @param mixed $beginTime
-     * @return Schedule
-     */
-    public function setBeginTime($beginTime) {
-        $this->beginTime = $beginTime;
         return $this;
     }
 
