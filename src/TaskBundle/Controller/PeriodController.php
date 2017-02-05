@@ -19,6 +19,8 @@ class PeriodController extends BaseApiController
     {
         $result = $this->get('period_handler')->getPeriodById($periodId);
 
+        $result->setData($this->get('api_serializer')->conciseSerializePeriod($result->getData()));
+
         return $this->getResponseByResultObj($result);
     }
 

@@ -4,12 +4,11 @@ namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use TaskBundle\Entity\Task;
 
 /**
  * @ORM\Entity
@@ -33,6 +32,7 @@ class Period extends BaseEntity
      * @var string
      * Gedmo\Versioned
      * @ORM\Column(type="string")
+     * @Groups({"full_1", "concise"})
      */
     private $description;
 
@@ -47,6 +47,7 @@ class Period extends BaseEntity
     private $begin;
 
     /**
+     * @Groups({"full_1", "concise"})
      * @ORM\Column(type="time")
      */
     private $end;
@@ -68,6 +69,7 @@ class Period extends BaseEntity
     }
 
     /**
+     * @Groups({"full_1"})
      * @return mixed
      */
     public function getTask() {
@@ -82,6 +84,7 @@ class Period extends BaseEntity
     }
 
     /**
+     * @Groups({"full_1", "concise"})
      * @return mixed
      */
     public function getBegin()

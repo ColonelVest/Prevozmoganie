@@ -10,6 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="ScheduleRepository")
@@ -43,6 +44,7 @@ class Schedule extends BaseEntity
     }
 
     /**
+     * @Groups({"full_1"})
      * @ORM\ManyToMany(targetEntity="Period")
      * @ORM\JoinTable(name="schedule_periods",
      *      joinColumns={@ORM\JoinColumn(name="schedule_id", referencedColumnName="id")},
@@ -54,16 +56,19 @@ class Schedule extends BaseEntity
      * @ORM\Column()
      * @Gedmo\Versioned()
      * @Assert\NotNull()
+     * @Groups({"full_1", "concise"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="date", unique=true, nullable=false)
+     * @Groups({"full_1", "concise"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="BaseBundle\Entity\User")
+     * @Groups({"full_1"})
      */
     private $user;
 

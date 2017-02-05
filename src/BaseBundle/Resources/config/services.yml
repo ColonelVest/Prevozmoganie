@@ -6,3 +6,12 @@ services:
   error_message_handler:
     class: BaseBundle\Models\ErrorMessageHandler
     arguments: ['@monolog.logger']
+
+  api_serializer:
+    class: BaseBundle\Controller\ApiSerializer
+    arguments: ['@object_normalizer']
+
+  object_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+        tags:
+            - { name: serializer.normalizer }
