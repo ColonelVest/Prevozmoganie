@@ -7,11 +7,21 @@ services:
     class: BaseBundle\Models\ErrorMessageHandler
     arguments: ['@monolog.logger']
 
-  api_serializer:
-    class: BaseBundle\Controller\ApiSerializer
+  api_normalizer:
+    class: BaseBundle\Controller\ApiNormalizer
     arguments: ['@object_normalizer']
 
   object_normalizer:
-        class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
-        tags:
-            - { name: serializer.normalizer }
+    class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+    arguments: ['@metadata_factory']
+    tags:
+        - { name: serializer.normalizer }
+
+  metadata_factory:
+    class: Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory
+    arguments: ['@annotaion_loader']
+
+
+  annotaion_loader:
+    class: Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader
+    arguments: ['@annotations.cached_reader']

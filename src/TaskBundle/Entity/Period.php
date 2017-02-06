@@ -38,11 +38,13 @@ class Period extends BaseEntity
 
     /**
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
+     * @Groups({"full_1"})
      */
     private $task;
 
     /**
      * @ORM\Column(type="time")
+     * @Groups({"full_1", "concise"})
      */
     private $begin;
 
@@ -69,7 +71,6 @@ class Period extends BaseEntity
     }
 
     /**
-     * @Groups({"full_1"})
      * @return mixed
      */
     public function getTask() {
@@ -84,7 +85,6 @@ class Period extends BaseEntity
     }
 
     /**
-     * @Groups({"full_1", "concise"})
      * @return mixed
      */
     public function getBegin()

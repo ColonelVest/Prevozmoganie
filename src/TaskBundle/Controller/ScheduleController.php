@@ -17,8 +17,9 @@ class ScheduleController extends BaseApiController
     public function getScheduleAction($dateString = null)
     {
         $result = $this->get('schedule_handler')->getScheduleByDateString($dateString);
+        $serializedData = $this->get('api_serializer')->conciseNormalizeSchedule($result->getData());
 
-        return $this->getResponseByResultObj($result);
+        return $this->getResponseByResultObj($result->setData($serializedData));
     }
 
     /**
