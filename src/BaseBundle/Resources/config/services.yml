@@ -14,6 +14,8 @@ services:
   object_normalizer:
     class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
     arguments: ['@metadata_factory']
+    calls:
+        - [setSerializer, ['@serializer']]
     tags:
         - { name: serializer.normalizer }
 

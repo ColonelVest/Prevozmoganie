@@ -3,6 +3,7 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\Result;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
@@ -19,7 +20,7 @@ class PeriodController extends BaseApiController
     {
         $result = $this->get('period_handler')->getPeriodById($periodId);
 
-        $result->setData($this->get('api_normalizer')->conciseNormalizePeriod($result->getData()));
+        $result = $this->normalizePeriod($result);
 
         return $this->getResponseByResultObj($result);
     }
@@ -31,6 +32,7 @@ class PeriodController extends BaseApiController
     {
         $result = $this->get('period_handler')->getPeriods();
         $normalizedPeriods = $this->get('api_normalizer')->normalizePeriods($result->getData());
+
         return $this->getResponseByResultObj($result->setData($normalizedPeriods));
     }
 
@@ -48,8 +50,7 @@ class PeriodController extends BaseApiController
             $end = $request->request->get('end');
             $description = $request->request->get('description');
             $result = $this->get('period_handler')->createPeriod($result->getData(), $begin, $end, $description);
-            $normalizedPeriod = $this->get('api_normalizer')->conciseNormalizePeriod($result->getData());
-//            $result->setData()
+            $result = $this->normalizePeriod($result);
         }
 
         return $this->getResponseByResultObj($result);
@@ -66,5 +67,15 @@ class PeriodController extends BaseApiController
         $result = $this->get('period_handler')->deletePeriodById($periodId, $date);
 
         return $this->getResponseByResultObj($result);
+    }
+
+    private function normalizePeriod(Result $result)
+    {
+        if (!is_null($result->getData())) {
+            $normalizedPeriod = $this->get('api_normalizer')->conciseNormalizePeriod($result->getData());
+            $result->setData($normalizedPeriod);
+        }
+
+        return $result;
     }
 }

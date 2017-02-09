@@ -3,6 +3,7 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\Result;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Schedule;
@@ -17,9 +18,8 @@ class ScheduleController extends BaseApiController
     public function getScheduleAction($dateString = null)
     {
         $result = $this->get('schedule_handler')->getScheduleByDateString($dateString);
-        $serializedData = $this->get('api_serializer')->conciseNormalizeSchedule($result->getData());
 
-        return $this->getResponseByResultObj($result->setData($serializedData));
+        return $this->getResponseByResultObj($this->getNormalizedSchedule($result));
     }
 
     /**
@@ -46,7 +46,16 @@ class ScheduleController extends BaseApiController
         $result = $this->get('schedule_handler')
             ->createSchedule($dateString, $startTimeString, $description, $user);
 
-        return $this->getResponseByResultObj($result);
+        return $this->getResponseByResultObj($this->getNormalizedSchedule($result));
     }
 
+    private function getNormalizedSchedule(Result $result)
+    {
+        if (!is_null($result->getData())) {
+            $serializedData = $this->get('api_normalizer')->conciseNormalizeSchedule($result->getData());
+            $result->setData($serializedData);
+        }
+
+        return $result;
+    }
 }
