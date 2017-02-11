@@ -73,6 +73,31 @@ class Schedule extends BaseEntity
     private $user;
 
     /**
+     * @ORM\Column(type="time", nullable=false)
+     * @Groups({"full_1"})
+     */
+    private $estimatedBeginTime;
+
+    /**
+     * @return mixed
+     */
+    public function getEstimatedBeginTime()
+    {
+        return $this->estimatedBeginTime;
+    }
+
+    /**
+     * @param mixed $estimatedBeginTime
+     * @return Schedule
+     */
+    public function setEstimatedBeginTime($estimatedBeginTime)
+    {
+        $this->estimatedBeginTime = $estimatedBeginTime;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getPeriods() {

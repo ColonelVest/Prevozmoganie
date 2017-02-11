@@ -65,7 +65,7 @@ class PeriodHandler extends EntityHandler
         $schedule->removePeriod($period);
         $this->em->flush();
 
-        return Result::createSuccessResult($period->getId());
+        return Result::createSuccessResult($period);
     }
 
     public function deletePeriodById($periodId, $dateString)

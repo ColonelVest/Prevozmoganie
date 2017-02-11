@@ -52,7 +52,8 @@ class ScheduleHandler extends EntityHandler
         $schedule = (new Schedule())
             ->setDate($date)
             ->setDescription($description)
-            ->setUser($user);
+            ->setUser($user)
+            ->setEstimatedBeginTime($startTime);
 
         return $this->validateEntityAndGetResult($schedule);
     }

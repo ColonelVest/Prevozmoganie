@@ -65,6 +65,7 @@ class PeriodController extends BaseApiController
     public function deleteSchedulePeriodAction($date, $periodId)
     {
         $result = $this->get('period_handler')->deletePeriodById($periodId, $date);
+        $result = $this->normalizePeriod($result);
 
         return $this->getResponseByResultObj($result);
     }

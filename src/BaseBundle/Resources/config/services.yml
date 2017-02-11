@@ -5,7 +5,7 @@ services:
 
   error_message_handler:
     class: BaseBundle\Models\ErrorMessageHandler
-    arguments: ['@monolog.logger']
+    arguments: ['@monolog.logger', '@translator.default']
 
   api_normalizer:
     class: BaseBundle\Controller\ApiNormalizer
@@ -16,8 +16,6 @@ services:
     arguments: ['@metadata_factory']
     calls:
         - [setSerializer, ['@serializer']]
-    tags:
-        - { name: serializer.normalizer }
 
   metadata_factory:
     class: Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory
