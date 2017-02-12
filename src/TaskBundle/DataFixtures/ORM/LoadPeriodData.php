@@ -24,9 +24,12 @@ class LoadPeriodData extends AbstractFixture implements OrderedFixtureInterface,
         foreach ($this->periods as $index => $item) {
             $period = new Period();
             $period->setTask($this->getReference('task'.$index));
-            $period->setDuration($item[0]);
-            $period->setInternalNumber($index);
-            $period->setRealDuration($item[1]);
+            $period->setUser($this->getReference('fixt_admin'));
+            $period->setCreatedBy($this->getReference('fixt_admin'));
+            $period->setCreatedAt(new \DateTime());
+            $period->setDate(new \DateTime($item[0] . ' day'));
+            $period->setBegin(\DateTime::createFromFormat('H:i', $item[1]));
+            $period->setEnd(\DateTime::createFromFormat('H:i', $item[3]));
             $period->setDescription($item[2]);
             $manager->persist($period);
             $this->addReference('period'.$index, $period);
@@ -35,12 +38,12 @@ class LoadPeriodData extends AbstractFixture implements OrderedFixtureInterface,
     }
 
     private $periods = [
-        [25, 20, 'opop'],
-        [11, 20, '123df'],
-        [12, 20, 'asdf'],
-        [13, 20, 'asdf'],
-        [14, 20, '34eerw'],
-        [15, 20, 'qtqregtwer'],
+        ['-2', '09:00', 'opop', '09:10'],
+        ['-1', '09:00', '123df', '09:10'],
+        ['+1', '09:00', 'asdf', '09:10'],
+        ['+2', '09:00', 'asdf', '09:10'],
+        ['-2', '19:00', '34eerw','19:10'],
+        ['+2', '19:00', 'qtqregtwer','19:10'],
     ];
 
     /**

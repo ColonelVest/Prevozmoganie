@@ -20,7 +20,7 @@ class PeriodController extends BaseApiController
     {
         $result = $this->get('period_handler')->getPeriodById($periodId);
 
-        $result = $this->normalizePeriod($result);
+        $result = $this->normalizePeriodResult($result);
 
         return $this->getResponseByResultObj($result);
     }
@@ -52,7 +52,7 @@ class PeriodController extends BaseApiController
         $user = $this->getUser();
         $date = \DateTime::createFromFormat('dmY', $request->request->get('date'));
         $result = $this->get('period_handler')->createPeriod($user, $date, $begin, $end, $description);
-        $result = $this->normalizePeriod($result);
+        $result = $this->normalizePeriodResult($result);
 
         return $this->getResponseByResultObj($result);
     }
@@ -60,18 +60,17 @@ class PeriodController extends BaseApiController
     /**
      * @Rest\View()
      * @param $periodId
-     * @param $date
      * @return View
      */
     public function deletePeriodAction($periodId)
     {
         $result = $this->get('period_handler')->deletePeriodById($periodId);
-        $result = $this->normalizePeriod($result);
+        $result = $this->normalizePeriodResult($result);
 
         return $this->getResponseByResultObj($result);
     }
 
-    private function normalizePeriod(Result $result)
+    private function normalizePeriodResult(Result $result)
     {
         if (!is_null($result->getData())) {
             $normalizedPeriod = $this->get('api_normalizer')->conciseNormalizePeriod($result->getData());
