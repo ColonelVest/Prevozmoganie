@@ -37,11 +37,6 @@ class Day extends BaseEntity
     use BlameableEntity;
 
     /**
-     * @ORM\OneToOne(targetEntity="TaskBundle\Entity\Schedule")
-     */
-    private $schedule;
-
-    /**
      * @Gedmo\Versioned()
      * @ORM\Column(type="date")
      */
@@ -64,20 +59,6 @@ class Day extends BaseEntity
      */
     public function setUser($user) {
         $this->user = $user;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSchedule() {
-        return $this->schedule;
-    }
-
-    /**
-     * @param mixed $schedule
-     */
-    public function setSchedule($schedule) {
-        $this->schedule = $schedule;
     }
 
     /**

@@ -115,6 +115,9 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: BaseBundle\Entity\User
+    from_email:
+            address: faainttt@gmail.com
+            sender_name: Danya
 fos_rest:
     view:
         mime_types:

@@ -1,4 +1,4 @@
-schedule_bundle:
+task_bundle:
     type: rest
     prefix: /v1
     resource: "@TaskBundle/Controller"

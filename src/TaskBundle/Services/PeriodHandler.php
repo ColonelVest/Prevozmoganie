@@ -2,6 +2,7 @@
 
 namespace TaskBundle\Services;
 
+use BaseBundle\Entity\User;
 use BaseBundle\Models\ErrorMessageHandler;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
@@ -9,21 +10,15 @@ use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use TaskBundle\Entity\Period;
-use TaskBundle\Entity\Schedule;
 
 class PeriodHandler extends EntityHandler
 {
-    /** @var ScheduleHandler $scheduleHandler */
-    private $scheduleHandler;
-
     public function __construct(
         EntityManager $em,
         ApiResponseFormatter $responseFormatter,
-        RecursiveValidator $validator,
-        ScheduleHandler $scheduleHandler
+        RecursiveValidator $validator
     ) {
         parent::__construct($em, $responseFormatter, $validator);
-        $this->scheduleHandler = $scheduleHandler;
     }
 
     public function getPeriodById($periodId)
@@ -36,45 +31,39 @@ class PeriodHandler extends EntityHandler
         return Result::createSuccessResult($period);
     }
 
-    public function getPeriods()
+    public function getPeriods(\DateTime $date)
     {
         $periods = $this->em->getRepository('TaskBundle:Period')->findAll();
 
         return Result::createSuccessResult($periods);
     }
 
-    public function createPeriod(Schedule $schedule, $begin, $end, $description)
+    public function createPeriod(?User $user, \DateTime $date, \DateTime $begin, \DateTime $end, $description)
     {
         $period = new Period();
         $period->setDescription($description);
-        $beginTime = \DateTime::createFromFormat('H:i', $begin);
-        $endTime = \DateTime::createFromFormat('H:i', $end);
-
-        if (!($beginTime instanceof \DateTime) || !($endTime instanceof \DateTime)) {
-            //TODO: Что делать с такой ситуацией? ПРи нормальной работе такого не должно быть
-        }
-        $period->setBegin($beginTime);
-        $period->setEnd($endTime);
-        $schedule->addPeriod($period);
+        $period->setBegin($begin);
+        $period->setEnd($end);
+        $period->setDate($date);
+        $period->setUser($user);
 
         return $this->validateEntityAndGetResult($period);
     }
 
-    public function deletePeriod(Period $period, Schedule $schedule)
+    public function deletePeriod(Period $period)
     {
-        $schedule->removePeriod($period);
+        $this->em->remove($period);
         $this->em->flush();
 
         return Result::createSuccessResult($period);
     }
 
-    public function deletePeriodById($periodId, $dateString)
+    public function deletePeriodById($periodId)
     {
         $result = $this->getPeriodById($periodId);
         if ($result->getIsSuccess()) {
-            $scheduleResult = $this->scheduleHandler->getScheduleByDateString($dateString);
 
-            return $this->deletePeriod($result->getData(), $scheduleResult->getData());
+            return $this->deletePeriod($result->getData());
         }
 
         return $result;

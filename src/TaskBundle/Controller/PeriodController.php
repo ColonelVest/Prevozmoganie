@@ -27,10 +27,13 @@ class PeriodController extends BaseApiController
 
     /**
      * @Rest\View()
+     * @param Request $request
+     * @return
      */
-    public function getPeriodsAction()
+    public function getPeriodsAction(Request $request)
     {
-        $result = $this->get('period_handler')->getPeriods();
+        $date = $request->request->get('date');
+        $result = $this->get('period_handler')->getPeriods($date);
         $normalizedPeriods = $this->get('api_normalizer')->normalizePeriods($result->getData());
 
         return $this->getResponseByResultObj($result->setData($normalizedPeriods));
@@ -39,19 +42,17 @@ class PeriodController extends BaseApiController
     /**
      * @Rest\View()
      * @param Request $request
-     * @param $date
      * @return
      */
-    public function postPeriodAction(Request $request, $date)
+    public function postPeriodAction(Request $request)
     {
-        $result = $this->get('schedule_handler')->getScheduleByDateString($date);
-        if ($result->getIsSuccess()) {
-            $begin = $request->request->get('begin');
-            $end = $request->request->get('end');
-            $description = $request->request->get('description');
-            $result = $this->get('period_handler')->createPeriod($result->getData(), $begin, $end, $description);
-            $result = $this->normalizePeriod($result);
-        }
+        $begin = $request->request->get('begin');
+        $end = $request->request->get('end');
+        $description = $request->request->get('description');
+        $user = $this->getUser();
+        $date = \DateTime::createFromFormat('dmY', $request->request->get('date'));
+        $result = $this->get('period_handler')->createPeriod($user, $date, $begin, $end, $description);
+        $result = $this->normalizePeriod($result);
 
         return $this->getResponseByResultObj($result);
     }
@@ -62,9 +63,9 @@ class PeriodController extends BaseApiController
      * @param $date
      * @return View
      */
-    public function deleteSchedulePeriodAction($date, $periodId)
+    public function deletePeriodAction($periodId)
     {
-        $result = $this->get('period_handler')->deletePeriodById($periodId, $date);
+        $result = $this->get('period_handler')->deletePeriodById($periodId);
         $result = $this->normalizePeriod($result);
 
         return $this->getResponseByResultObj($result);

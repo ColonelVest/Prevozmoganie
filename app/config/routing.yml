@@ -11,7 +11,7 @@ base:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-schedule_api:
+task_api:
     type: rest
     prefix: /api
     resource: "@TaskBundle/Resources/config/routes.yml"

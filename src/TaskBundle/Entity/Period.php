@@ -3,6 +3,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -37,22 +38,76 @@ class Period extends BaseEntity
     private $description;
 
     /**
+     * @var Task
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
      * @Groups({"full_1"})
      */
     private $task;
 
     /**
+     * @var \DateTime
      * @ORM\Column(type="time")
      * @Groups({"full_1", "concise"})
      */
     private $begin;
 
     /**
+     * @var \DateTime
      * @Groups({"full_1", "concise"})
      * @ORM\Column(type="time")
      */
     private $end;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="date", nullable=false)
+     * @Groups({"full_1"})
+     */
+    private $date;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="BaseBundle\Entity\User")
+     */
+    private $user;
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     * @return Period
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     * @return Period
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 
     /**
      * @return string

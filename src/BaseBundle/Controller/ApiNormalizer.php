@@ -4,7 +4,6 @@ namespace BaseBundle\Controller;
 
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use TaskBundle\Entity\Period;
-use TaskBundle\Entity\Schedule;
 
 class ApiNormalizer
 {
@@ -16,20 +15,6 @@ class ApiNormalizer
         $this->objectNormalizer = $objectNormalizer;
     }
 
-    public function conciseNormalizeSchedule(Schedule $schedule)
-    {
-        $dateCallback = function ($date) {
-            return $date instanceof \DateTime ? $date->format('Y-m-d') : '';
-        };
-        $periodCallback = function ($periods) {
-            return $this->normalizePeriods($periods);
-        };
-        $this->objectNormalizer->setCallbacks(['date' => $dateCallback, 'periods' => $periodCallback,]);
-
-        $data = $this->objectNormalizer->normalize($schedule, null, ['groups' => ['full_1']]);
-
-        return $data;
-    }
 
     public function normalizePeriods($periods)
     {
