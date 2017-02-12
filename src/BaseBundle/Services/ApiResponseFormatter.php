@@ -2,7 +2,7 @@
 
 namespace BaseBundle\Services;
 
-use BaseBundle\Models\ErrorMessageHandler;
+use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 
 class ApiResponseFormatter
@@ -10,10 +10,10 @@ class ApiResponseFormatter
     /** @var  bool $isSuccess */
     private $isSuccess;
     private $response;
-    /** @var  ErrorMessageHandler $messageHandler */
+    /** @var  ErrorMessages $messageHandler */
     private $messageHandler;
 
-    public function __construct(ErrorMessageHandler $messageHandler)
+    public function __construct(ErrorMessages $messageHandler)
     {
         $this->messageHandler = $messageHandler;
     }
@@ -60,13 +60,13 @@ class ApiResponseFormatter
         return $this;
     }
 
-    public function createResponseFromResultObj(Result $result)
+    public function createResponseFromResultObj(Result $result) : array
     {
         $this->createResponse($result->getIsSuccess());
         foreach ($result->getErrors() as $error) {
             $this->addResponseMessage($error);
         }
-        if ($result->getData()) {
+        if (!is_null($result->getData())) {
             $this->setResponseData($result->getData());
         }
 

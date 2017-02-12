@@ -19,8 +19,10 @@ class ApiNormalizer
     public function normalizePeriods($periods)
     {
         $data = [];
-        foreach ($periods as $period) {
-            $data[] = $this->conciseNormalizePeriod($period);
+        if (is_array($periods)) {
+            foreach ($periods as $period) {
+                $data[] = $this->conciseNormalizePeriod($period);
+            }
         }
 
         return $data;

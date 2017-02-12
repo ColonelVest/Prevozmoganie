@@ -5,7 +5,7 @@ namespace BaseBundle\Models;
 use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
-class ErrorMessageHandler
+class ErrorMessages
 {
     /** @var  Logger $logger */
     private $logger;
@@ -22,6 +22,7 @@ class ErrorMessageHandler
     const INCORRECT_TIME_FORMAT = 3;
     const INCORRECT_SCHEDULE_BEGIN_TIME = 4;
     const REQUESTED_PERIOD_NOT_EXISTS = 5;
+    const PERIOD_DATE_INCORRECT = 6;
 
     public function getErrorMessageByCode($code)
     {
@@ -42,6 +43,7 @@ class ErrorMessageHandler
         2 => 'incorrect_date',
         3 => 'incorrect_time',
         4 => 'incorrect_schedule_begin_time',
-        5 => 'period_not_exists'
+        5 => 'period_not_exists',
+        6 => 'period_date_incorrect'
     ];
 }

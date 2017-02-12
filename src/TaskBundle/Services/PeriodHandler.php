@@ -3,7 +3,7 @@
 namespace TaskBundle\Services;
 
 use BaseBundle\Entity\User;
-use BaseBundle\Models\ErrorMessageHandler;
+use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
 use BaseBundle\Services\EntityHandler;
@@ -25,7 +25,7 @@ class PeriodHandler extends EntityHandler
     {
         $period = $this->em->find('TaskBundle:Period', $periodId);
         if (is_null($period)) {
-            return Result::createErrorResult([ErrorMessageHandler::REQUESTED_PERIOD_NOT_EXISTS]);
+            return Result::createErrorResult([ErrorMessages::REQUESTED_PERIOD_NOT_EXISTS]);
         }
 
         return Result::createSuccessResult($period);
@@ -33,7 +33,7 @@ class PeriodHandler extends EntityHandler
 
     public function getPeriods(\DateTime $date) : Result
     {
-        $periods = $this->em->getRepository('TaskBundle:Period')->findAll();
+        $periods = $this->em->getRepository('TaskBundle:Period')->getByDate($date);
 
         return Result::createSuccessResult($periods);
     }

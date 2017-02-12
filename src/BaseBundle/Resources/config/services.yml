@@ -4,7 +4,7 @@ services:
     arguments: ['@error_message_handler']
 
   error_message_handler:
-    class: BaseBundle\Models\ErrorMessageHandler
+    class: BaseBundle\Models\ErrorMessages
     arguments: ['@monolog.logger', '@translator.default']
 
   api_normalizer:
@@ -25,3 +25,6 @@ services:
   annotaion_loader:
     class: Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader
     arguments: ['@annotations.cached_reader']
+
+  base_helper:
+    class: BaseBundle\Services\BaseHelper

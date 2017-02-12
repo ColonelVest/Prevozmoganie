@@ -15,7 +15,6 @@ class PeriodType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('duration', IntegerType::class)
             ->add('description', TextType::class)
             ->add('begin', TimeType::class)
             ->add('end', TimeType::class)
