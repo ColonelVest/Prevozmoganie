@@ -3,11 +3,15 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\ErrorResult;
 use BaseBundle\Models\Result;
+use BaseBundle\Models\SuccessResult;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
 use FOS\RestBundle\View\View;
+use TaskBundle\Form\PeriodType;
 
 class PeriodController extends BaseApiController
 {
@@ -46,13 +50,11 @@ class PeriodController extends BaseApiController
      */
     public function postPeriodAction(Request $request)
     {
-        $begin = $request->request->get('begin');
-        $end = $request->request->get('end');
-        $description = $request->request->get('description');
-        $user = $this->getUser();
-        $date = \DateTime::createFromFormat('dmY', $request->request->get('date'));
-        $result = $this->get('period_handler')->createPeriod($user, $date, $begin, $end, $description);
-        $result = $this->normalizePeriodResult($result);
+        $result = $this->fillEntityByRequest(new Period(), $request, PeriodType::class);
+        if ($result->getIsSuccess()) {
+            $result = $this->get('period_handler')->createPeriod($result->getData());
+            $result = $this->normalizePeriodResult($result);
+        }
 
         return $this->getResponseByResultObj($result);
     }
@@ -68,6 +70,23 @@ class PeriodController extends BaseApiController
         $result = $this->normalizePeriodResult($result);
 
         return $this->getResponseByResultObj($result);
+    }
+
+    private function fillEntityByRequest($entity, Request $request, $type) : Result
+    {
+        $form = $this->createForm($type, $entity);
+        $form->handleRequest($request);
+        if (count($form->getErrors()) > 0) {
+            $result = Result::createErrorResult();
+            foreach ($form->getErrors(true) as $error) {
+                /** @var FormError $error */
+                $result->addError($error->getMessage());
+            }
+
+            return $result;
+        }
+
+        return Result::createSuccessResult($entity);
     }
 
     private function normalizePeriodResult(Result $result)

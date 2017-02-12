@@ -21,7 +21,7 @@ class PeriodHandler extends EntityHandler
         parent::__construct($em, $responseFormatter, $validator);
     }
 
-    public function getPeriodById($periodId)
+    public function getPeriodById($periodId) : Result
     {
         $period = $this->em->find('TaskBundle:Period', $periodId);
         if (is_null($period)) {
@@ -31,22 +31,15 @@ class PeriodHandler extends EntityHandler
         return Result::createSuccessResult($period);
     }
 
-    public function getPeriods(\DateTime $date)
+    public function getPeriods(\DateTime $date) : Result
     {
         $periods = $this->em->getRepository('TaskBundle:Period')->findAll();
 
         return Result::createSuccessResult($periods);
     }
 
-    public function createPeriod(?User $user, \DateTime $date, \DateTime $begin, \DateTime $end, $description)
+    public function createPeriod(Period $period) : Result
     {
-        $period = new Period();
-        $period->setDescription($description);
-        $period->setBegin($begin);
-        $period->setEnd($end);
-        $period->setDate($date);
-        $period->setUser($user);
-
         return $this->validateEntityAndGetResult($period);
     }
 
@@ -58,7 +51,7 @@ class PeriodHandler extends EntityHandler
         return Result::createSuccessResult($period);
     }
 
-    public function deletePeriodById($periodId)
+    public function deletePeriodById($periodId) : Result
     {
         $result = $this->getPeriodById($periodId);
         if ($result->getIsSuccess()) {
