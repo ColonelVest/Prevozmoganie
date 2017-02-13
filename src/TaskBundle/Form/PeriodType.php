@@ -3,7 +3,6 @@
 namespace TaskBundle\Form;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -16,9 +15,16 @@ class PeriodType extends AbstractType
     {
         $builder
             ->add('description', TextType::class)
-            ->add('begin', TimeType::class)
-            ->add('end', TimeType::class)
-            ->add('date', DateType::class)
+            ->add('begin', TimeType::class, [
+                'widget' => 'single_text'
+            ])
+            ->add('end', TimeType::class, [
+                'widget' => 'single_text'
+            ])
+            ->add('date', DateType::class, [
+                'format' => 'ddMMyyyy',
+                'widget' => 'single_text'
+            ])
             ;
     }
 
@@ -31,6 +37,8 @@ class PeriodType extends AbstractType
             )
         );
     }
+
+
     public function getName()
     {
         return '';

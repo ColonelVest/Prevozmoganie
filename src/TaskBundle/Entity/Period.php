@@ -56,13 +56,14 @@ class Period extends BaseEntity
      * @var \DateTime
      * @Groups({"full_1", "concise"})
      * @ORM\Column(type="time")
+     * @Assert\NotNull()
      */
     private $end;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=false)
-     * @Groups({"full_1"})
+     * @Groups({"full_1", "concise"})
      */
     private $date;
 

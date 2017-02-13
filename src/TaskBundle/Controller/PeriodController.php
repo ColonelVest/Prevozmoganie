@@ -80,8 +80,8 @@ class PeriodController extends BaseApiController
     private function fillEntityByRequest($entity, Request $request, $type) : Result
     {
         $form = $this->createForm($type, $entity);
-        $form->handleRequest($request);
-        if (count($form->getErrors()) > 0) {
+        $form->submit($request->request->all());
+        if (!$form->isValid()) {
             $result = Result::createErrorResult();
             foreach ($form->getErrors(true) as $error) {
                 /** @var FormError $error */
