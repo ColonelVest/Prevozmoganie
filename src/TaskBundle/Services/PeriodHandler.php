@@ -2,7 +2,6 @@
 
 namespace TaskBundle\Services;
 
-use BaseBundle\Entity\User;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
@@ -48,14 +47,13 @@ class PeriodHandler extends EntityHandler
         $this->em->remove($period);
         $this->em->flush();
 
-        return Result::createSuccessResult($period);
+        return Result::createSuccessResult($period->getId());
     }
 
     public function deletePeriodById($periodId) : Result
     {
         $result = $this->getPeriodById($periodId);
         if ($result->getIsSuccess()) {
-
             return $this->deletePeriod($result->getData());
         }
 

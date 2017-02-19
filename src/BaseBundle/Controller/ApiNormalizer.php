@@ -4,6 +4,7 @@ namespace BaseBundle\Controller;
 
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use TaskBundle\Entity\Period;
+use TaskBundle\Entity\Task;
 
 class ApiNormalizer
 {
@@ -33,12 +34,36 @@ class ApiNormalizer
         $timeCallback = function ($dateTime) {
             return $dateTime instanceof \DateTime ? $dateTime->format('H:i') : '';
         };
-        $normalizer = clone $this->objectNormalizer;
-        $normalizer->setCallbacks(array('begin' => $timeCallback, 'end' => $timeCallback));
+        $this->objectNormalizer->setCallbacks(array('begin' => $timeCallback, 'end' => $timeCallback));
 
-        $data = $normalizer->normalize($period, null, array('groups' => array('concise')));
+        $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('concise')));
 
         return $data;
     }
 
+    public function conciseNormalizeTask(Task $task)
+    {
+        return $this->objectNormalizer->normalize($task, null, ['groups' => ['concise']]);
+    }
+
+    public function normalizeTasks($tasks)
+    {
+        $callback = function ($task) {
+            return $this->conciseNormalizeTask($task);
+        };
+
+        return $this->normalizeEntities($tasks, $callback);
+    }
+
+    public function normalizeEntities($entities, $callback)
+    {
+        $data = [];
+        if (is_array($entities)) {
+            foreach ($entities as $entity) {
+                $data[] = $callback($entity);
+            }
+        }
+
+        return $data;
+    }
 }

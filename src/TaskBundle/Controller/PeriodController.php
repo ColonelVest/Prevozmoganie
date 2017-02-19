@@ -6,8 +6,6 @@ use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
 use FOS\RestBundle\View\View;
@@ -72,26 +70,8 @@ class PeriodController extends BaseApiController
     public function deletePeriodAction($periodId)
     {
         $result = $this->get('period_handler')->deletePeriodById($periodId);
-        $result = $this->normalizePeriodResult($result);
 
         return $this->getResponseByResultObj($result);
-    }
-
-    private function fillEntityByRequest($entity, Request $request, $type) : Result
-    {
-        $form = $this->createForm($type, $entity);
-        $form->submit($request->request->all());
-        if (!$form->isValid()) {
-            $result = Result::createErrorResult();
-            foreach ($form->getErrors(true) as $error) {
-                /** @var FormError $error */
-                $result->addError($error->getMessage());
-            }
-
-            return $result;
-        }
-
-        return Result::createSuccessResult($entity);
     }
 
     private function normalizePeriodResult(Result $result)

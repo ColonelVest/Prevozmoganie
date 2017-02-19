@@ -63,7 +63,7 @@ class Period extends BaseEntity
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=false)
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full_1"})
      */
     private $date;
 

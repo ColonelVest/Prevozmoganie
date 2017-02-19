@@ -2,3 +2,6 @@ services:
     period_handler:
         class: TaskBundle\Services\PeriodHandler
         arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+    task_handler:
+        class: TaskBundle\Services\TaskHandler
+        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']

@@ -23,6 +23,7 @@ class ErrorMessages
     const INCORRECT_SCHEDULE_BEGIN_TIME = 4;
     const REQUESTED_PERIOD_NOT_EXISTS = 5;
     const PERIOD_DATE_INCORRECT = 6;
+    const REQUESTED_TASK_NOT_EXISTS = 7;
 
     public function getErrorMessageByCode($code)
     {

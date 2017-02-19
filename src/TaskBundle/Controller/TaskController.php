@@ -2,20 +2,18 @@
 
 namespace TaskBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\RestBundle\View\View;
+use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\Result;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Task;
 use TaskBundle\Form\TaskType;
 
-class TaskController extends FOSRestController
+class TaskController extends BaseApiController
 {
     /**
-     * @param Task $task
-     * @return mixed
+     * @param $taskId
      * @Rest\View()
      * @ApiDoc(
      *   resource = true,
@@ -26,10 +24,13 @@ class TaskController extends FOSRestController
      *     404 = "Returned when the page is not found"
      *   }
      * )
+     * @return array
      */
-    public function getTaskAction(Task $task)
+    public function getTaskAction($taskId)
     {
-        return $task;
+        $result = $this->get('task_handler')->getTaskById($taskId);
+
+        return $this->getResponseByResultObj($this->normalizeTaskByResult($result));
     }
 
     /**
@@ -37,18 +38,22 @@ class TaskController extends FOSRestController
      */
     public function getTasksAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $result = $this->get('task_handler')->getTasks();
+        $normalizedTasks = $this->get('api_normalizer')->normalizeTasks($result->getData());
 
-        return $em->getRepository('TaskBundle:Task')->findAll();
+        return $this->getResponseByResultObj(Result::createSuccessResult($normalizedTasks));
     }
 
-    public function deleteTasksAction(Task $task)
+    /**
+     * @Rest\View
+     * @param Task $task
+     * @return array
+     */
+    public function deleteTaskAction(Task $task)
     {
-        $dm = $this->getDoctrine()->getManager();
-        $dm->remove($task);
-        $dm->flush();
+        $result = $this->get('task_handler')->deleteTaskById($task);
 
-        return new View();
+        return $this->getResponseByResultObj($result);
     }
 
     /**
@@ -58,19 +63,24 @@ class TaskController extends FOSRestController
      */
     public function postTasksAction(Request $request)
     {
-        $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $dm = $this->getDoctrine()->getManager();
-            $dm->persist($task);
-            $dm->flush();
+        $result = $this->fillEntityByRequest(new Task(), $request, TaskType::class);
+        if ($result->getIsSuccess()) {
+            $result = $this->get('task_handler')->createTask($result->getData());
+            $result = $this->normalizeTaskByResult($result);
         }
 
-        return $task;
+        return $this->getResponseByResultObj($result);
     }
 
+    private function normalizeTaskByResult(Result $result)
+    {
+        if (!is_null($result->getData())) {
+            $normalizedPeriod = $this->get('api_normalizer')->conciseNormalizeTask($result->getData());
+            $result->setData($normalizedPeriod);
+        }
 
+        return $result;
+    }
 
 
 }
