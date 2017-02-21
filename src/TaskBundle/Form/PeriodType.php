@@ -4,6 +4,7 @@ namespace TaskBundle\Form;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,8 +24,9 @@ class PeriodType extends AbstractType
             ])
             ->add('date', DateType::class, [
                 'format' => 'ddMMyyyy',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
+            ->add('id', IntegerType::class, [ 'mapped' => false])
             ;
     }
 

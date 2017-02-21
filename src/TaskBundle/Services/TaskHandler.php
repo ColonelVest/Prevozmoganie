@@ -32,12 +32,17 @@ class TaskHandler extends EntityHandler
         return $this->validateEntityAndGetResult($task);
     }
 
-    public function deleteTask(Task $task)
+    public function deleteTask(Task $task) : Result
     {
         $this->em->remove($task);
         $this->em->flush();
 
         return Result::createSuccessResult($task->getId());
+    }
+
+    public function editTask(Task $task) : Result
+    {
+        return $this->validateEntityAndGetResult($task);
     }
 
     public function deleteTaskById($taskId) : Result

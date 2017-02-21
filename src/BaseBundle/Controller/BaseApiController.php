@@ -36,7 +36,8 @@ class BaseApiController extends FOSRestController
             $result = Result::createErrorResult();
             foreach ($form->getErrors(true) as $error) {
                 /** @var FormError $error */
-                $result->addError($error->getMessage());
+                $message = $error->getMessage();
+                $result->addError(intval($message));
             }
 
             return $result;

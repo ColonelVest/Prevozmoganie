@@ -38,12 +38,6 @@ class Task extends BaseEntity
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=2048)
-     * @Gedmo\Versioned
-     */
-    private $body;
-
-    /**
      * @var Task
      * @ORM\ManyToOne(targetEntity="Task", inversedBy="children")
      */
@@ -61,6 +55,13 @@ class Task extends BaseEntity
     private $period;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     * @Groups({"full_1", "concise"})
+     */
+    private $isCompleted = false;
+
+    /**
      * @return mixed
      */
     public function getChildren() {
@@ -73,6 +74,7 @@ class Task extends BaseEntity
      */
     public function setChildren($children) {
         $this->children = $children;
+
         return $this;
     }
 
@@ -146,18 +148,23 @@ class Task extends BaseEntity
         return $this;
     }
 
-
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getBody() {
-        return $this->body;
+    public function isIsCompleted(): bool
+    {
+        return $this->isCompleted;
     }
 
     /**
-     * @param mixed $body
+     * @param bool $isCompleted
+     * @return Task
      */
-    public function setBody($body) {
-        $this->body = $body;
+    public function setIsCompleted(bool $isCompleted): Task
+    {
+        $this->isCompleted = $isCompleted;
+
+        return $this;
     }
+
 }

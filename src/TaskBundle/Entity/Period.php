@@ -5,6 +5,7 @@ namespace TaskBundle\Entity;
 use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
@@ -29,6 +30,8 @@ class Period extends BaseEntity
      * updates createdBy, updatedBy fields
      */
     use BlameableEntity;
+
+    use SoftDeleteable;
 
     /**
      * @var string
@@ -63,7 +66,7 @@ class Period extends BaseEntity
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=false)
-     * @Groups({"full_1"})
+     * @Groups({"full_1", "concise"})
      */
     private $date;
 

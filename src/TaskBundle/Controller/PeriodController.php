@@ -64,6 +64,26 @@ class PeriodController extends BaseApiController
 
     /**
      * @Rest\View()
+     * @param Request $request
+     * @param $periodId
+     * @return Result
+     */
+    public function putPeriodAction(Request $request, $periodId)
+    {
+        $periodHandler = $this->get('period_handler');
+        $result = $periodHandler->getPeriodById($periodId);
+        if ($result->getIsSuccess()) {
+            $result = $this->fillEntityByRequest($result->getData(), $request, PeriodType::class);
+            if ($result->getIsSuccess()) {
+                $result = $periodHandler->editPeriod($result->getData());
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @Rest\View()
      * @param $periodId
      * @return View
      */

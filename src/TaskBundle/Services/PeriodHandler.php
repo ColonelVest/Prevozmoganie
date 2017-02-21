@@ -44,10 +44,11 @@ class PeriodHandler extends EntityHandler
 
     public function deletePeriod(Period $period)
     {
+        $periodId = $period->getId();
         $this->em->remove($period);
         $this->em->flush();
 
-        return Result::createSuccessResult($period->getId());
+        return Result::createSuccessResult($periodId);
     }
 
     public function deletePeriodById($periodId) : Result
@@ -58,5 +59,10 @@ class PeriodHandler extends EntityHandler
         }
 
         return $result;
+    }
+
+    public function editPeriod(Period $period) : Result
+    {
+        return $this->validateEntityAndGetResult($period);
     }
 }

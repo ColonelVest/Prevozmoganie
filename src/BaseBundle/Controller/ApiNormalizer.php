@@ -34,7 +34,12 @@ class ApiNormalizer
         $timeCallback = function ($dateTime) {
             return $dateTime instanceof \DateTime ? $dateTime->format('H:i') : '';
         };
-        $this->objectNormalizer->setCallbacks(array('begin' => $timeCallback, 'end' => $timeCallback));
+        $dateCallback = function ($date) {
+            return $date instanceof \DateTime ? $date->format('dmY') : '';
+        };
+        $this->objectNormalizer->setCallbacks(
+            ['begin' => $timeCallback, 'end' => $timeCallback, 'date' => $dateCallback]
+        );
 
         $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('concise')));
 

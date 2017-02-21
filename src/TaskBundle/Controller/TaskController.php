@@ -72,6 +72,21 @@ class TaskController extends BaseApiController
         return $this->getResponseByResultObj($result);
     }
 
+
+    public function putTaskAction(Request $request, $taskId)
+    {
+        $taskHandler = $this->get('task_handler');
+        $result = $taskHandler->getTaskById($taskId);
+        if ($result->getIsSuccess()) {
+            $result = $this->fillEntityByRequest($result->getData(), $request, TaskType::class);
+            if ($result->getIsSuccess()) {
+                $result = $taskHandler->editTask($result->getData());
+            }
+        }
+
+        return $this->getResponseByResultObj($result);
+    }
+
     private function normalizeTaskByResult(Result $result)
     {
         if (!is_null($result->getData())) {
