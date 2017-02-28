@@ -14,28 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="tasks")
  * @Gedmo\Loggable()
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Task extends BaseEntity
+class Task extends BaseTask
 {
-
-    /**
-     * Hook softdeleteable behavior
-     * deletedAt field
-     */
-    use SoftDeleteableEntity;
-
     public function __construct()
     {
         $this->children = new ArrayCollection();
     }
-
-    /**
-     * @ORM\Column(type="string")
-     * @Gedmo\Versioned
-     * @Assert\NotBlank()
-     * @Groups({"full_1", "concise"})
-     */
-    private $title;
 
     /**
      * @var Task
@@ -129,23 +115,6 @@ class Task extends BaseEntity
     public function setParent($parent)
     {
         $this->parent = $parent;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTitle() {
-        return $this->title;
-    }
-
-    /**
-     * @param mixed $title
-     * @return Task
-     */
-    public function setTitle($title) {
-        $this->title = $title;
-
-        return $this;
     }
 
     /**

@@ -5,7 +5,7 @@ namespace TaskBundle\Entity;
 use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteable;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="periods")
  * @ORM\Entity(repositoryClass="PeriodRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Period extends BaseEntity
 {
@@ -31,7 +32,7 @@ class Period extends BaseEntity
      */
     use BlameableEntity;
 
-    use SoftDeleteable;
+    use SoftDeleteableEntity;
 
     /**
      * @var string
