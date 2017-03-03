@@ -28,7 +28,7 @@ class TaskController extends BaseApiController
      */
     public function getTaskAction($taskId)
     {
-        $result = $this->get('task_handler')->getTaskById($taskId);
+        $result = $this->get('task_handler')->getById($taskId);
 
         return $this->getResponseByResultObj($this->normalizeTaskByResult($result));
     }
@@ -38,7 +38,7 @@ class TaskController extends BaseApiController
      */
     public function getTasksAction()
     {
-        $result = $this->get('task_handler')->getTasks();
+        $result = $this->get('task_handler')->getEntities();
         $normalizedTasks = $this->get('api_normalizer')->normalizeTasks($result->getData());
 
         return $this->getResponseByResultObj(Result::createSuccessResult($normalizedTasks));
@@ -46,12 +46,12 @@ class TaskController extends BaseApiController
 
     /**
      * @Rest\View
-     * @param Task $task
+     * @param $id
      * @return array
      */
-    public function deleteTaskAction(Task $task)
+    public function deleteTaskAction($id)
     {
-        $result = $this->get('task_handler')->deleteTaskById($task);
+        $result = $this->get('task_handler')->removeById($id);
 
         return $this->getResponseByResultObj($result);
     }
@@ -65,7 +65,7 @@ class TaskController extends BaseApiController
     {
         $result = $this->fillEntityByRequest(new Task(), $request, TaskType::class);
         if ($result->getIsSuccess()) {
-            $result = $this->get('task_handler')->createTask($result->getData());
+            $result = $this->get('task_handler')->create($result->getData());
             $result = $this->normalizeTaskByResult($result);
         }
 
@@ -76,11 +76,12 @@ class TaskController extends BaseApiController
     public function putTaskAction(Request $request, $taskId)
     {
         $taskHandler = $this->get('task_handler');
-        $result = $taskHandler->getTaskById($taskId);
+        $result = $taskHandler->getById($taskId);
         if ($result->getIsSuccess()) {
             $result = $this->fillEntityByRequest($result->getData(), $request, TaskType::class);
             if ($result->getIsSuccess()) {
-                $result = $taskHandler->editTask($result->getData());
+                $result = $taskHandler->edit($result->getData());
+                $result = $this->normalizeTaskByResult($result);
             }
         }
 

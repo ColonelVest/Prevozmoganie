@@ -27,7 +27,7 @@ class BaseTask extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"full"})
+     * @Groups({"full", "concise"})
      */
     private $description;
 
