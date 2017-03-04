@@ -7,10 +7,6 @@ services:
     class: BaseBundle\Models\ErrorMessages
     arguments: ['@monolog.logger', '@translator.default']
 
-  api_normalizer:
-    class: BaseBundle\Controller\ApiNormalizer
-    arguments: ['@object_normalizer']
-
   object_normalizer:
     class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
     arguments: ['@metadata_factory']

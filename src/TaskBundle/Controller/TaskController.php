@@ -4,6 +4,8 @@ namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\Result;
+use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\EntityHandler;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,9 +30,7 @@ class TaskController extends BaseApiController
      */
     public function getTaskAction($taskId)
     {
-        $result = $this->get('task_handler')->getById($taskId);
-
-        return $this->getResponseByResultObj($this->normalizeTaskByResult($result));
+        return $this->getEntityResultById($taskId);
     }
 
     /**
@@ -38,10 +38,7 @@ class TaskController extends BaseApiController
      */
     public function getTasksAction()
     {
-        $result = $this->get('task_handler')->getEntities();
-        $normalizedTasks = $this->get('api_normalizer')->normalizeTasks($result->getData());
-
-        return $this->getResponseByResultObj(Result::createSuccessResult($normalizedTasks));
+        return $this->getEntities();
     }
 
     /**
@@ -51,9 +48,7 @@ class TaskController extends BaseApiController
      */
     public function deleteTaskAction($id)
     {
-        $result = $this->get('task_handler')->removeById($id);
-
-        return $this->getResponseByResultObj($result);
+        return $this->removeEntityById($id);
     }
 
     /**
@@ -99,4 +94,13 @@ class TaskController extends BaseApiController
     }
 
 
+    protected function getHandler(): EntityHandler
+    {
+        return $this->get('task_handler');
+    }
+
+    protected function getNormalizer() : ApiNormalizer
+    {
+        return $this->get('task_normalizer');
+    }
 }

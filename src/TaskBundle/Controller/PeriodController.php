@@ -5,6 +5,8 @@ namespace TaskBundle\Controller;
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
+use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\EntityHandler;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
@@ -102,5 +104,15 @@ class PeriodController extends BaseApiController
         }
 
         return $result;
+    }
+
+    protected function getHandler(): EntityHandler
+    {
+        // TODO: Implement getHandler() method.
+    }
+
+    protected function getNormalizer(): ApiNormalizer
+    {
+        // TODO: Implement getNormalizer() method.
     }
 }
