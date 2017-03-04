@@ -7,6 +7,7 @@ use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiNormalizer;
 use BaseBundle\Services\EntityHandler;
+use Doctrine\Common\Collections\Criteria;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
@@ -22,10 +23,7 @@ class PeriodController extends BaseApiController
      */
     public function getPeriodAction($periodId = null)
     {
-        $result = $this->get('period_handler')->getPeriodById($periodId);
-        $result = $this->normalizePeriodResult($result);
-
-        return $this->getResponseByResultObj($result);
+        return $this->getEntityResultById($periodId);
     }
 
     /**
@@ -40,7 +38,7 @@ class PeriodController extends BaseApiController
             $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
         } else {
             $result = $this->get('period_handler')->getPeriods($date);
-            $normalizedPeriods = $this->get('api_normalizer')->normalizePeriods($result->getData());
+            $normalizedPeriods = $this->get('period_normalizer')->normalizePeriods($result->getData());
             $result->setData($normalizedPeriods);
         }
 
@@ -108,11 +106,11 @@ class PeriodController extends BaseApiController
 
     protected function getHandler(): EntityHandler
     {
-        // TODO: Implement getHandler() method.
+        return $this->get('period_handler');
     }
 
     protected function getNormalizer(): ApiNormalizer
     {
-        // TODO: Implement getNormalizer() method.
+        return $this->get('period_normalizer');
     }
 }

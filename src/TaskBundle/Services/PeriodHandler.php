@@ -7,27 +7,17 @@ use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use TaskBundle\Entity\Period;
 
 class PeriodHandler extends EntityHandler
 {
-    public function __construct(
-        EntityManager $em,
-        ApiResponseFormatter $responseFormatter,
-        RecursiveValidator $validator
-    ) {
-        parent::__construct($em, $responseFormatter, $validator);
-    }
+    protected $notExistsMessage = ErrorMessages::REQUESTED_PERIOD_NOT_EXISTS;
 
     public function getPeriodById($periodId) : Result
     {
-        $period = $this->em->find('TaskBundle:Period', $periodId);
-        if (is_null($period)) {
-            return Result::createErrorResult([ErrorMessages::REQUESTED_PERIOD_NOT_EXISTS]);
-        }
-
-        return Result::createSuccessResult($period);
+        return $this->getById($periodId);
     }
 
     public function getPeriods(\DateTime $date) : Result
@@ -39,30 +29,26 @@ class PeriodHandler extends EntityHandler
 
     public function createPeriod(Period $period) : Result
     {
-        return $this->validateEntityAndGetResult($period);
+        return $this->create($period);
     }
 
     public function deletePeriod(Period $period)
     {
-        $periodId = $period->getId();
-        $this->em->remove($period);
-        $this->em->flush();
-
-        return Result::createSuccessResult($periodId);
+        return $this->remove($period);
     }
 
     public function deletePeriodById($periodId) : Result
     {
-        $result = $this->getPeriodById($periodId);
-        if ($result->getIsSuccess()) {
-            return $this->deletePeriod($result->getData());
-        }
-
-        return $result;
+        return $this->removeById($periodId);
     }
 
     public function editPeriod(Period $period) : Result
     {
-        return $this->validateEntityAndGetResult($period);
+        return $this->edit($period);
+    }
+
+    protected function getRepository(): EntityRepository
+    {
+        return $this->em->getRepository('TaskBundle:Period');
     }
 }

@@ -5,6 +5,7 @@ namespace BaseBundle\Services;
 use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
@@ -36,9 +37,9 @@ abstract class EntityHandler
         return Result::createSuccessResult($entity);
     }
 
-    public function getEntities()
+    public function getEntities(Criteria $criteria)
     {
-        $entities = $this->getRepository()->findAll();
+        $entities = $this->getRepository()->matching($criteria);
 
         return Result::createSuccessResult($entities);
     }

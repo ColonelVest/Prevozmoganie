@@ -6,6 +6,7 @@ use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiNormalizer;
 use BaseBundle\Services\EntityHandler;
+use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,7 +39,7 @@ class TaskController extends BaseApiController
      */
     public function getTasksAction()
     {
-        return $this->getEntities();
+        return $this->getEntitiesByCriteria(Criteria::create());
     }
 
     /**
@@ -58,41 +59,14 @@ class TaskController extends BaseApiController
      */
     public function postTasksAction(Request $request)
     {
-        $result = $this->fillEntityByRequest(new Task(), $request, TaskType::class);
-        if ($result->getIsSuccess()) {
-            $result = $this->get('task_handler')->create($result->getData());
-            $result = $this->normalizeTaskByResult($result);
-        }
-
-        return $this->getResponseByResultObj($result);
+        return $this->createEntity($request, Task::class, TaskType::class);
     }
 
 
     public function putTaskAction(Request $request, $taskId)
     {
-        $taskHandler = $this->get('task_handler');
-        $result = $taskHandler->getById($taskId);
-        if ($result->getIsSuccess()) {
-            $result = $this->fillEntityByRequest($result->getData(), $request, TaskType::class);
-            if ($result->getIsSuccess()) {
-                $result = $taskHandler->edit($result->getData());
-                $result = $this->normalizeTaskByResult($result);
-            }
-        }
-
-        return $this->getResponseByResultObj($result);
+        return $this->editEntity($request, $taskId, TaskType::class);
     }
-
-    private function normalizeTaskByResult(Result $result)
-    {
-        if (!is_null($result->getData())) {
-            $normalizedPeriod = $this->get('api_normalizer')->conciseNormalizeTask($result->getData());
-            $result->setData($normalizedPeriod);
-        }
-
-        return $result;
-    }
-
 
     protected function getHandler(): EntityHandler
     {
