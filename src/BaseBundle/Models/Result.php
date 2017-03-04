@@ -18,7 +18,7 @@ class Result
     public static function createSuccessResult($data = null)
     {
         $result = new self();
-        if ($data) {
+        if (!is_null($data)) {
             $result->setData($data);
         }
 

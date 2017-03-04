@@ -26,7 +26,8 @@ class RepetitiveTaskType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => RepetitiveTask::class
+                'data_class' => RepetitiveTask::class,
+                'csrf_protection' => false
             ]);
     }
 

@@ -8,7 +8,12 @@ services:
     task_normalizer:
         class: TaskBundle\Services\TaskNormalizer
         arguments: ['@object_normalizer']
-
+    repetitive_task_handler:
+        class: TaskBundle\Services\RepetitiveTaskHandler
+        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+    repetitive_task_normalizer:
+        class: TaskBundle\Services\RepetitiveTaskNormalizer
+        arguments: ['@object_normalizer']
     period_normalizer:
         class: TaskBundle\Services\PeriodNormalizer
         arguments: ['@object_normalizer']

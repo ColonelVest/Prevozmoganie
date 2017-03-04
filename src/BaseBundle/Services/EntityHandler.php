@@ -39,7 +39,7 @@ abstract class EntityHandler
 
     public function getEntities(Criteria $criteria)
     {
-        $entities = $this->getRepository()->matching($criteria);
+        $entities = $this->getRepository()->matching($criteria)->getValues();
 
         return Result::createSuccessResult($entities);
     }
@@ -78,9 +78,9 @@ abstract class EntityHandler
         if (count($errors) > 0) {
             $errorCodes = [];
             foreach ($errors as $error) {
-                //TODO: Вместо сообщений указывать коды ошибок
                 $errorCodes[] = (int)$error;
             }
+
             return Result::createErrorResult($errorCodes);
         }
 

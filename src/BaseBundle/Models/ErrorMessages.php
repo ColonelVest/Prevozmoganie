@@ -24,6 +24,7 @@ class ErrorMessages
     const REQUESTED_PERIOD_NOT_EXISTS = 5;
     const PERIOD_DATE_INCORRECT = 6;
     const REQUESTED_TASK_NOT_EXISTS = 7;
+    const REQUESTED_REP_TASK_NOT_EXISTS = 8;
 
     public function getErrorMessageByCode($code)
     {
@@ -45,6 +46,8 @@ class ErrorMessages
         3 => 'incorrect_time',
         4 => 'incorrect_schedule_begin_time',
         5 => 'period_not_exists',
-        6 => 'period_date_incorrect'
+        6 => 'period_date_incorrect',
+        7 => 'requested_task_not_exists',
+        8 => 'requested_repetitive_task_not_exists'
     ];
 }
