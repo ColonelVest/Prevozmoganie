@@ -4,7 +4,7 @@ namespace TaskBundle\Controller;
 
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\AbstractNormalizer;
 use BaseBundle\Services\EntityHandler;
 
 class RepetitiveTaskController extends BaseApiController
@@ -15,7 +15,7 @@ class RepetitiveTaskController extends BaseApiController
         // TODO: Implement getHandler() method.
     }
 
-    protected function getNormalizer(): ApiNormalizer
+    protected function getNormalizer(): AbstractNormalizer
     {
         // TODO: Implement getNormalizer() method.
     }

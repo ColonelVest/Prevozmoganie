@@ -3,8 +3,7 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Models\Result;
-use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\AbstractNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -62,7 +61,12 @@ class TaskController extends BaseApiController
         return $this->createEntity($request, Task::class, TaskType::class);
     }
 
-
+    /**
+     * @Rest\View
+     * @param Request $request
+     * @param $taskId
+     * @return array
+     */
     public function putTaskAction(Request $request, $taskId)
     {
         return $this->editEntity($request, $taskId, TaskType::class);
@@ -73,7 +77,7 @@ class TaskController extends BaseApiController
         return $this->get('task_handler');
     }
 
-    protected function getNormalizer() : ApiNormalizer
+    protected function getNormalizer() : AbstractNormalizer
     {
         return $this->get('task_normalizer');
     }

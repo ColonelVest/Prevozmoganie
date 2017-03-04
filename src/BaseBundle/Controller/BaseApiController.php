@@ -3,7 +3,7 @@
 namespace BaseBundle\Controller;
 
 use BaseBundle\Models\Result;
-use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\AbstractNormalizer;
 use BaseBundle\Services\BaseHelper;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 abstract class BaseApiController extends FOSRestController
 {
     abstract protected function getHandler() : EntityHandler;
-    abstract protected function getNormalizer() : ApiNormalizer;
+    abstract protected function getNormalizer() : AbstractNormalizer;
 
     protected function getEntityResultById($id)
     {

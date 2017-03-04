@@ -5,7 +5,7 @@ namespace TaskBundle\Controller;
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
-use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\AbstractNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -36,13 +36,12 @@ class PeriodController extends BaseApiController
         $date = $this->getDateFromRequest($request, 'date');
         if ($date === false) {
             $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
-        } else {
-            $result = $this->get('period_handler')->getPeriods($date);
-            $normalizedPeriods = $this->get('period_normalizer')->normalizePeriods($result->getData());
-            $result->setData($normalizedPeriods);
-        }
 
-        return $this->getResponseByResultObj($result);
+            return $this->getResponseByResultObj($result);
+        }
+        $expr = Criteria::expr()->eq('date', $date);
+
+        return $this->getEntitiesByCriteria((Criteria::create())->where($expr));
     }
 
     /**
@@ -52,14 +51,8 @@ class PeriodController extends BaseApiController
      */
     public function postPeriodAction(Request $request)
     {
-        $result = $this->fillEntityByRequest(new Period(), $request, PeriodType::class);
-        if ($result->getIsSuccess()) {
-            $result->getData()->setUser($this->getUser());
-            $result = $this->get('period_handler')->createPeriod($result->getData());
-            $result = $this->normalizePeriodResult($result);
-        }
+        return $this->createEntity($request, Period::class, PeriodType::class);
 
-        return $this->getResponseByResultObj($result);
     }
 
     /**
@@ -70,16 +63,7 @@ class PeriodController extends BaseApiController
      */
     public function putPeriodAction(Request $request, $periodId)
     {
-        $periodHandler = $this->get('period_handler');
-        $result = $periodHandler->getPeriodById($periodId);
-        if ($result->getIsSuccess()) {
-            $result = $this->fillEntityByRequest($result->getData(), $request, PeriodType::class);
-            if ($result->getIsSuccess()) {
-                $result = $periodHandler->editPeriod($result->getData());
-            }
-        }
-
-        return $result;
+        return $this->editEntity($request, $periodId, PeriodType::class);
     }
 
     /**
@@ -89,19 +73,7 @@ class PeriodController extends BaseApiController
      */
     public function deletePeriodAction($periodId)
     {
-        $result = $this->get('period_handler')->deletePeriodById($periodId);
-
-        return $this->getResponseByResultObj($result);
-    }
-
-    private function normalizePeriodResult(Result $result)
-    {
-        if (!is_null($result->getData())) {
-            $normalizedPeriod = $this->get('api_normalizer')->conciseNormalizePeriod($result->getData());
-            $result->setData($normalizedPeriod);
-        }
-
-        return $result;
+        return $this->removeEntityById($periodId);
     }
 
     protected function getHandler(): EntityHandler
@@ -109,7 +81,7 @@ class PeriodController extends BaseApiController
         return $this->get('period_handler');
     }
 
-    protected function getNormalizer(): ApiNormalizer
+    protected function getNormalizer(): AbstractNormalizer
     {
         return $this->get('period_normalizer');
     }

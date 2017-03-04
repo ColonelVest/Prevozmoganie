@@ -5,7 +5,7 @@ namespace BaseBundle\Services;
 use BaseBundle\Entity\BaseEntity;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-abstract class ApiNormalizer
+abstract class AbstractNormalizer
 {
     /** @var  ObjectNormalizer $objectNormalizer */
     protected $objectNormalizer;

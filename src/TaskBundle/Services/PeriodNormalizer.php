@@ -3,9 +3,9 @@
 namespace TaskBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Services\ApiNormalizer;
+use BaseBundle\Services\AbstractNormalizer;
 
-class PeriodNormalizer extends ApiNormalizer
+class PeriodNormalizer extends AbstractNormalizer
 {
     public function conciseNormalize(BaseEntity $period)
     {
