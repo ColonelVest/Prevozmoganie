@@ -3,6 +3,8 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\ErrorMessages;
+use BaseBundle\Models\Result;
 use BaseBundle\Services\AbstractNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
@@ -37,10 +39,20 @@ class TaskController extends BaseApiController
 
     /**
      * @Rest\View
+     * @param Request $request
+     * @return array
      */
-    public function getTasksAction()
+    public function getTasksAction(Request $request)
     {
-        return $this->getEntitiesByCriteria(Criteria::create());
+        $date = $this->getDateFromRequest($request, 'date');
+        if ($date === false) {
+            $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
+
+            return $this->getResponseByResultObj($result);
+        }
+        $expr = Criteria::expr()->eq('date', $date);
+
+        return $this->getEntitiesByCriteria((Criteria::create())->where($expr));
     }
 
     /**

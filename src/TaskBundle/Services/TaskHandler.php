@@ -24,8 +24,8 @@ class TaskHandler extends EntityHandler
         foreach ($task->getDaysOfWeek() as $dayOfWeek) {
             $capitalizedDaysOfWeek[] = ucfirst($dayOfWeek);
         }
-
-        foreach (new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $task->getEndDate()) as $day) {
+        $end = (clone $task->getEndDate())->add(new \DateInterval('P1D'));
+        foreach (new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $end) as $day) {
             /** @var \DateTime $day */
             $dayOfWeek = $day->format('D');
             if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
