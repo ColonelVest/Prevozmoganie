@@ -3,7 +3,8 @@
 namespace BaseBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends Controller
 {
@@ -12,6 +13,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('BaseBundle:Default:index.html.twig');
+        $data = $this->get('doctrine.orm.default_entity_manager')->getRepository('TaskBundle:Task')->findAll();
+        return new Response();
     }
 }

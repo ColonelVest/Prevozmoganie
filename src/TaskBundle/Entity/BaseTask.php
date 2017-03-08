@@ -43,16 +43,13 @@ class BaseTask extends BaseEntity
      * @param string $title
      * @return BaseTask
      */
-    public function setTitle(string $title): BaseTask
+    public function setTitle(string $title)
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
@@ -62,7 +59,7 @@ class BaseTask extends BaseEntity
      * @param string $description
      * @return BaseTask
      */
-    public function setDescription(string $description): BaseTask
+    public function setDescription(string $description)
     {
         $this->description = $description;
 

@@ -23,7 +23,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
         foreach ($this->tasks as $index => $item) {
             $task = new Task();
             $task->setTitle($item[0]);
-            $task->setBody($item[1]);
+            $task->setDescription($item[1]);
             $manager->persist($task);
             $this->addReference('task'.$index, $task);
         }

@@ -48,6 +48,13 @@ class Task extends BaseTask
     private $isCompleted = false;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="date", nullable=true)
+     * @Groups({"full_1", "concise"})
+     */
+    private $date;
+
+    /**
      * @return mixed
      */
     public function getChildren() {
@@ -132,6 +139,25 @@ class Task extends BaseTask
     public function setIsCompleted(bool $isCompleted): Task
     {
         $this->isCompleted = $isCompleted;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate(): ?\DateTime
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return Task
+     */
+    public function setDate(?\DateTime $date): Task
+    {
+        $this->date = $date;
 
         return $this;
     }

@@ -19,6 +19,7 @@ abstract class EntityHandler
     /** @var  RecursiveValidator $validator */
     protected $validator;
     protected $notExistsMessage = ErrorMessages::REQUESTED_DATA_NOT_EXISTS;
+    const DATE_FORMAT = 'dmY';
 
     public function __construct(EntityManager $em, ApiResponseFormatter $responseFormatter, RecursiveValidator $validator)
     {

@@ -3,13 +3,9 @@
 namespace TaskBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
- * @ORM\Table
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
@@ -17,77 +13,129 @@ class RepetitiveTask extends BaseTask
 {
     /**
      * @var \DateTime
-     * @ORM\Column(type="date", nullable=true)
      */
-    private $begin;
+    private $beginTime;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="date", nullable=true)
      */
-    private $end;
+    private $endTime;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer")
-     * @Groups({"concise"})
+     * @var \DateTime
      */
-    private $frequency;
+    protected $beginDate;
 
     /**
-     * @return \DateTime
+     * @var \DateTime
      */
-    public function getBegin(): ?\DateTime
-    {
-        return $this->begin;
-    }
+    protected $endDate;
 
     /**
-     * @param \DateTime $begin
-     * @return RepetitiveTask
+     * @var array
      */
-    public function setBegin(\DateTime $begin): RepetitiveTask
-    {
-        $this->begin = $begin;
-
-        return $this;
-    }
+    private $daysOfWeek = [];
 
     /**
      * @return \DateTime
      */
-    public function getEnd(): ?\DateTime
+    public function getBeginTime(): ?\DateTime
     {
-        return $this->end;
+        return $this->beginTime;
     }
 
     /**
-     * @param \DateTime $end
+     * @param \DateTime $beginTime
      * @return RepetitiveTask
      */
-    public function setEnd(\DateTime $end): RepetitiveTask
+    public function setBeginTime(?\DateTime $beginTime): RepetitiveTask
     {
-        $this->end = $end;
+        $this->beginTime = $beginTime;
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return \DateTime
      */
-    public function getFrequency(): ?int
+    public function getEndTime(): ?\DateTime
     {
-        return $this->frequency;
+        return $this->endTime;
     }
 
     /**
-     * @param int $frequency
+     * @param \DateTime $endTime
      * @return RepetitiveTask
      */
-    public function setFrequency(int $frequency): RepetitiveTask
+    public function setEndTime(?\DateTime $endTime): RepetitiveTask
     {
-        $this->frequency = $frequency;
+        $this->endTime = $endTime;
 
         return $this;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getBeginDate(): ?\DateTime
+    {
+        return $this->beginDate;
+    }
+
+    /**
+     * @param \DateTime $beginDate
+     * @return RepetitiveTask
+     */
+    public function setBeginDate(\DateTime $beginDate): RepetitiveTask
+    {
+        $this->beginDate = $beginDate;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndDate(): ?\DateTime
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     * @return RepetitiveTask
+     */
+    public function setEndDate(\DateTime $endDate): RepetitiveTask
+    {
+        $this->endDate = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDaysOfWeek(): ?array
+    {
+        return $this->daysOfWeek;
+    }
+
+    /**
+     * @param array $daysOfWeek
+     * @return RepetitiveTask
+     */
+    public function setDaysOfWeek(array $daysOfWeek): RepetitiveTask
+    {
+        $this->daysOfWeek = $daysOfWeek;
+
+        return $this;
+    }
+
+    public function addDayOfWeek($dayOfWeek)
+    {
+        $this->daysOfWeek[] = $dayOfWeek;
+
+        return $this;
+    }
+
 }

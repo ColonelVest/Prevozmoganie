@@ -9,7 +9,9 @@ use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use TaskBundle\Entity\RepetitiveTask;
 use TaskBundle\Entity\Task;
+use TaskBundle\Form\RepetitiveTaskType;
 use TaskBundle\Form\TaskType;
 
 class TaskController extends BaseApiController
@@ -59,6 +61,21 @@ class TaskController extends BaseApiController
     public function postTasksAction(Request $request)
     {
         return $this->createEntity($request, Task::class, TaskType::class);
+    }
+
+    /**
+     * @Rest\View
+     * @param Request $request
+     * @return array
+     */
+    public function postRtasksAction(Request $request)
+    {
+        $result = $this->fillEntityByRequest(new RepetitiveTask(), $request, RepetitiveTaskType::class);
+        if ($result->getIsSuccess()) {
+            $result = $this->get('task_handler')->generateRepetitiveTasks($result->getData());
+        }
+
+        return $this->getResponseByResultObj($result);
     }
 
     /**
