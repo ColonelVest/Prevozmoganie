@@ -1,0 +1,5 @@
+errors_bundle:
+    type: rest
+    prefix: /v1
+    resource: "@ErrorsBundle/Controller"
+    name_prefix:  api_v1_

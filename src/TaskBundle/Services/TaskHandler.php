@@ -25,17 +25,17 @@ class TaskHandler extends EntityHandler
             $capitalizedDaysOfWeek[] = ucfirst($dayOfWeek);
         }
         $end = (clone $task->getEndDate())->add(new \DateInterval('P1D'));
+        $templateTask  = (new Task())
+            ->setBeginTime($task->getBeginTime())
+            ->setEndTime($task->getEndTime())
+            ->setDescription($task->getDescription())
+            ->setTitle($task->getTitle());
+
         foreach (new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $end) as $day) {
             /** @var \DateTime $day */
             $dayOfWeek = $day->format('D');
             if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
-                $task = (new Task())
-                    ->setBeginTime($task->getBeginTime())
-                    ->setEndTime($task->getEndTime())
-                    ->setDescription($task->getDescription())
-                    ->setTitle($task->getTitle())
-                    ->setDate($day)
-                ;
+                $task = (clone $templateTask)->setDate($day);
                 $this->em->persist($task);
                 $this->em->flush();
             }
