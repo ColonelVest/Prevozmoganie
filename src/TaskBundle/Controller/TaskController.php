@@ -44,11 +44,14 @@ class TaskController extends BaseApiController
      */
     public function getTasksAction(Request $request)
     {
-        $date = $this->getDateFromRequest($request, 'date');
-        if ($date === false) {
-            $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
+        $date = null;
+        if ($request->get('date')) {
+            $date = $this->getDateFromRequest($request, 'date');
+            if ($date === false) {
+                $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
 
-            return $this->getResponseByResultObj($result);
+                return $this->getResponseByResultObj($result);
+            }
         }
         $expr = Criteria::expr()->eq('date', $date);
 

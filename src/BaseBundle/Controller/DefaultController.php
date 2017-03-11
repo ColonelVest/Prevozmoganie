@@ -13,7 +13,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $data = $this->get('doctrine.orm.default_entity_manager')->getRepository('TaskBundle:Task')->findAll();
         return new Response();
     }
 }

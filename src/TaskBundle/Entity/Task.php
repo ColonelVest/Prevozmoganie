@@ -55,6 +55,58 @@ class Task extends BaseTask
     private $date;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="time", nullable=true)
+     * @Groups({"full_1", "concise"})
+     */
+    private $beginTime;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="time", nullable=true)
+     * @Groups({"full_1", "concise"})
+     */
+    private $endTime;
+
+    /**
+     * @return \DateTime
+     */
+    public function getBeginTime(): ?\DateTime
+    {
+        return $this->beginTime;
+    }
+
+    /**
+     * @param \DateTime $beginTime
+     * @return Task
+     */
+    public function setBeginTime(\DateTime $beginTime): Task
+    {
+        $this->beginTime = $beginTime;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getEndTime(): ?\DateTime
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @param \DateTime $endTime
+     * @return Task
+     */
+    public function setEndTime(\DateTime $endTime): Task
+    {
+        $this->endTime = $endTime;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getChildren() {

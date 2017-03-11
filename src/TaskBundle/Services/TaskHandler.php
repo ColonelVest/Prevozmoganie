@@ -30,9 +30,12 @@ class TaskHandler extends EntityHandler
             $dayOfWeek = $day->format('D');
             if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
                 $task = (new Task())
+                    ->setBeginTime($task->getBeginTime())
+                    ->setEndTime($task->getEndTime())
                     ->setDescription($task->getDescription())
                     ->setTitle($task->getTitle())
-                    ->setDate($day);
+                    ->setDate($day)
+                ;
                 $this->em->persist($task);
                 $this->em->flush();
             }
