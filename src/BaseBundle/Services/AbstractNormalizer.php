@@ -16,6 +16,7 @@ abstract class AbstractNormalizer
     }
 
     abstract public function conciseNormalize(BaseEntity $entity);
+    abstract public function fullNormalize(BaseEntity $entity);
 
     public function conciseNormalizeEntities($entities)
     {

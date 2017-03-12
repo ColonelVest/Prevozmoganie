@@ -80,7 +80,7 @@ class Task extends BaseTask
      * @param \DateTime $beginTime
      * @return Task
      */
-    public function setBeginTime(\DateTime $beginTime): Task
+    public function setBeginTime(?\DateTime $beginTime): Task
     {
         $this->beginTime = $beginTime;
 
@@ -99,7 +99,7 @@ class Task extends BaseTask
      * @param \DateTime $endTime
      * @return Task
      */
-    public function setEndTime(\DateTime $endTime): Task
+    public function setEndTime(?\DateTime $endTime): Task
     {
         $this->endTime = $endTime;
 

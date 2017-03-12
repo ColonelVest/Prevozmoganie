@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,6 +24,10 @@ class TaskType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('id', IntegerType::class, ['mapped' => false])
+            ->add('beginTime', TimeType::class, [
+                'widget' => 'single_text'
+            ])
+            ->add('endTime', TimeType::class, ['widget' => 'single_text'])
         ;
     }
 

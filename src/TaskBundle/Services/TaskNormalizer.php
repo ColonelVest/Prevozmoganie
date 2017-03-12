@@ -21,4 +21,19 @@ class TaskNormalizer extends AbstractNormalizer
 
         return $this->objectNormalizer->normalize($task, null, ['groups' => ['concise']]);
     }
+
+    public function fullNormalize(BaseEntity $task)
+    {
+        $dateCallback = function ($date) {
+            return $this->normalizeDate($date);
+        };
+        $timeCallback = function ($time) {
+            return $this->normalizeTime($time);
+        };
+        $this->objectNormalizer->setCallbacks(
+            ['date' => $dateCallback, 'beginTime' => $timeCallback, 'endTime' => $timeCallback]
+        );
+
+        return $this->objectNormalizer->normalize($task, null, ['groups' => ['full']]);
+    }
 }

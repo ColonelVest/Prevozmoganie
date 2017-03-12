@@ -27,30 +27,36 @@ class Error extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"full"})
      */
     private $body;
 
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"concise", "full"})
      */
     private $title;
 
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full"})
      */
     private $reason;
 
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full"})
      */
     private $solution;
 
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full"})
+     * @Assert\Choice(callback="getErrorTypes")
      */
     private $type;
 
@@ -149,4 +155,11 @@ class Error extends BaseEntity
         return $this;
     }
 
+    public static function getErrorTypes()
+    {
+        return [
+            'typo',
+            'algorithmic',
+        ];
+    }
 }

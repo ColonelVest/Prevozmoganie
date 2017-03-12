@@ -11,4 +11,9 @@ class ErrorNormalizer extends AbstractNormalizer
     {
         return $this->objectNormalizer->normalize($error, null, array('groups' => array('concise')));
     }
+
+    public function fullNormalize(BaseEntity $error)
+    {
+        return $this->objectNormalizer->normalize($error, null, array('groups' => array('full')));
+    }
 }

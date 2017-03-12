@@ -53,9 +53,11 @@ class TaskController extends BaseApiController
                 return $this->getResponseByResultObj($result);
             }
         }
-        $expr = Criteria::expr()->eq('date', $date);
+        $expr = Criteria::expr();
+        $criteria = Criteria::create();
+        $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
 
-        return $this->getEntitiesByCriteria((Criteria::create())->where($expr));
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**

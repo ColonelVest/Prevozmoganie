@@ -23,4 +23,9 @@ class PeriodNormalizer extends AbstractNormalizer
 
         return $data;
     }
+
+    public function fullNormalize(BaseEntity $entity)
+    {
+        // TODO: Implement fullNormalize() method.
+    }
 }
