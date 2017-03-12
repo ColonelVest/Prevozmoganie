@@ -54,7 +54,7 @@ abstract class BaseApiController extends FOSRestController
         $result = $this->fillEntityByRequest(new $entityType(), $request, $entityForm);
         if ($result->getIsSuccess()) {
             $result = $this->getHandler()->create($result->getData());
-            $result = $this->normalizeByResult($result);
+            $result = $this->normalizeByResult($result, true);
         }
 
         return $this->getResponseByResultObj($result);
@@ -68,7 +68,7 @@ abstract class BaseApiController extends FOSRestController
             $result = $this->fillEntityByRequest($result->getData(), $request, $entityForm);
             if ($result->getIsSuccess()) {
                 $result = $handler->edit($result->getData());
-                $result = $this->normalizeByResult($result);
+                $result = $this->normalizeByResult($result, true);
             }
         }
 
@@ -98,6 +98,7 @@ abstract class BaseApiController extends FOSRestController
         $form = $this->createForm($type, $entity);
         $form->submit($request->request->all());
         if (!$form->isValid()) {
+
             $result = Result::createErrorResult();
             foreach ($form->getErrors(true) as $error) {
                 /** @var FormError $error */

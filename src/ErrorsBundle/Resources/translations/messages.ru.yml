@@ -1,0 +1,9 @@
+unexpected_error: Непредвиденная ошибка
+not_exists: Не существует
+incorrect_date: Некорректная дата
+incorrect_time: Некорректное время
+incorrect_schedule_begin_time: Некорректное время начала расписания дня
+period_not_exists: Период не существует
+period_date_incorrect: Дата периода некорректна
+requested_task_not_exists: Запрашиваемая задача не существует
+requested_error_not_esists: Запрашиваемая ошибка не существует

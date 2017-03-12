@@ -26,7 +26,7 @@ class Error extends BaseEntity
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({"full"})
      */
     private $body;
@@ -59,6 +59,20 @@ class Error extends BaseEntity
      * @Assert\Choice(callback="getErrorTypes")
      */
     private $type;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     * @Groups({"full", "concise"})
+     */
+    private $isFixed = false;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full", "concise"})
+     */
+    private $prevention;
 
     /**
      * @return string
@@ -155,11 +169,50 @@ class Error extends BaseEntity
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isIsFixed(): ?bool
+    {
+        return $this->isFixed;
+    }
+
+    /**
+     * @param bool $isFixed
+     * @return Error
+     */
+    public function setIsFixed(bool $isFixed): Error
+    {
+        $this->isFixed = $isFixed;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrevention(): ?string
+    {
+        return $this->prevention;
+    }
+
+    /**
+     * @param string $prevention
+     * @return Error
+     */
+    public function setPrevention(string $prevention): Error
+    {
+        $this->prevention = $prevention;
+
+        return $this;
+    }
+
     public static function getErrorTypes()
     {
         return [
             'typo',
             'algorithmic',
+            'forgot'
         ];
     }
 }

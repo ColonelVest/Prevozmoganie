@@ -37,6 +37,11 @@ class RepetitiveTask extends BaseTask
     private $daysOfWeek = [];
 
     /**
+     * @var number
+     */
+    private $weekFrequency;
+
+    /**
      * @return \DateTime
      */
     public function getBeginTime(): ?\DateTime
@@ -134,6 +139,25 @@ class RepetitiveTask extends BaseTask
     public function addDayOfWeek($dayOfWeek)
     {
         $this->daysOfWeek[] = $dayOfWeek;
+
+        return $this;
+    }
+
+    /**
+     * @return number
+     */
+    public function getWeekFrequency()
+    {
+        return $this->weekFrequency;
+    }
+
+    /**
+     * @param number $weekFrequency
+     * @return RepetitiveTask
+     */
+    public function setWeekFrequency($weekFrequency): RepetitiveTask
+    {
+        $this->weekFrequency = $weekFrequency;
 
         return $this;
     }

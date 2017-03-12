@@ -4,6 +4,8 @@ namespace ErrorsBundle\Form;
 
 use ErrorsBundle\Entity\Error;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,6 +17,14 @@ class ErrorType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('body', TextType::class)
+            ->add('solution', TextType::class)
+            ->add('reason', TextType::class)
+            ->add('id', NumberType::class, [
+                'mapped' => false
+            ])
+            ->add('type', TextType::class)
+            ->add('isFixed', CheckboxType::class)
+            ->add('prevention', TextType::class)
             ;
 
     }

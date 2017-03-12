@@ -43,28 +43,28 @@ class Task extends BaseTask
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $isCompleted = false;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $date;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="time", nullable=true)
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $beginTime;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="time", nullable=true)
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $endTime;
 

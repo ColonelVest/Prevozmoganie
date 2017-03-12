@@ -37,27 +37,27 @@ class Period extends BaseEntity
      * @var string
      * Gedmo\Versioned
      * @ORM\Column(type="string")
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $description;
 
     /**
      * @var Task
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
-     * @Groups({"full_1"})
+     * @Groups({"full"})
      */
     private $task;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="time")
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $begin;
 
     /**
      * @var \DateTime
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      * @ORM\Column(type="time")
      * @Assert\NotNull()
      */
@@ -66,7 +66,7 @@ class Period extends BaseEntity
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=false)
-     * @Groups({"full_1", "concise"})
+     * @Groups({"full", "concise"})
      */
     private $date;
 

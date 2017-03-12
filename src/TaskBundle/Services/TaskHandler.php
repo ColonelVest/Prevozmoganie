@@ -24,6 +24,7 @@ class TaskHandler extends EntityHandler
         foreach ($task->getDaysOfWeek() as $dayOfWeek) {
             $capitalizedDaysOfWeek[] = ucfirst($dayOfWeek);
         }
+
         $end = (clone $task->getEndDate())->add(new \DateInterval('P1D'));
         $templateTask  = (new Task())
             ->setBeginTime($task->getBeginTime())
@@ -31,15 +32,20 @@ class TaskHandler extends EntityHandler
             ->setDescription($task->getDescription())
             ->setTitle($task->getTitle());
 
-        foreach (new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $end) as $day) {
+        $period = new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $end);
+        foreach ($period as $dayNumber => $day) {
+            $weekNumber = floor($dayNumber / 7);
             /** @var \DateTime $day */
-            $dayOfWeek = $day->format('D');
-            if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
-                $task = (clone $templateTask)->setDate($day);
-                $this->em->persist($task);
-                $this->em->flush();
+            if (($weekNumber % $task->getWeekFrequency()) == 0) {
+                $dayOfWeek = $day->format('D');
+                if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
+                    $task = (clone $templateTask)->setDate($day);
+                    $this->em->persist($task);
+
+                }
             }
         }
+        $this->em->flush();
 
         return Result::createSuccessResult();
     }

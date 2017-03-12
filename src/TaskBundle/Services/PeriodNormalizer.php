@@ -24,8 +24,20 @@ class PeriodNormalizer extends AbstractNormalizer
         return $data;
     }
 
-    public function fullNormalize(BaseEntity $entity)
+    public function fullNormalize(BaseEntity $period)
     {
-        // TODO: Implement fullNormalize() method.
+        $timeCallback = function ($dateTime) {
+            return $this->normalizeTime($dateTime);
+        };
+        $dateCallback = function ($date) {
+            return $this->normalizeDate($date);
+        };
+        $this->objectNormalizer->setCallbacks(
+            ['begin' => $timeCallback, 'end' => $timeCallback, 'date' => $dateCallback]
+        );
+
+        $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('full')));
+
+        return $data;
     }
 }
