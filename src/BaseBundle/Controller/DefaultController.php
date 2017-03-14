@@ -13,6 +13,12 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        $tasks = $em->getRepository('TaskBundle:Task')->findBy(['title' => 'Постирать постельное белье']);
+        foreach ($tasks as $task) {
+            $em->remove($task);
+        }
+        $em->flush();
         return new Response();
     }
 }

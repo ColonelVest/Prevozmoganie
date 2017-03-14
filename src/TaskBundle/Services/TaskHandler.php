@@ -39,12 +39,13 @@ class TaskHandler extends EntityHandler
             if (($weekNumber % $task->getWeekFrequency()) == 0) {
                 $dayOfWeek = $day->format('D');
                 if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
-                    $task = (clone $templateTask)->setDate($day);
-                    $this->em->persist($task);
+                    $newTask = (clone $templateTask)->setDate($day);
+                    $this->em->persist($newTask);
 
                 }
             }
         }
+
         $this->em->flush();
 
         return Result::createSuccessResult();

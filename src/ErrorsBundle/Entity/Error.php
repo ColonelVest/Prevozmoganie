@@ -70,7 +70,7 @@ class Error extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"full", "concise"})
+     * @Groups({"full"})
      */
     private $prevention;
 
