@@ -3,10 +3,10 @@ errors:
     type:     annotation
     prefix:   /
 
-notes:
-    resource: "@NotesBundle/Controller/"
-    type:     annotation
-    prefix:   /notes
+note_api:
+    type: rest
+    prefix: /api
+    resource: "@NotesBundle/Resources/config/routes.yml"
 
 base:
     resource: "@BaseBundle/Controller/"

@@ -2,7 +2,9 @@
 
 namespace BaseBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,15 +12,11 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/")
+     * @Method({"POST"})
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.default_entity_manager');
-        $tasks = $em->getRepository('TaskBundle:Task')->findBy(['title' => 'Постирать постельное белье']);
-        foreach ($tasks as $task) {
-            $em->remove($task);
-        }
-        $em->flush();
+        $sdfsdf = 3424;
         return new Response();
     }
 }
