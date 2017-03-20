@@ -42,6 +42,30 @@ class RepetitiveTask extends BaseTask
     private $weekFrequency;
 
     /**
+     * @var bool
+     */
+    private $newTasksCreate = false;
+
+    /**
+     * @return bool
+     */
+    public function isNewTasksCreate(): ?bool
+    {
+        return $this->newTasksCreate;
+    }
+
+    /**
+     * @param bool $newTasksCreate
+     * @return RepetitiveTask
+     */
+    public function setNewTasksCreate(bool $newTasksCreate): RepetitiveTask
+    {
+        $this->newTasksCreate = $newTasksCreate;
+
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getBeginTime(): ?\DateTime

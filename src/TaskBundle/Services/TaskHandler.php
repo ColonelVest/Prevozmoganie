@@ -26,7 +26,7 @@ class TaskHandler extends EntityHandler
         }
 
         $end = (clone $task->getEndDate())->add(new \DateInterval('P1D'));
-        $templateTask  = (new Task())
+        $templateTask = (new Task())
             ->setBeginTime($task->getBeginTime())
             ->setEndTime($task->getEndTime())
             ->setDescription($task->getDescription())
@@ -44,6 +44,14 @@ class TaskHandler extends EntityHandler
 
                 }
             }
+        }
+
+        if ($task->isNewTasksCreate()) {
+            $newTasksCreateTask = (new Task())
+                ->setDate($task->getEndDate())
+                ->setTitle('Создать новые задачи типа '.$task->getTitle());
+
+            $this->em->persist($newTasksCreateTask);
         }
 
         $this->em->flush();

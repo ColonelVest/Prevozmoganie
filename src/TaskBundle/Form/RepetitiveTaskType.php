@@ -3,6 +3,7 @@
 namespace TaskBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -36,6 +37,7 @@ class RepetitiveTaskType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('weekFrequency', NumberType::class)
+            ->add('newTasksCreate', CheckboxType::class)
         ;
     }
 
