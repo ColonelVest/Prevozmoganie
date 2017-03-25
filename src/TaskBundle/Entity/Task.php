@@ -83,7 +83,7 @@ class Task extends BaseEntity
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"full"})
+     * @Groups({"full", "concise"})
      */
     private $deadline;
 

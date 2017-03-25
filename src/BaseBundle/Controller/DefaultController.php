@@ -7,16 +7,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use TaskBundle\Entity\Task;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/")
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
     public function indexAction(Request $request)
     {
-        $sdfsdf = 3424;
+//        $em = $this->get('doctrine.orm.default_entity_manager');
+//        /** @var Task $task */
+//        $task = $em->getRepository('TaskBundle:Task')->findOneBy(['title' => 'Дополнительная приборка(раковины, зеркало и тд)']);
+//        $task->setDate((clone($task->getDate())->modify('-1 day')));
+//        $em->flush();
+
         return new Response();
     }
 }

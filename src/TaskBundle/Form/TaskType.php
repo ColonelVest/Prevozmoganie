@@ -28,6 +28,10 @@ class TaskType extends AbstractType
                 'widget' => 'single_text'
             ])
             ->add('endTime', TimeType::class, ['widget' => 'single_text'])
+            ->add('deadline', DateType::class, [
+                'format' => 'ddMMyyyy',
+                'widget' => 'single_text',
+            ])
         ;
     }
 
