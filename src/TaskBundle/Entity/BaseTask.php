@@ -14,55 +14,5 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class BaseTask extends BaseEntity
 {
-    use SoftDeleteableEntity;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string")
-     * @Groups({"concise", "full"})
-     * @Assert\NotBlank()
-     */
-    private $title;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     * @Groups({"full", "concise"})
-     */
-    private $description;
-
-    /**
-     * @return string
-     */
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     * @return BaseTask
-     */
-    public function setTitle(string $title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     * @return BaseTask
-     */
-    public function setDescription(string $description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
 }

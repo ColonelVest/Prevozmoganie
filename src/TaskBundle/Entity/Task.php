@@ -2,8 +2,10 @@
 
 namespace TaskBundle\Entity;
 
+use BaseBundle\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,12 +16,24 @@ use Doctrine\ORM\Mapping as ORM;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Task extends BaseTask
+class Task extends BaseEntity
 {
-    public function __construct()
-    {
-        $this->children = new ArrayCollection();
-    }
+    use SoftDeleteableEntity;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     * @Groups({"concise", "full"})
+     * @Assert\NotBlank()
+     */
+    private $title;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full", "concise"})
+     */
+    private $description;
 
     /**
      * @var Task
@@ -65,6 +79,72 @@ class Task extends BaseTask
      * @Groups({"full", "concise"})
      */
     private $endTime;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="date", nullable=true)
+     * @Groups({"full"})
+     */
+    private $deadline;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeadline(): ?\DateTime
+    {
+        return $this->deadline;
+    }
+
+    /**
+     * @param \DateTime $deadline
+     * @return Task
+     */
+    public function setDeadline(\DateTime $deadline): Task
+    {
+        $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return self
+     */
+    public function setTitle(string $title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return self
+     */
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
 
     /**
      * @return \DateTime

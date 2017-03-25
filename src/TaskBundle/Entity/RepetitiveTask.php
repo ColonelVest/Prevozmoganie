@@ -9,8 +9,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class RepetitiveTask extends BaseTask
+class RepetitiveTask
 {
+    /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var string
+     */
+    private $description;
+
     /**
      * @var \DateTime
      */
@@ -45,6 +55,68 @@ class RepetitiveTask extends BaseTask
      * @var bool
      */
     private $newTasksCreate = false;
+
+    /**
+     * @var int
+     */
+    private $daysBeforeDeadline;
+
+    /**
+     * @return string
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return RepetitiveTask
+     */
+    public function setTitle(string $title): RepetitiveTask
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return RepetitiveTask
+     */
+    public function setDescription(string $description): RepetitiveTask
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDaysBeforeDeadline()
+    {
+        return $this->daysBeforeDeadline;
+    }
+
+    /**
+     * @param mixed $daysBeforeDeadline
+     * @return RepetitiveTask
+     */
+    public function setDaysBeforeDeadline($daysBeforeDeadline)
+    {
+        $this->daysBeforeDeadline = $daysBeforeDeadline;
+
+        return $this;
+    }
 
     /**
      * @return bool

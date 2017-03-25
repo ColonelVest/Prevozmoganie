@@ -18,6 +18,10 @@ class TaskHandler extends EntityHandler
         return $this->em->getRepository('TaskBundle:Task');
     }
 
+    /**
+     * @param RepetitiveTask $task
+     * @return Result
+     */
     public function generateRepetitiveTasks(RepetitiveTask $task)
     {
         $capitalizedDaysOfWeek = [];
@@ -39,7 +43,11 @@ class TaskHandler extends EntityHandler
             if (($weekNumber % $task->getWeekFrequency()) == 0) {
                 $dayOfWeek = $day->format('D');
                 if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
-                    $newTask = (clone $templateTask)->setDate($day);
+                    $deadlineDate = (clone $day)->modify('+' . $task->getDaysBeforeDeadline() . 'days');
+
+                    $newTask = (clone $templateTask)
+                        ->setDeadline($deadlineDate)
+                        ->setDate($day);
                     $this->em->persist($newTask);
 
                 }
@@ -49,7 +57,7 @@ class TaskHandler extends EntityHandler
         if ($task->isNewTasksCreate()) {
             $newTasksCreateTask = (new Task())
                 ->setDate($task->getEndDate())
-                ->setTitle('Создать новые задачи типа '.$task->getTitle());
+                ->setTitle('Создать новые задачи типа "' .$task->getTitle() . '"');
 
             $this->em->persist($newTasksCreateTask);
         }
