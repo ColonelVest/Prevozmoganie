@@ -104,7 +104,7 @@ class Task extends BaseEntity
      * @param \DateTime $deadline
      * @return Task
      */
-    public function setDeadline(\DateTime $deadline): Task
+    public function setDeadline(?\DateTime $deadline): Task
     {
         $this->deadline = $deadline;
 

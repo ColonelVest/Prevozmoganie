@@ -19,7 +19,8 @@ class DefaultController extends Controller
     {
 //        $em = $this->get('doctrine.orm.default_entity_manager');
 //        /** @var Task $task */
-//        $task = $em->getRepository('TaskBundle:Task')->findOneBy(['title' => 'Дополнительная приборка(раковины, зеркало и тд)']);
+//        $task = $em->getRepository('TaskBundle:Task')->findOneBy(['title' => 'Прибраться в квартире', 'date' => \DateTime::createFromFormat('dmY', '09042017')]);
+//        $task->setIsCompleted(false);
 //        $task->setDate((clone($task->getDate())->modify('-1 day')));
 //        $em->flush();
 

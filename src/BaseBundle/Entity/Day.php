@@ -43,25 +43,6 @@ class Day extends BaseEntity
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BaseBundle\Entity\User")
-     */
-    private $user;
-
-    /**
-     * @return mixed
-     */
-    public function getUser() {
-        return $this->user;
-    }
-
-    /**
-     * @param mixed $user
-     */
-    public function setUser($user) {
-        $this->user = $user;
-    }
-
-    /**
      * @return mixed
      */
     public function getDate() {

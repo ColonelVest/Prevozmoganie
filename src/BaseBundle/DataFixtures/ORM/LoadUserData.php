@@ -20,11 +20,12 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
+        $encoder = $this->container->get('security.password_encoder');
+
         $fixturesUser = new User();
         $fixturesUser->setUsername('angry');
         $fixturesUser->setDisplayedName('angry stupid user');
         $fixturesUser->setEmail('user1@faaint.com');
-        $encoder = $this->container->get('security.password_encoder');
         $password = $encoder->encodePassword($fixturesUser, $this->container->getParameter('fixtures_user_password'));
         $fixturesUser->setPassword($password);
         $fixturesUser->setEnabled(true);
@@ -35,7 +36,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $fixturesUser2->setUsername('good');
         $fixturesUser2->setDisplayedName('good-natured user');
         $fixturesUser2->setEmail('user2@faaint.com');
-        $encoder = $this->container->get('security.password_encoder');
         $password = $encoder->encodePassword($fixturesUser2, $this->container->getParameter('fixtures_user_password'));
         $fixturesUser2->setPassword($password);
         $fixturesUser2->setEnabled(true);
@@ -46,7 +46,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $fixturesUser3->setUsername('kenedias');
         $fixturesUser3->setDisplayedName('danya odmin');
         $fixturesUser3->setEmail('faainttt@gmail.com');
-        $encoder = $this->container->get('security.password_encoder');
         $password = $encoder->encodePassword($fixturesUser3, $this->container->getParameter('fixtures_admin_password'));
         $fixturesUser3->setPassword($password);
         $fixturesUser3->setEnabled(true);

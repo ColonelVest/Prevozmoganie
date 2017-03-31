@@ -24,3 +24,5 @@ services:
 
   base_helper:
     class: BaseBundle\Services\BaseHelper
+
+  encoder:
