@@ -3,12 +3,14 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
  * @ORM\Entity()
@@ -16,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Task extends BaseEntity
+class Task extends BaseEntity implements UserReferable
 {
     use SoftDeleteableEntity;
 
@@ -86,6 +88,12 @@ class Task extends BaseEntity
      * @Groups({"full", "concise"})
      */
     private $deadline;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     */
+    private $user;
 
     public function __construct()
     {
@@ -292,4 +300,22 @@ class Task extends BaseEntity
         return $this;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser() : ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return Task
+     */
+    public function setUser(?User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

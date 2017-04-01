@@ -2,6 +2,8 @@
 
 namespace BaseBundle\Controller;
 
+use BaseBundle\Entity\UserReferable;
+use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\AbstractNormalizer;
 use BaseBundle\Services\BaseHelper;
@@ -42,16 +44,17 @@ abstract class BaseApiController extends FOSRestController
         return $this->getResponseByResultObj(Result::createSuccessResult($normalisedEntities));
     }
 
-    protected function removeEntityById($id)
+    protected function removeEntityById($id, Request $request)
     {
-        $result = $this->getHandler()->removeById($id);
+        $checkTokenResult = $this->checkToken($request);
+        $result = $this->getHandler()->removeById($id, $checkTokenResult->getData());
 
         return $this->getResponseByResultObj($result);
     }
 
-    protected function createEntity(Request $request, $entityType, $entityForm)
+    protected function createEntity(Request $request, $entityType, $entityForm, $withUser = false)
     {
-        $result = $this->fillEntityByRequest(new $entityType(), $request, $entityForm);
+        $result = $this->fillEntityByRequest(new $entityType(), $request, $entityForm, $withUser);
         if ($result->getIsSuccess()) {
             $result = $this->getHandler()->create($result->getData());
             $result = $this->normalizeByResult($result, true);
@@ -85,16 +88,36 @@ abstract class BaseApiController extends FOSRestController
         return BaseHelper::createDateFromString($request->get($propertyName), $format);
     }
 
+    public function checkToken(Request $request)
+    {
+        $result = $this->getToken($request);
+        if (!$result->getIsSuccess()) {
+            return $result;
+        }
+
+        return $this->get('token_handler')->isTokenCorrect($result->getData());
+    }
+
     /**
      * Заполняет сушность данными из запроса с помощью формы
      *
      * @param $entity
      * @param Request $request
      * @param $type
+     * @param bool $setUser
      * @return Result
      */
-    protected function fillEntityByRequest($entity, Request $request, $type) : Result
+    protected function fillEntityByRequest($entity, Request $request, $type, $setUser = false) : Result
     {
+        if ($setUser && $entity instanceof UserReferable) {
+            $userResult = $this->getRequestUser($request);
+            if (!$userResult->getIsSuccess()) {
+                return $userResult;
+            }
+            //TODO: Мб добавить интерфейс и проверку на него
+            $entity->setUser($userResult->getData());
+        }
+
         $form = $this->createForm($type, $entity);
         $form->submit($request->get($form->getName()));
         if (!$form->isValid()) {
@@ -110,6 +133,26 @@ abstract class BaseApiController extends FOSRestController
         }
 
         return Result::createSuccessResult($entity);
+    }
+
+    protected function getToken(Request $request)
+    {
+        $token = $request->get('token');
+        if (is_null($token)) {
+            return Result::createErrorResult(ErrorMessages::NOT_AUTHORIZED);
+        }
+
+        return Result::createSuccessResult($token);
+    }
+
+    protected function getRequestUser(Request $request)
+    {
+        $result = $this->getToken($request);
+        if (!$result->getIsSuccess()) {
+            return $result;
+        }
+
+        return $this->get('token_handler')->getUserByToken($result->getData());
     }
 
     private function normalizeByResult(Result $result, $isFullNormalization = false)

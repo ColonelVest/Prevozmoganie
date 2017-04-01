@@ -27,6 +27,8 @@ class ErrorMessages
     const REQUESTED_ERROR_NOT_EXISTS = 8;
     const UNKNOWN_USERNAME = 9;
     const INCORRECT_PASSWORD = 10;
+    const INCORRECT_TOKEN = 11;
+    const NOT_AUTHORIZED = 12;
 
     public function getErrorMessageByCode($code)
     {
@@ -52,6 +54,8 @@ class ErrorMessages
         7 => 'requested_task_not_exists',
         8 => 'requested_error_not_esists',
         9 => 'unknown_username',
-        10 => 'incorrect_password'
+        10 => 'incorrect_password',
+        11 => 'incorrect_token',
+        12 => 'not_authorized'
     ];
 }

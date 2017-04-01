@@ -63,11 +63,12 @@ class TaskController extends BaseApiController
     /**
      * @Rest\View
      * @param $id
+     * @param Request $request
      * @return array
      */
-    public function deleteTaskAction($id)
+    public function deleteTaskAction($id, Request $request)
     {
-        return $this->removeEntityById($id);
+        return $this->removeEntityById($id, $request);
     }
 
     /**
@@ -77,7 +78,7 @@ class TaskController extends BaseApiController
      */
     public function postTasksAction(Request $request)
     {
-        return $this->createEntity($request, Task::class, TaskType::class);
+        return $this->createEntity($request, Task::class, TaskType::class, true);
     }
 
     /**
@@ -87,7 +88,7 @@ class TaskController extends BaseApiController
      */
     public function postRtasksAction(Request $request)
     {
-        $result = $this->fillEntityByRequest(new RepetitiveTask(), $request, RepetitiveTaskType::class);
+        $result = $this->fillEntityByRequest(new RepetitiveTask(), $request, RepetitiveTaskType::class, true);
         if ($result->getIsSuccess()) {
             $result = $this->get('task_handler')->generateRepetitiveTasks($result->getData());
         }

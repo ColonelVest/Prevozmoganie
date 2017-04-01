@@ -25,5 +25,5 @@ services:
   base_helper:
     class: BaseBundle\Services\BaseHelper
 
-  encoder:
-    class: BaseBundle\Services\ApiEncoder
+  token_handler:
+    class: BaseBundle\Services\UserTokenHandler

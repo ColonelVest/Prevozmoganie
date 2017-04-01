@@ -69,11 +69,12 @@ class PeriodController extends BaseApiController
     /**
      * @Rest\View()
      * @param $periodId
+     * @param Request $request
      * @return View
      */
-    public function deletePeriodAction($periodId)
+    public function deletePeriodAction($periodId, Request $request)
     {
-        return $this->removeEntityById($periodId);
+        return $this->removeEntityById($periodId, $request);
     }
 
     protected function getHandler(): EntityHandler

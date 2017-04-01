@@ -36,11 +36,12 @@ class ErrorsController extends BaseApiController
     /**
      * @Rest\View
      * @param $errorId
+     * @param Request $request
      * @return array
      */
-    public function deleteErrorAction($errorId)
+    public function deleteErrorAction($errorId, Request $request)
     {
-        return $this->removeEntityById($errorId);
+        return $this->removeEntityById($errorId, $request);
     }
 
     /**

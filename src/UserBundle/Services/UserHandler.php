@@ -4,7 +4,7 @@ namespace UserBundle\Services;
 
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
-use BaseBundle\Services\ApiEncoder;
+use BaseBundle\Services\UserTokenHandler;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -16,10 +16,10 @@ class UserHandler
     private $em;
     /** @var  UserPasswordEncoder $encoder */
     private $passwordEncoder;
-    /** @var  ApiEncoder $apiEncoder */
+    /** @var  UserTokenHandler $apiEncoder */
     private $apiEncoder;
 
-    public function __construct(EntityManager $em, UserPasswordEncoder $passwordEncoder, ApiEncoder $apiEncoder)
+    public function __construct(EntityManager $em, UserPasswordEncoder $passwordEncoder, UserTokenHandler $apiEncoder)
     {
         $this->em = $em;
         $this->passwordEncoder = $passwordEncoder;
@@ -31,7 +31,7 @@ class UserHandler
         return $this->em->getRepository('UserBundle:User');
     }
 
-    public function getToken($username, $password)
+    public function getUser($username, $password)
     {
         /** @var User $user */
         $user = $this->getRepository()->findOneBy(['username' => $username]);
@@ -40,9 +40,19 @@ class UserHandler
         }
 
         if ($user->getPassword() == $this->passwordEncoder->isPasswordValid($user, $password)) {
-            return $this->apiEncoder->encode($username, $user->getPassword());
+            return Result::createSuccessResult($user);
         }
 
         return Result::createErrorResult(ErrorMessages::INCORRECT_PASSWORD);
+    }
+
+    public function getToken($username, $password)
+    {
+        $userResult = $this->getUser($username, $password);
+        if (!$userResult->getIsSuccess()) {
+            return $userResult;
+        }
+
+        return Result::createSuccessResult($this->apiEncoder->encode($username, $userResult->getData()->getPassword()));
     }
 }

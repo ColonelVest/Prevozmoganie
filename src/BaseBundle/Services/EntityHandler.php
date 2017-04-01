@@ -3,12 +3,14 @@
 namespace BaseBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
+use UserBundle\Entity\User;
 
 abstract class EntityHandler
 {
@@ -21,8 +23,11 @@ abstract class EntityHandler
     protected $notExistsMessage = ErrorMessages::REQUESTED_DATA_NOT_EXISTS;
     const DATE_FORMAT = 'dmY';
 
-    public function __construct(EntityManager $em, ApiResponseFormatter $responseFormatter, RecursiveValidator $validator)
-    {
+    public function __construct(
+        EntityManager $em,
+        ApiResponseFormatter $responseFormatter,
+        RecursiveValidator $validator
+    ) {
         $this->em = $em;
         $this->responseFormatter = $responseFormatter;
         $this->validator = $validator;
@@ -45,7 +50,8 @@ abstract class EntityHandler
         return Result::createSuccessResult($entities);
     }
 
-    public function remove(BaseEntity $entity) {
+    public function remove(BaseEntity $entity)
+    {
         $id = $entity->getId();
         $this->em->remove($entity);
         $this->em->flush();
@@ -53,7 +59,7 @@ abstract class EntityHandler
         return Result::createSuccessResult($id);
     }
 
-    public function removeById($id)
+    public function removeById($id, User $user)
     {
         $result = $this->getById($id);
         if ($result->getIsSuccess()) {
@@ -63,12 +69,12 @@ abstract class EntityHandler
         return $result;
     }
 
-    public function create(BaseEntity $entity) : Result
+    public function create(BaseEntity $entity): Result
     {
         return $this->validateEntityAndGetResult($entity);
     }
 
-    public function edit(BaseEntity $entity) : Result
+    public function edit(BaseEntity $entity): Result
     {
         return $this->validateEntityAndGetResult($entity);
     }
@@ -91,5 +97,5 @@ abstract class EntityHandler
         return Result::createSuccessResult($entity);
     }
 
-    abstract protected function getRepository() : EntityRepository;
+    abstract protected function getRepository(): EntityRepository;
 }
