@@ -32,6 +32,6 @@ class ListenerType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return '';
+        return 'listener';
     }
 }

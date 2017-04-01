@@ -3,7 +3,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Entity\User;
+use UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -72,7 +72,7 @@ class Period extends BaseEntity
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="BaseBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
     private $user;
 

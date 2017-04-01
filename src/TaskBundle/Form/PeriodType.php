@@ -43,6 +43,6 @@ class PeriodType extends AbstractType
 
     public function getName()
     {
-        return '';
+        return 'period';
     }
 }

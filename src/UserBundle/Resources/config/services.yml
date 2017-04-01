@@ -1,0 +1,10 @@
+services:
+  user_handler:
+    class: UserBundle\Services\UserHandler
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@security.password_encoder'
+      - '@encoder'
+  user_normalizer:
+    class: UserBundle\Services\UserNormalizer
+    arguments: ['@object_normalizer']

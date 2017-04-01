@@ -2,12 +2,13 @@
 
 namespace BaseBundle\Services;
 
+use BaseBundle\Models\Result;
 
-class Encoder
+class ApiEncoder
 {
     public function encode($username, $password)
     {
-        return $username . '|' . $password;
+        return Result::createSuccessResult($username . '|' . $password);
     }
 
     public function decode($token)
@@ -16,9 +17,9 @@ class Encoder
         $username = substr($token, 0, $delimiterPosition);
         $password = substr($token, $delimiterPosition + 1);
 
-        return [
+        return Result::createSuccessResult([
             'username' => $username,
             'password' => $password
-        ];
+        ]);
     }
 }

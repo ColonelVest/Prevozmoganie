@@ -2,7 +2,7 @@
 
 namespace BaseBundle\DataFixtures\ORM;
 
-use BaseBundle\Entity\User;
+use UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -46,7 +46,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $fixturesUser3->setUsername('kenedias');
         $fixturesUser3->setDisplayedName('danya odmin');
         $fixturesUser3->setEmail('faainttt@gmail.com');
-        $password = $encoder->encodePassword($fixturesUser3, $this->container->getParameter('fixtures_admin_password'));
+        $password = $encoder->encodePassword($fixturesUser3,
+            $this->container->getParameter('fixtures_admin_password'));
         $fixturesUser3->setPassword($password);
         $fixturesUser3->setEnabled(true);
         $fixturesUser3->addRole('ROLE_ADMIN');

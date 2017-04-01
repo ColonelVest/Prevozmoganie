@@ -26,6 +26,11 @@ errors_api:
     prefix: /api
     resource: "@ErrorsBundle/Resources/config/routes.yml"
 
+users_api:
+    type: rest
+    prefix: /api
+    resource: "@UserBundle/Resources/config/routes.yml"
+
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc

@@ -40,6 +40,6 @@ class ErrorType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return '';
+        return 'error';
     }
 }

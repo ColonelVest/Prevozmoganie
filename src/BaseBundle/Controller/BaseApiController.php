@@ -96,7 +96,7 @@ abstract class BaseApiController extends FOSRestController
     protected function fillEntityByRequest($entity, Request $request, $type) : Result
     {
         $form = $this->createForm($type, $entity);
-        $form->submit($request->request->all());
+        $form->submit($request->get($form->getName()));
         if (!$form->isValid()) {
 
             $result = Result::createErrorResult();
