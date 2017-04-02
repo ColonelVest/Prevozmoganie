@@ -17,12 +17,12 @@ class ListenerController extends BaseApiController
      * @Rest\View
      * @return array
      */
-    public function getListenersAction()
+    public function getListenersAction(Request $request)
     {
 //        $expr = Criteria::expr();
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($criteria);
+        return $this->getEntitiesByCriteria($request, $criteria);
     }
 
     /**

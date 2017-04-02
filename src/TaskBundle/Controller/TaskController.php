@@ -19,7 +19,9 @@ use TaskBundle\Form\TaskType;
 class TaskController extends BaseApiController
 {
     /**
+     * @param Request $request
      * @param $taskId
+     * @return array
      * @Rest\View()
      * @ApiDoc(
      *   resource = true,
@@ -30,11 +32,10 @@ class TaskController extends BaseApiController
      *     404 = "Returned when the page is not found"
      *   }
      * )
-     * @return array
      */
-    public function getTaskAction($taskId)
+    public function getTaskAction(Request $request, $taskId)
     {
-        return $this->getEntityResultById($taskId);
+        return $this->getEntityResultById($request, $taskId);
     }
 
     /**
@@ -57,7 +58,7 @@ class TaskController extends BaseApiController
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
 
-        return $this->getEntitiesByCriteria($criteria);
+        return $this->getEntitiesByCriteria($request, $criteria);
     }
 
     /**

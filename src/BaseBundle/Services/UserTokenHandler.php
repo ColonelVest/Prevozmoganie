@@ -42,7 +42,7 @@ class UserTokenHandler
     public function getUserByToken($token)
     {
         $result = $this->decode($token);
-        if (!$result->getIsSuccess()) {
+        if ($result->getIsSuccess()) {
             $userData = $result->getData();
             $result = $this->userHandler->getUser($userData['username'], $userData['password']);
         }

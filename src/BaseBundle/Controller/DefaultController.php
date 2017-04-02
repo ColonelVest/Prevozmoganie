@@ -17,7 +17,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $em = $this->get('doctrine.orm.default_entity_manager');
+        $em = $this->get('doctrine.orm.default_entity_manager');
 //        /** @var Task $task */
 //        $task = $em->getRepository('TaskBundle:Task')->findOneBy(['title' => 'Прибраться в квартире', 'date' => \DateTime::createFromFormat('dmY', '09042017')]);
 //        $task->setIsCompleted(false);

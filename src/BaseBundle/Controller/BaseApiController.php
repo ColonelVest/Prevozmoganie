@@ -20,8 +20,9 @@ abstract class BaseApiController extends FOSRestController
     /** @var  EntityManager $em */
     protected $em;
 
-    abstract protected function getHandler() : EntityHandler;
-    abstract protected function getNormalizer() : AbstractNormalizer;
+    abstract protected function getHandler(): EntityHandler;
+
+    abstract protected function getNormalizer(): AbstractNormalizer;
 
     public function setContainer(ContainerInterface $container = null)
     {
@@ -29,25 +30,46 @@ abstract class BaseApiController extends FOSRestController
         $this->em = $container->get('doctrine.orm.default_entity_manager');
     }
 
-    protected function getEntityResultById($id, $isFullNormalized = true)
+    protected function getEntityResultById(Request $request, $id, $isFullNormalized = true)
     {
-        $result = $this->getHandler()->getById($id);
+        $result = $this->checkToken($request);
+        if ($result->getIsSuccess()) {
+            $user = $result->getData();
+            $result = $this->getHandler()->getById($id);
+
+            if ($result->getIsSuccess()
+                && ($result->getData() instanceOf UserReferable || $result->getData()->getUser() == $user)
+            ) {
+                $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
+            }
+        }
 
         return $this->getResponseByResultObj($this->normalizeByResult($result, $isFullNormalized));
     }
 
-    protected function getEntitiesByCriteria(Criteria $criteria)
+    protected function getEntitiesByCriteria(Request $request, Criteria $criteria)
     {
-        $result = $this->getHandler()->getEntities($criteria);
-        $normalisedEntities = $this->getNormalizer()->conciseNormalizeEntities($result->getData());
+        $result = $this->checkToken($request);
+        if ($result->getIsSuccess()) {
+            $user = $result->getData();
+            $criteria->andWhere(Criteria::expr()->eq('user', $user));
+            $result = $this->getHandler()->getEntities($criteria);
+            if ($result->getIsSuccess()) {
+                $normalisedEntities = $this->getNormalizer()->conciseNormalizeEntities($result->getData());
+                $result = Result::createSuccessResult($normalisedEntities);
+            }
+        }
 
-        return $this->getResponseByResultObj(Result::createSuccessResult($normalisedEntities));
+        return $this->getResponseByResultObj($result);
     }
 
     protected function removeEntityById($id, Request $request)
     {
-        $checkTokenResult = $this->checkToken($request);
-        $result = $this->getHandler()->removeById($id, $checkTokenResult->getData());
+        $result = $this->checkToken($request);
+        if ($result->getIsSuccess()) {
+            $user = $result->getData();
+            $result = $this->getHandler()->removeById($id, $user);
+        }
 
         return $this->getResponseByResultObj($result);
     }
@@ -65,13 +87,21 @@ abstract class BaseApiController extends FOSRestController
 
     protected function editEntity(Request $request, $entityId, $entityForm)
     {
-        $handler = $this->getHandler();
-        $result = $this->getHandler()->getById($entityId);
+        $result = $this->checkToken($request);
         if ($result->getIsSuccess()) {
-            $result = $this->fillEntityByRequest($result->getData(), $request, $entityForm);
+            $user = $result->getData();
+            $handler = $this->getHandler();
+            $result = $this->getHandler()->getById($entityId);
             if ($result->getIsSuccess()) {
-                $result = $handler->edit($result->getData());
-                $result = $this->normalizeByResult($result, true);
+                if ($result->getData() instanceof UserReferable && $result->getData()->getUser() == $user) {
+                    $result = $this->fillEntityByRequest($result->getData(), $request, $entityForm);
+                    if ($result->getIsSuccess()) {
+                        $result = $handler->edit($result->getData());
+                        $result = $this->normalizeByResult($result, true);
+                    }
+                } else {
+                    $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
+                }
             }
         }
 
@@ -107,7 +137,7 @@ abstract class BaseApiController extends FOSRestController
      * @param bool $setUser
      * @return Result
      */
-    protected function fillEntityByRequest($entity, Request $request, $type, $setUser = false) : Result
+    protected function fillEntityByRequest($entity, Request $request, $type, $setUser = false): Result
     {
         if ($setUser && $entity instanceof UserReferable) {
             $userResult = $this->getRequestUser($request);

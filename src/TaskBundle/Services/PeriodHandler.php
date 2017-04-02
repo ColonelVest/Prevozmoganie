@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use TaskBundle\Entity\Period;
+use UserBundle\Entity\User;
 
 class PeriodHandler extends EntityHandler
 {
@@ -35,11 +36,6 @@ class PeriodHandler extends EntityHandler
     public function deletePeriod(Period $period)
     {
         return $this->remove($period);
-    }
-
-    public function deletePeriodById($periodId) : Result
-    {
-        return $this->removeById($periodId);
     }
 
     public function editPeriod(Period $period) : Result

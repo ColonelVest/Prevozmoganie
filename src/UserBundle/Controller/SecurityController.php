@@ -19,7 +19,11 @@ class SecurityController extends FOSRestController
     {
         $username = $request->get('login');
         $password = $request->get('password');
-        $result = $this->get('user_handler')->getToken($username, $password);
+
+        $result = $this->get('user_handler')->getUser($username, $password, true);
+        if (!$result->getIsSuccess()) {
+            $result = $this->get('token_handler')->encode($username, $password);
+        }
 
         return $this->get('api_response_formatter')->createResponseFromResultObj($result);
     }

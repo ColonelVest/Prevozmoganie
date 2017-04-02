@@ -27,3 +27,4 @@ services:
 
   token_handler:
     class: BaseBundle\Services\UserTokenHandler
+    arguments: ['@user_handler']

@@ -15,12 +15,13 @@ class ErrorsController extends BaseApiController
 {
     /**
      * @Rest\View
+     * @param Request $request
      * @param $errorId
      * @return array
      */
-    public function getErrorAction($errorId)
+    public function getErrorAction(Request $request, $errorId)
     {
-        return $this->getEntityResultById($errorId);
+        return $this->getEntityResultById($request, $errorId);
     }
 
     /**
@@ -30,7 +31,7 @@ class ErrorsController extends BaseApiController
      */
     public function getErrorsAction(Request $request)
     {
-        return $this->getEntitiesByCriteria(Criteria::create());
+        return $this->getEntitiesByCriteria($request, Criteria::create());
     }
 
     /**

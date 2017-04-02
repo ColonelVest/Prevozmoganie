@@ -16,14 +16,11 @@ class UserHandler
     private $em;
     /** @var  UserPasswordEncoder $encoder */
     private $passwordEncoder;
-    /** @var  UserTokenHandler $apiEncoder */
-    private $apiEncoder;
 
-    public function __construct(EntityManager $em, UserPasswordEncoder $passwordEncoder, UserTokenHandler $apiEncoder)
+    public function __construct(EntityManager $em, UserPasswordEncoder $passwordEncoder)
     {
         $this->em = $em;
         $this->passwordEncoder = $passwordEncoder;
-        $this->apiEncoder = $apiEncoder;
     }
 
     protected function getRepository(): EntityRepository
@@ -31,7 +28,7 @@ class UserHandler
         return $this->em->getRepository('UserBundle:User');
     }
 
-    public function getUser($username, $password)
+    public function getUser($username, $password, $isPlainPassword = false)
     {
         /** @var User $user */
         $user = $this->getRepository()->findOneBy(['username' => $username]);
@@ -39,20 +36,13 @@ class UserHandler
             return Result::createErrorResult(ErrorMessages::UNKNOWN_USERNAME);
         }
 
-        if ($user->getPassword() == $this->passwordEncoder->isPasswordValid($user, $password)) {
+
+        if (($isPlainPassword && $this->passwordEncoder->isPasswordValid($user, $password))
+            || (!$isPlainPassword && $user->getPassword() == $password)
+        ) {
             return Result::createSuccessResult($user);
         }
 
         return Result::createErrorResult(ErrorMessages::INCORRECT_PASSWORD);
-    }
-
-    public function getToken($username, $password)
-    {
-        $userResult = $this->getUser($username, $password);
-        if (!$userResult->getIsSuccess()) {
-            return $userResult;
-        }
-
-        return Result::createSuccessResult($this->apiEncoder->encode($username, $userResult->getData()->getPassword()));
     }
 }
