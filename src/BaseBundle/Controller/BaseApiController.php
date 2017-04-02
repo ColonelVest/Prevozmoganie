@@ -116,7 +116,7 @@ abstract class BaseApiController extends FOSRestController
 
     protected function getDateFromRequest(Request $request, $propertyName, $format = 'dmY')
     {
-        return BaseHelper::createDateFromString($request->get($propertyName), $format);
+        return $this->get('base_helper')->createDateFromString($request->get($propertyName), $format);
     }
 
     public function checkToken(Request $request)

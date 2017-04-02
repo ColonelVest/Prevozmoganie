@@ -7,3 +7,6 @@ services:
   user_normalizer:
     class: UserBundle\Services\UserNormalizer
     arguments: ['@object_normalizer']
+  achievement_manager:
+    class: UserBundle\Services\AchievementManager
+    arguments: ['@doctrine.orm.entity_manager']

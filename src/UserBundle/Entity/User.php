@@ -2,6 +2,7 @@
 
 namespace UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -20,6 +21,7 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+        $this->achievements = new ArrayCollection();
     }
 
     /**
@@ -52,6 +54,56 @@ class User extends BaseUser
      * @ORM\Column()
      */
     private $displayedName;
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Achievement")
+     * @ORM\JoinTable(name="user_achievements",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="achievement_id", referencedColumnName="id")}
+     *      )
+     */
+    private $achievements;
+
+    /**
+     * @return ArrayCollection|Achievement[]
+     */
+    public function getAchievements(): ArrayCollection
+    {
+        return $this->achievements;
+    }
+
+    /**
+     * @param Achievement $achievement
+     * @return User
+     */
+    public function addAchievement(Achievement $achievement): User
+    {
+        $this->achievements->add($achievement);
+
+        return $this;
+    }
+
+    /**
+     * @param Achievement $achievement
+     * @return User
+     */
+    public function removeAchievement(Achievement $achievement): User
+    {
+        $this->achievements->remove($achievement);
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function removeAllAchievements(): User
+    {
+        $this->achievements = new ArrayCollection();
+
+        return $this;
+    }
 
     /**
      * @return mixed
