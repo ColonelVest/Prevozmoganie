@@ -38,7 +38,8 @@ abstract class BaseApiController extends FOSRestController
             $result = $this->getHandler()->getById($id);
 
             if ($result->getIsSuccess()
-                && ($result->getData() instanceOf UserReferable || $result->getData()->getUser() == $user)
+                && $result->getData() instanceOf UserReferable
+                && $result->getData()->getUser() != $user
             ) {
                 $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
             }
@@ -74,7 +75,7 @@ abstract class BaseApiController extends FOSRestController
         return $this->getResponseByResultObj($result);
     }
 
-    protected function createEntity(Request $request, $entityType, $entityForm, $withUser = false)
+    protected function createEntity(Request $request, $entityType, $entityForm, $withUser = true)
     {
         $result = $this->fillEntityByRequest(new $entityType(), $request, $entityForm, $withUser);
         if ($result->getIsSuccess()) {

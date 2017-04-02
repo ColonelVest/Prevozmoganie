@@ -3,6 +3,7 @@
 namespace ErrorsBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -10,13 +11,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use UserBundle\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ErrorRepository")
  * @ORM\Table(name="errors")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Error extends BaseEntity
+class Error extends BaseEntity implements UserReferable
 {
     use TimestampableEntity;
 
@@ -73,6 +75,12 @@ class Error extends BaseEntity
      * @Groups({"full"})
      */
     private $prevention;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     */
+    private $user;
 
     /**
      * @return string
@@ -214,5 +222,17 @@ class Error extends BaseEntity
             'algorithmic',
             'forgot'
         ];
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): Error
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

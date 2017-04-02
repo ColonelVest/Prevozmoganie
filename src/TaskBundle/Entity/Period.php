@@ -3,6 +3,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="PeriodRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Period extends BaseEntity
+class Period extends BaseEntity implements UserReferable
 {
     /**
      * Hook timestampable behavior
@@ -107,7 +108,7 @@ class Period extends BaseEntity
      * @param mixed $user
      * @return Period
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
         $this->user = $user;
 

@@ -79,7 +79,7 @@ class TaskController extends BaseApiController
      */
     public function postTasksAction(Request $request)
     {
-        return $this->createEntity($request, Task::class, TaskType::class, true);
+        return $this->createEntity($request, Task::class, TaskType::class);
     }
 
     /**
