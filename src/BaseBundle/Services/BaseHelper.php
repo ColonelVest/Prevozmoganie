@@ -20,7 +20,7 @@ class BaseHelper
      * @param string $methodName
      * @return array
      */
-    public static function getArrayWithKeysByMethodName(array $entities, $methodName = 'getId')
+    public function getArrayWithKeysByMethodName(array $entities, $methodName = 'getId')
     {
         $resultArray = [];
         foreach ($entities as $entity) {

@@ -8,19 +8,20 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use UserBundle\Entity\Achievement;
 
 class LoadAchievementData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     const ACHIEVEMENT_TYPES = [
-        'for_1_day' => '- 1 days',
-        'for_3_days' => '- 3 days',
-        'for_week' => '- 1 week',
-        'for_month' => '- 1 month',
-        'for_3_month' => '- 3 month',
-        'for_half_year' => '- 6 month',
-        'for_year' => '- 1 year'
+        'for_1_day' => 'P1D',
+        'for_3_days' => 'P3D',
+        'for_week' => 'P1W',
+        'for_month' => 'P1M',
+        'for_3_month' => 'P3M',
+        'for_half_year' => 'P6M',
+        'for_year' => 'P1Y'
     ];
 
     /**
@@ -30,7 +31,17 @@ class LoadAchievementData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-        // TODO: Implement load() method.
+        //TODO: Добавить проверку на наличие таковой ачивки по названию
+        foreach (self::ACHIEVEMENT_TYPES as $name => $dateIntervalString) {
+            $achievement = (new Achievement())
+                ->setName($name)
+                ->setDateInterval($dateIntervalString)
+                ->setClassType('task');
+            ;
+
+            $manager->persist($achievement);
+        }
+        $manager->flush();
     }
 
     /**

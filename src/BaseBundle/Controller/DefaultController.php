@@ -19,7 +19,7 @@ class DefaultController extends Controller
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);
-//        $data = $this->get('achievement_manager')->generate();
+//        $this->get('achievement_manager')->generate();
 //        /** @var Task $task */
 //        $task = $em->getRepository('TaskBundle:Task')->findOneBy(['title' => 'Прибраться в квартире', 'date' => \DateTime::createFromFormat('dmY', '09042017')]);
 //        $task->setIsCompleted(false);

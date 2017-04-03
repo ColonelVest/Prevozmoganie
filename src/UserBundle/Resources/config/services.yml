@@ -9,4 +9,6 @@ services:
     arguments: ['@object_normalizer']
   achievement_manager:
     class: UserBundle\Services\AchievementManager
-    arguments: ['@doctrine.orm.entity_manager']
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@base_helper'

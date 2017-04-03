@@ -15,7 +15,7 @@ class AchievementCommand extends ContainerAwareCommand
     {
         $this
             ->setName('user:achivment_command')
-            ->setDescription('Создает очивки пользователям');
+            ->setDescription('Create achievements for users');
     }
 
     /**

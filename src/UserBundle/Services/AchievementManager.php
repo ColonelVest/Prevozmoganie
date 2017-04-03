@@ -2,22 +2,26 @@
 
 namespace UserBundle\Services;
 
+use BaseBundle\Services\BaseHelper;
 use Doctrine\ORM\EntityManager;
+use UserBundle\Entity\Achievement;
 use UserBundle\Entity\User;
 
 class AchievementManager
 {
     /** @var  EntityManager $em */
     private $em;
+    /** @var  BaseHelper $helper */
+    private $helper;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, BaseHelper $helper)
     {
         $this->em = $em;
+        $this->helper = $helper;
     }
 
     /**
      * @param User[] $users
-     * @return array
      */
     public function generate(array $users = [])
     {
@@ -26,39 +30,41 @@ class AchievementManager
             $users = $this->em->getRepository('UserBundle:User')->findAll();
         }
 
-        $achievements = [];
-        foreach (self::ACHIEVEMENT_TYPES as $achievement => $dateString) {
-            $achievements[$achievement] = $this->getUserIdsWithAllCompletedTasks($users, new \DateTime($dateString));
-        }
+        $usersArrayWithIdKeys = $this->helper->getArrayWithKeysByMethodName($users);
 
-        return $achievements;
+        $taskAchievements = $this->em
+            ->getRepository('UserBundle:Achievement')
+            ->findBy(['classType' => 'task']);
+
+        foreach ($taskAchievements as $achievement) {
+            $this->addAchievement($usersArrayWithIdKeys, $achievement);
+        }
     }
 
     /**
-     * @param User[] $users
-     * @param \DateTime|null $beginDate
-     * @return array
+     * @param array $usersWithIdKeys
+     * @param Achievement $achievement
      */
-    private function getUserIdsWithAllCompletedTasks(array $users = [], \DateTime $beginDate = null)
+    private function addAchievement(array $usersWithIdKeys, Achievement $achievement)
     {
-        $beginDate = is_null($beginDate) ? new \DateTime('-1 month') : $beginDate;
-        $statistic = $this->getTaskCompletionStatistic($beginDate);
-        $userIdsWithAllCompletedTasks = [];
+        $beginDate = (new \DateTime())->sub($achievement->getDateInterval());
+        $statistic = $this->getTaskCompletionStatistic($beginDate, array_keys($usersWithIdKeys));
 
         foreach ($statistic as $userStatistic) {
             if ($userStatistic['CompletedCount'] > 0 && $userStatistic['UnCompletedCount'] == 0) {
-                $userIdsWithAllCompletedTasks[] = $userStatistic['user_id'];
+                $userId = $userStatistic['user_id'];
+                /** @var User $user */
+                $user = $usersWithIdKeys[$userId];
+                $user->addAchievement($achievement);
             }
         }
-
-        return $userIdsWithAllCompletedTasks;
     }
 
-    private function getTaskCompletionStatistic(\DateTime $beginDate)
+    private function getTaskCompletionStatistic(\DateTime $beginDate, $userIds)
     {
         $request = $this->em->getConnection()->prepare(
             'SELECT
-  count(*) as TaskCount,
+  count(*) AS TaskCount,
   SUM(CASE WHEN is_completed = 1
     THEN 1
       ELSE 0 END) AS CompletedCount,
@@ -69,13 +75,14 @@ class AchievementManager
   fos_user.username
 FROM tasks
   JOIN fos_user ON fos_user.id = tasks.user_id
-WHERE user_id IS NOT NULL AND tasks.date < :currentDate AND tasks.date >= :beginDate AND user_id IN (1, 2)
+WHERE user_id IS NOT NULL AND tasks.date < :currentDate AND tasks.date >= :beginDate AND user_id IN (:userIds)
 GROUP BY user_id'
         );
         $request->execute(
             [
                 ':currentDate' => (new \DateTime())->format('Y-m-d'),
                 ':beginDate' => $beginDate->format('Y-m-d'),
+                ':userIds' => join(', ', $userIds)
             ]
         );
 
