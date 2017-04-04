@@ -7,6 +7,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -41,6 +42,7 @@ class Note extends BaseEntity
      * @ORM\Column(type="string")
      * @Assert\Length(max=50, maxMessage="too_long_note_title"))
      * @Gedmo\Versioned
+     * @Groups({"concise", "full"})
      */
     private $title;
 
@@ -48,6 +50,7 @@ class Note extends BaseEntity
      * @ORM\Column(type="string", length=2048)
      * @Assert\Length(min=10, minMessage="too_shory_note_content")
      * @Gedmo\Versioned
+     * @Groups({"concise", "full"})
      */
     private $body;
 
@@ -78,6 +81,4 @@ class Note extends BaseEntity
     public function setBody($body) {
         $this->body = $body;
     }
-
-
 }

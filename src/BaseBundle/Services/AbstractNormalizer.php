@@ -30,6 +30,20 @@ abstract class AbstractNormalizer
         return $data;
     }
 
+    protected function getDateCallback()
+    {
+        return function ($date) {
+            return $this->normalizeDate($date);
+        };
+    }
+
+    protected function getTimeCallback()
+    {
+        return function ($time) {
+            return $this->normalizeTime($time);
+        };
+    }
+
     protected function normalizeDate($date, $format = 'dmY')
     {
         return $date instanceof \DateTime ? $date->format($format) : '';

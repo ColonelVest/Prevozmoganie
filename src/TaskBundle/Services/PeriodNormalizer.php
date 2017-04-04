@@ -9,14 +9,12 @@ class PeriodNormalizer extends AbstractNormalizer
 {
     public function conciseNormalize(BaseEntity $period)
     {
-        $timeCallback = function ($dateTime) {
-            return $this->normalizeTime($dateTime);
-        };
-        $dateCallback = function ($date) {
-            return $this->normalizeDate($date);
-        };
         $this->objectNormalizer->setCallbacks(
-            ['begin' => $timeCallback, 'end' => $timeCallback, 'date' => $dateCallback]
+            [
+                'begin' => $this->getTimeCallback(),
+                'end' => $this->getTimeCallback(),
+                'date' => $this->getDateCallback()
+            ]
         );
 
         $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('concise')));
@@ -26,14 +24,12 @@ class PeriodNormalizer extends AbstractNormalizer
 
     public function fullNormalize(BaseEntity $period)
     {
-        $timeCallback = function ($dateTime) {
-            return $this->normalizeTime($dateTime);
-        };
-        $dateCallback = function ($date) {
-            return $this->normalizeDate($date);
-        };
         $this->objectNormalizer->setCallbacks(
-            ['begin' => $timeCallback, 'end' => $timeCallback, 'date' => $dateCallback]
+            [
+                'begin' => $this->getTimeCallback(),
+                'end' => $this->getTimeCallback(),
+                'date' => $this->getDateCallback()
+            ]
         );
 
         $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('full')));

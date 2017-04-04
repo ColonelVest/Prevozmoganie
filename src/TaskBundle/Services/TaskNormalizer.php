@@ -9,18 +9,12 @@ class TaskNormalizer extends AbstractNormalizer
 {
     public function conciseNormalize(BaseEntity $task)
     {
-        $dateCallback = function ($date) {
-            return $this->normalizeDate($date);
-        };
-        $timeCallback = function ($time) {
-            return $this->normalizeTime($time);
-        };
         $this->objectNormalizer->setCallbacks(
             [
-                'date' => $dateCallback,
-                'deadline' => $dateCallback,
-                'beginTime' => $timeCallback,
-                'endTime' => $timeCallback,
+                'date' => $this->getDateCallback(),
+                'deadline' => $this->getDateCallback(),
+                'beginTime' => $this->getTimeCallback(),
+                'endTime' => $this->getTimeCallback(),
             ]
         );
 
@@ -29,18 +23,12 @@ class TaskNormalizer extends AbstractNormalizer
 
     public function fullNormalize(BaseEntity $task)
     {
-        $dateCallback = function ($date) {
-            return $this->normalizeDate($date);
-        };
-        $timeCallback = function ($time) {
-            return $this->normalizeTime($time);
-        };
         $this->objectNormalizer->setCallbacks(
             [
-                'date' => $dateCallback,
-                'deadline' => $dateCallback,
-                'beginTime' => $timeCallback,
-                'endTime' => $timeCallback,
+                'date' => $this->getDateCallback(),
+                'deadline' => $this->getDateCallback(),
+                'beginTime' => $this->getTimeCallback(),
+                'endTime' => $this->getTimeCallback(),
             ]
         );
 

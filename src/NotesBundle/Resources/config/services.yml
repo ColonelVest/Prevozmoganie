@@ -6,3 +6,14 @@ services:
     listeners_normalizer:
         class: NotesBundle\Services\ListenersNormalizer
         arguments: ['@object_normalizer']
+
+    notes_handler:
+        class: NotesBundle\Services\NotesHandler
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'
+
+    notes_normalizer:
+        class: NotesBundle\Services\NotesNormalizer
+        arguments: ['@object_normalizer']
