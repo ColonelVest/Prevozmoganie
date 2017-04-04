@@ -3,6 +3,7 @@
 namespace UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -66,9 +67,9 @@ class User extends BaseUser
     private $achievements;
 
     /**
-     * @return ArrayCollection|Achievement[]
+     * @return Collection|Achievement[]
      */
-    public function getAchievements(): ArrayCollection
+    public function getAchievements(): Collection
     {
         return $this->achievements;
     }
@@ -79,7 +80,9 @@ class User extends BaseUser
      */
     public function addAchievement(Achievement $achievement): User
     {
-        $this->achievements->add($achievement);
+        if (!in_array($achievement, $this->achievements->toArray())) {
+            $this->achievements->add($achievement);
+        }
 
         return $this;
     }

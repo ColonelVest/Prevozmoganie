@@ -39,6 +39,8 @@ class AchievementManager
         foreach ($taskAchievements as $achievement) {
             $this->addAchievement($usersArrayWithIdKeys, $achievement);
         }
+
+        $this->em->flush();
     }
 
     /**
@@ -51,7 +53,7 @@ class AchievementManager
         $statistic = $this->getTaskCompletionStatistic($beginDate, array_keys($usersWithIdKeys));
 
         foreach ($statistic as $userStatistic) {
-            if ($userStatistic['CompletedCount'] > 0 && $userStatistic['UnCompletedCount'] == 0) {
+            if ($userStatistic['TaskCount'] > 0  && $userStatistic['UnCompletedCount'] == 0) {
                 $userId = $userStatistic['user_id'];
                 /** @var User $user */
                 $user = $usersWithIdKeys[$userId];
@@ -75,7 +77,7 @@ class AchievementManager
   fos_user.username
 FROM tasks
   JOIN fos_user ON fos_user.id = tasks.user_id
-WHERE user_id IS NOT NULL AND tasks.date < :currentDate AND tasks.date >= :beginDate AND user_id IN (:userIds)
+WHERE user_id IS NOT NULL AND tasks.date < :currentDate AND tasks.date >= :beginDate AND user_id IN (:userIds) AND tasks.deleted_at IS NULL
 GROUP BY user_id'
         );
         $request->execute(
