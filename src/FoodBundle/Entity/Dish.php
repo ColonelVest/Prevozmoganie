@@ -25,6 +25,12 @@ class Dish extends BaseEntity
     private $recipes;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $description;
+
+    /**
      * @return string
      */
     public function getTitle(): ?string
@@ -80,10 +86,4 @@ class Dish extends BaseEntity
 
         return $this;
     }
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $description;
 }
