@@ -2,14 +2,16 @@
 
 namespace TaskBundle\Entity;
 
+use BaseBundle\Entity\UserReferable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use UserBundle\Entity\User;
 
 /**
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class RepetitiveTask
+class RepetitiveTask implements UserReferable
 {
     /**
      * @var string
@@ -60,6 +62,11 @@ class RepetitiveTask
      * @var int
      */
     private $daysBeforeDeadline;
+
+    /**
+     * @var User
+     */
+    private $user;
 
     /**
      * @return string
@@ -258,4 +265,22 @@ class RepetitiveTask
         return $this;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return RepetitiveTask
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

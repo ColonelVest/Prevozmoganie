@@ -52,8 +52,8 @@ class RepetitiveTaskType extends AbstractType
             ]);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
-        return '';
+        return 'task';
     }
 }

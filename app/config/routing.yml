@@ -1,3 +1,8 @@
+food:
+    resource: "@FoodBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 errors:
     resource: "@ErrorsBundle/Controller/"
     type:     annotation

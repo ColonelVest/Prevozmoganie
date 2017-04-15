@@ -152,7 +152,6 @@ abstract class BaseApiController extends FOSRestController
         $form = $this->createForm($type, $entity);
         $form->submit($request->get($form->getName()));
         if (!$form->isValid()) {
-
             $result = Result::createErrorResult();
             foreach ($form->getErrors(true) as $error) {
                 /** @var FormError $error */

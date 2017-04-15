@@ -3,6 +3,7 @@
 namespace NotesBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -10,14 +11,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\User;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="NoteRepository")
  * @ORM\Table(name="notes")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @Gedmo\Loggable
  */
-class Note extends BaseEntity
+class Note extends BaseEntity implements UserReferable
 {
     /**
      * Hook softdeleteable behavior
@@ -32,10 +34,10 @@ class Note extends BaseEntity
     use TimestampableEntity;
 
     /**
-     * Hook blameable behavior
-     * updates createdBy, updatedBy fields
+     * @var User
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
-    use BlameableEntity;
+    private $user;
 
     /**
      * @Assert\NotBlank()
@@ -48,7 +50,6 @@ class Note extends BaseEntity
 
     /**
      * @ORM\Column(type="string", length=2048)
-     * @Assert\Length(min=10, minMessage="too_shory_note_content")
      * @Gedmo\Versioned
      * @Groups({"concise", "full"})
      */
@@ -80,5 +81,24 @@ class Note extends BaseEntity
      */
     public function setBody($body) {
         $this->body = $body;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return Note
+     */
+    public function setUser(User $user) : Note
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

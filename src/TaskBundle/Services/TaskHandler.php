@@ -34,6 +34,7 @@ class TaskHandler extends EntityHandler
             ->setBeginTime($task->getBeginTime())
             ->setEndTime($task->getEndTime())
             ->setDescription($task->getDescription())
+            ->setUser($task->getUser())
             ->setTitle($task->getTitle());
 
         $period = new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $end);
@@ -57,7 +58,10 @@ class TaskHandler extends EntityHandler
         if ($task->isNewTasksCreate()) {
             $newTasksCreateTask = (new Task())
                 ->setDate($task->getEndDate())
-                ->setTitle('Создать новые задачи типа "' .$task->getTitle() . '"');
+                ->setTitle('Создать новые задачи типа "' .$task->getTitle() . '"')
+                ->setUser($task->getUser())
+                ->setDeadline(clone($task->getEndDate())->modify('+10 days'));
+            ;
 
             $this->em->persist($newTasksCreateTask);
         }
