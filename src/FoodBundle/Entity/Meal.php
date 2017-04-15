@@ -32,6 +32,7 @@ class Meal extends BaseEntity
      * @var Dish
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Dish")
      */
+    //TODO: Сменить на множ
     private $dish;
 
     /**
