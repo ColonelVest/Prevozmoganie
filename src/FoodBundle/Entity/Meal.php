@@ -18,20 +18,89 @@ use Doctrine\ORM\Mapping as ORM;
 class Meal extends BaseEntity
 {
     /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $title;
+
+    /**
      * @var MealType
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\MealType")
      */
     private $mealType;
 
     /**
-     * @var Dish
-     * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Dish")
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="FoodBundle\Entity\Dish")
+     * @ORM\JoinTable(name="meal_dishes",
+     *      joinColumns={@ORM\JoinColumn(name="meal_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id")}
+     *      )
      */
     private $dishes;
 
     public function __construct()
     {
         $this->dishes = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDishes()
+    {
+        return $this->dishes;
+    }
+
+    /**
+     * @param Dish $dish
+     * @return Meal
+     */
+    public function addDish(Dish $dish)
+    {
+        $this->dishes->add($dish);
+
+        return $this;
+    }
+
+    /**
+     * @param Dish $dish
+     * @return Meal
+     */
+    public function removeDish(Dish $dish)
+    {
+        $this->dishes->remove($dish);
+
+        return $this;
+    }
+
+    /**
+     * @return Meal
+     */
+    public function removeAllDishes()
+    {
+        $this->dishes = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return Meal
+     */
+    public function setTitle(string $title): Meal
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
     /**
