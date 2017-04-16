@@ -91,12 +91,33 @@ class Recipe extends BaseEntity
     }
 
     /**
-     * @param ArrayCollection $ingredientsData
+     * @param IngredientData $data
      * @return Recipe
      */
-    public function setIngredientsData(ArrayCollection $ingredientsData): Recipe
+    public function addIngredientData(IngredientData $data)
     {
-        $this->ingredientsData = $ingredientsData;
+        $this->ingredientsData->add($data);
+
+        return $this;
+    }
+
+    /**
+     * @param IngredientData $data
+     * @return Recipe
+     */
+    public function removeIngredientData(IngredientData $data)
+    {
+        $this->ingredientsData->remove($data);
+
+        return $this;
+    }
+
+    /**
+     * @return Recipe
+     */
+    public function removeAllIngredientsData()
+    {
+        $this->ingredientsData = new ArrayCollection();
 
         return $this;
     }
