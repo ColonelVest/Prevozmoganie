@@ -17,6 +17,7 @@ class Ingredient extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"concise", "full"})
      */
     private $title;
 
@@ -24,6 +25,7 @@ class Ingredient extends BaseEntity
      * @var string
      * @ORM\Column(type="string")
      * @Assert\Choice(callback="getDimensionsList")
+     * @Groups({"concise", "full"})
      */
     private $dimension;
 

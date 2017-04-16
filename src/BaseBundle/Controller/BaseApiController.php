@@ -6,7 +6,6 @@ use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\AbstractNormalizer;
-use BaseBundle\Services\BaseHelper;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
@@ -48,12 +47,14 @@ abstract class BaseApiController extends FOSRestController
         return $this->getResponseByResultObj($this->normalizeByResult($result, $isFullNormalized));
     }
 
-    protected function getEntitiesByCriteria(Request $request, Criteria $criteria)
+    protected function getEntitiesByCriteria(Request $request, Criteria $criteria, $byUser = true)
     {
         $result = $this->checkToken($request);
         if ($result->getIsSuccess()) {
             $user = $result->getData();
-            $criteria->andWhere(Criteria::expr()->eq('user', $user));
+            if ($byUser) {
+                $criteria->andWhere(Criteria::expr()->eq('user', $user));
+            }
             $result = $this->getHandler()->getEntities($criteria);
             if ($result->getIsSuccess()) {
                 $normalisedEntities = $this->getNormalizer()->conciseNormalizeEntities($result->getData());
