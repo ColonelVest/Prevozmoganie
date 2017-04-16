@@ -6,6 +6,7 @@ use BaseBundle\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -17,6 +18,7 @@ class Recipe extends BaseEntity
 
     /**
      * @var string
+     * @Groups({"concise", "full"})
      * @ORM\Column(type="string")
      */
     private $title;
@@ -30,10 +32,12 @@ class Recipe extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"full"})
      */
     private $description;
 
     /**
+     * @Groups({"full"})
      * @var Dish
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Dish")
      */

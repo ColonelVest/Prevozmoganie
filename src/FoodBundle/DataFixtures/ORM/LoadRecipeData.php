@@ -18,6 +18,7 @@ class LoadRecipeData extends AbstractFixture implements OrderedFixtureInterface,
             'title' => 'Обычная пюрешка',
             'ingredientsData' => ['milkData', 'potatoesData'],
             'referenceName' => 'typicalMashedPotatoes',
+            'dishReference' => 'mashedPotatoes'
         ],
     ];
 
@@ -31,6 +32,7 @@ class LoadRecipeData extends AbstractFixture implements OrderedFixtureInterface,
         foreach (self::RECIPE_DATA as $recipeData) {
             $recipe = (new Recipe())
                 ->setTitle($recipeData['title'])
+                ->setDish($this->getReference($recipeData['dishReference']))
                 ->setDescription($recipeData['title']);
             foreach ($recipeData['ingredientsData'] as $ingredientsData) {
                 $recipe->addIngredientData($this->getReference($ingredientsData));

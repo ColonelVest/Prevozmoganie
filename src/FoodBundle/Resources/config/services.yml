@@ -14,3 +14,13 @@ services:
     food.services.dish_normalizer:
         class: FoodBundle\Services\DishNormalizer
         arguments: ['@object_normalizer']
+
+    food.services.recipe_normalizer:
+        class: FoodBundle\Services\RecipeNormalizer
+        arguments: ['@object_normalizer', '@food.services.dish_normalizer']
+    food.services.recipe_handler:
+        class: FoodBundle\Services\RecipeHandler
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'

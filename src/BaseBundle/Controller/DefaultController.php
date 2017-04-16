@@ -18,7 +18,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
+//        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);
 //        $this->get('achievement_manager')->generate();
 //        /** @var Task $task */
