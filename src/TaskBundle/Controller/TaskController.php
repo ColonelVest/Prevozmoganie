@@ -5,7 +5,7 @@ namespace TaskBundle\Controller;
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -113,7 +113,7 @@ class TaskController extends BaseApiController
         return $this->get('task_handler');
     }
 
-    protected function getNormalizer() : AbstractNormalizer
+    protected function getNormalizer() : EntityNormalizer
     {
         return $this->get('task_normalizer');
     }

@@ -5,3 +5,12 @@ services:
     food.services.ingredient_handler:
         class: FoodBundle\Services\IngredientHandler
         arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+    food.services.dish_handler:
+        class: FoodBundle\Services\DishHandler
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'
+    food.services.dish_normalizer:
+        class: FoodBundle\Services\DishNormalizer
+        arguments: ['@object_normalizer']

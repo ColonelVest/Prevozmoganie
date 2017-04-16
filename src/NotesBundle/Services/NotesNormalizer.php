@@ -4,9 +4,9 @@ namespace NotesBundle\Services;
 
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 
-class NotesNormalizer extends AbstractNormalizer
+class NotesNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $note)
     {

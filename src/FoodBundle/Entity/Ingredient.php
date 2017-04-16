@@ -32,7 +32,7 @@ class Ingredient extends BaseEntity
     /**
      * @return string
      */
-    public function getDimension(): string
+    public function getDimension(): ?string
     {
         return $this->dimension;
     }
@@ -69,7 +69,7 @@ class Ingredient extends BaseEntity
 
     public static function getDimensionsList() {
         return [
-            'кг', 'г', 'шт', 'л', 'm3'
+            'кг', 'г', 'шт', 'л', 'm3', 'уп.'
         ];
     }
 }

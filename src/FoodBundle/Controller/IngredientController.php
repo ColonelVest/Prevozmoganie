@@ -3,7 +3,7 @@
 namespace FoodBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use FoodBundle\Entity\Ingredient;
@@ -11,6 +11,10 @@ use FoodBundle\Form\IngredientType;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
+/**
+ * Class IngredientController
+ * @package FoodBundle\Controller
+ */
 class IngredientController extends BaseApiController
 {
     /**
@@ -63,7 +67,7 @@ class IngredientController extends BaseApiController
      * @param $ingredientId
      * @return array
      */
-    public function putTasksAction(Request $request, $ingredientId)
+    public function putIngredientsAction(Request $request, $ingredientId)
     {
         return $this->editEntity($request, $ingredientId, IngredientType::class);
     }
@@ -73,7 +77,7 @@ class IngredientController extends BaseApiController
         return $this->get('food.services.ingredient_handler');
     }
 
-    protected function getNormalizer(): AbstractNormalizer
+    protected function getNormalizer(): EntityNormalizer
     {
         return $this->get('food.services.ingredient_normalizer');
     }

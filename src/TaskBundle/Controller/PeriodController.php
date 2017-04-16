@@ -5,7 +5,7 @@ namespace TaskBundle\Controller;
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -83,7 +83,7 @@ class PeriodController extends BaseApiController
         return $this->get('period_handler');
     }
 
-    protected function getNormalizer(): AbstractNormalizer
+    protected function getNormalizer(): EntityNormalizer
     {
         return $this->get('period_normalizer');
     }

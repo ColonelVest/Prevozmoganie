@@ -5,6 +5,7 @@ namespace FoodBundle\Entity;
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -15,6 +16,7 @@ class Dish extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"concise", "full"})
      */
     private $title;
 
@@ -27,6 +29,7 @@ class Dish extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full"})
      */
     private $description;
 

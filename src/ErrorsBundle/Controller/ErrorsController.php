@@ -3,7 +3,7 @@
 namespace ErrorsBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use ErrorsBundle\Entity\Error;
@@ -71,7 +71,7 @@ class ErrorsController extends BaseApiController
         return $this->get('errors_handler');
     }
 
-    protected function getNormalizer(): AbstractNormalizer
+    protected function getNormalizer(): EntityNormalizer
     {
         return $this->get('errors_normalizer');
     }

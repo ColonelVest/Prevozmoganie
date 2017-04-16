@@ -3,9 +3,9 @@
 namespace TaskBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 
-class TaskNormalizer extends AbstractNormalizer
+class TaskNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $task)
     {

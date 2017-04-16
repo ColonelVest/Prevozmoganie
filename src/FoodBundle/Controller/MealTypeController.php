@@ -4,7 +4,7 @@ namespace FoodBundle\Controller;
 
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 
 class MealTypeController extends BaseApiController
@@ -15,7 +15,7 @@ class MealTypeController extends BaseApiController
         // TODO: Implement getHandler() method.
     }
 
-    protected function getNormalizer(): AbstractNormalizer
+    protected function getNormalizer(): EntityNormalizer
     {
         // TODO: Implement getNormalizer() method.
     }

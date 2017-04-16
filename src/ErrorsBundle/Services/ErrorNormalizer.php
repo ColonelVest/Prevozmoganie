@@ -3,9 +3,9 @@
 namespace ErrorsBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 
-class ErrorNormalizer extends AbstractNormalizer
+class ErrorNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $error)
     {

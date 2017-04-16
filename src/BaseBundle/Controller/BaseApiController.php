@@ -5,7 +5,7 @@ namespace BaseBundle\Controller;
 use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
@@ -21,7 +21,7 @@ abstract class BaseApiController extends FOSRestController
 
     abstract protected function getHandler(): EntityHandler;
 
-    abstract protected function getNormalizer(): AbstractNormalizer;
+    abstract protected function getNormalizer(): EntityNormalizer;
 
     public function setContainer(ContainerInterface $container = null)
     {

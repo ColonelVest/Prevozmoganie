@@ -3,7 +3,7 @@
 namespace NotesBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use NotesBundle\Entity\Note;
@@ -73,7 +73,7 @@ class NotesController extends BaseApiController
         return $this->get('notes_handler');
     }
 
-    protected function getNormalizer(): AbstractNormalizer
+    protected function getNormalizer(): EntityNormalizer
     {
         return $this->get('notes_normalizer');
     }

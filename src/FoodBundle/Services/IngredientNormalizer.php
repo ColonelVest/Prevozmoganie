@@ -3,9 +3,9 @@
 namespace FoodBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Services\AbstractNormalizer;
+use BaseBundle\Services\EntityNormalizer;
 
-class IngredientNormalizer extends AbstractNormalizer
+class IngredientNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $ingredient)
     {
