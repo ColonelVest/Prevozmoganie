@@ -4,6 +4,7 @@ namespace FoodBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -24,8 +25,9 @@ class Recipe extends BaseEntity
     private $title;
 
     /**
-     * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="FoodBundle\Entity\IngredientData", mappedBy="recipe")
+     * @var Collection
+     * @Groups({"full"})
+     * @ORM\OneToMany(targetEntity="FoodBundle\Entity\IngredientData", mappedBy="recipe", cascade={"persist", "remove"})
      */
     private $ingredientsData;
 
@@ -51,7 +53,7 @@ class Recipe extends BaseEntity
     /**
      * @return Dish
      */
-    public function getDish(): Dish
+    public function getDish(): ?Dish
     {
         return $this->dish;
     }
@@ -87,9 +89,9 @@ class Recipe extends BaseEntity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getIngredientsData(): ArrayCollection
+    public function getIngredientsData(): Collection
     {
         return $this->ingredientsData;
     }

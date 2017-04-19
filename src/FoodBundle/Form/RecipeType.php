@@ -3,7 +3,6 @@
 namespace FoodBundle\Form;
 
 use FoodBundle\Entity\Dish;
-use FoodBundle\Entity\IngredientData;
 use FoodBundle\Entity\Recipe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -23,7 +22,7 @@ class RecipeType extends AbstractType
             ])
             ->add('ingredientsData', CollectionType::class, [
                 'allow_add' => true,
-                'entry_type' => IngredientData::class
+                'entry_type' => IngredientDataType::class
             ])
         ;
     }

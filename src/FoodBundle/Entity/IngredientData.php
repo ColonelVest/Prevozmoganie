@@ -17,12 +17,14 @@ class IngredientData extends BaseEntity
     /**
      * @var Ingredient
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Ingredient")
+     * @Groups({"full"})
      */
     private $ingredient;
 
     /**
-     * @var int
-     * @ORM\Column(type="integer")
+     * @var float
+     * @ORM\Column(type="float")
+     * @Groups({"concise", "full"})
      */
     private $count;
 
@@ -35,7 +37,7 @@ class IngredientData extends BaseEntity
     /**
      * @return Recipe
      */
-    public function getRecipe(): Recipe
+    public function getRecipe(): ?Recipe
     {
         return $this->recipe;
     }
@@ -54,7 +56,7 @@ class IngredientData extends BaseEntity
     /**
      * @return Ingredient
      */
-    public function getIngredient(): Ingredient
+    public function getIngredient(): ?Ingredient
     {
         return $this->ingredient;
     }
@@ -71,18 +73,18 @@ class IngredientData extends BaseEntity
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getCount(): int
+    public function getCount(): ?float
     {
         return $this->count;
     }
 
     /**
-     * @param int $count
+     * @param float $count
      * @return IngredientData
      */
-    public function setCount(int $count): IngredientData
+    public function setCount(float $count): IngredientData
     {
         $this->count = $count;
 
