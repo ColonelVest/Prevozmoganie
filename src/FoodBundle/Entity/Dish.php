@@ -22,7 +22,7 @@ class Dish extends BaseEntity
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="FoodBundle\Entity\Recipe", mappedBy="dish")
+     * @ORM\OneToMany(targetEntity="FoodBundle\Entity\Recipe", mappedBy="dish", cascade={"persist", "remove"})
      */
     private $recipes;
 

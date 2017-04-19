@@ -36,3 +36,8 @@ services:
         class: FoodBundle\EventListener\RecipeSubscriber
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    food.services.dish_subscriber:
+        class: FoodBundle\EventListener\DishSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
