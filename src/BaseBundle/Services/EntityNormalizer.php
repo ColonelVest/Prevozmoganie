@@ -3,20 +3,20 @@
 namespace BaseBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-abstract class EntityNormalizer
+abstract class EntityNormalizer extends ObjectNormalizer
 {
-    /** @var  ObjectNormalizer $objectNormalizer */
-    protected $objectNormalizer;
-
-    public function __construct(ObjectNormalizer $objectNormalizer)
-    {
-        $this->objectNormalizer = $objectNormalizer;
-    }
-
     abstract public function conciseNormalize(BaseEntity $entity);
     abstract public function fullNormalize(BaseEntity $entity);
+
+    public function __construct(ClassMetadataFactory $factory)
+    {
+        parent::__construct($factory);
+    }
 
     public function conciseNormalizeEntities($entities)
     {

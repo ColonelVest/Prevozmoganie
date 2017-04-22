@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -19,29 +19,31 @@ class Recipe extends BaseEntity
 
     /**
      * @var string
-     * @Groups({"concise", "full"})
+     * @Serializer\Groups({"concise", "full"})
      * @ORM\Column(type="string")
      */
     private $title;
 
     /**
      * @var Collection
-     * @Groups({"full"})
+     * @Serializer\Groups({"full"})
      * @ORM\OneToMany(targetEntity="FoodBundle\Entity\IngredientData", mappedBy="recipe", cascade={"persist", "remove"})
+     * @Serializer\MaxDepth(1)
      */
     private $ingredientsData;
 
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"full"})
+     * @Serializer\Groups({"full"})
      */
     private $description;
 
     /**
-     * @Groups({"full"})
+     * @Serializer\Groups({"full"})
      * @var Dish
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Dish")
+     * @Serializer\MaxDepth(1)
      */
     private $dish;
 

@@ -9,7 +9,7 @@ class TaskNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $task)
     {
-        $this->objectNormalizer->setCallbacks(
+        $this->setCallbacks(
             [
                 'date' => $this->getDateCallback(),
                 'deadline' => $this->getDateCallback(),
@@ -18,12 +18,12 @@ class TaskNormalizer extends EntityNormalizer
             ]
         );
 
-        return $this->objectNormalizer->normalize($task, null, ['groups' => ['concise']]);
+        return $this->normalize($task, null, ['groups' => ['concise']]);
     }
 
     public function fullNormalize(BaseEntity $task)
     {
-        $this->objectNormalizer->setCallbacks(
+        $this->setCallbacks(
             [
                 'date' => $this->getDateCallback(),
                 'deadline' => $this->getDateCallback(),
@@ -32,6 +32,6 @@ class TaskNormalizer extends EntityNormalizer
             ]
         );
 
-        return $this->objectNormalizer->normalize($task, null, ['groups' => ['full']]);
+        return $this->normalize($task, null, ['groups' => ['full']]);
     }
 }

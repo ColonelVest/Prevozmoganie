@@ -5,7 +5,7 @@ namespace FoodBundle\Entity;
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,20 +17,21 @@ class IngredientData extends BaseEntity
     /**
      * @var Ingredient
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Ingredient")
-     * @Groups({"full"})
+     * @Serializer\Groups({"full"})
      */
     private $ingredient;
 
     /**
      * @var float
      * @ORM\Column(type="float")
-     * @Groups({"concise", "full"})
+     * @Serializer\Groups({"concise", "full"})
      */
     private $count;
 
     /**
      * @var Recipe
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Recipe")
+     * @Serializer\MaxDepth(1)
      */
     private $recipe;
 

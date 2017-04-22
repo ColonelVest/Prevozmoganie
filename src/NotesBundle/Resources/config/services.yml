@@ -5,7 +5,7 @@ services:
 
     listeners_normalizer:
         class: NotesBundle\Services\ListenersNormalizer
-        arguments: ['@object_normalizer']
+        arguments: ['@metadata_factory']
 
     notes_handler:
         class: NotesBundle\Services\NotesHandler
@@ -16,4 +16,4 @@ services:
 
     notes_normalizer:
         class: NotesBundle\Services\NotesNormalizer
-        arguments: ['@object_normalizer']
+        arguments: ['@metadata_factory']

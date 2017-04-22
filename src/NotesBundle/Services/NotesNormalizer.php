@@ -2,7 +2,6 @@
 
 namespace NotesBundle\Services;
 
-
 use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Services\EntityNormalizer;
 
@@ -10,11 +9,11 @@ class NotesNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $note)
     {
-        return $this->objectNormalizer->normalize($note, null, ['groups' => ['concise']]);
+        return $this->normalize($note, null, ['groups' => ['concise']]);
     }
 
     public function fullNormalize(BaseEntity $note)
     {
-        return $this->objectNormalizer->normalize($note, null, ['groups' => ['full']]);
+        return $this->normalize($note, null, ['groups' => ['full']]);
     }
 }

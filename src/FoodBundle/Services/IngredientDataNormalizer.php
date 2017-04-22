@@ -4,22 +4,22 @@ namespace FoodBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Services\EntityNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 
 class IngredientDataNormalizer extends EntityNormalizer
 {
     /** @var  IngredientNormalizer $ingredientNormalizer */
     private $ingredientNormalizer;
 
-    public function __construct(ObjectNormalizer $normalizer, IngredientNormalizer $ingredientNormalizer)
+    public function __construct(ClassMetadataFactory $factory, IngredientNormalizer $ingredientNormalizer)
     {
-        parent::__construct($normalizer);
+        parent::__construct($factory);
         $this->ingredientNormalizer = $ingredientNormalizer;
     }
 
     public function conciseNormalize(BaseEntity $ingredientData)
     {
-        return $this->objectNormalizer->normalize($ingredientData, null, ['groups' => ['concise']]);
+        return $this->normalize($ingredientData, null, ['groups' => ['concise']]);
     }
 
     public function fullNormalize(BaseEntity $ingredientData)
@@ -28,10 +28,10 @@ class IngredientDataNormalizer extends EntityNormalizer
             return $this->ingredientNormalizer->conciseNormalize($ingredient);
         };
 
-        $this->objectNormalizer->setCallbacks([
+        $this->setCallbacks([
             'ingredient' => $ingredientCallback
         ]);
 
-        return $this->objectNormalizer->normalize($ingredientData, null, ['groups' => ['full']]);
+        return $this->normalize($ingredientData, null, ['groups' => ['full']]);
     }
 }

@@ -5,4 +5,4 @@ services:
 
     errors_normalizer:
         class: ErrorsBundle\Services\ErrorNormalizer
-        arguments: ['@object_normalizer']
+        arguments: ['@metadata_factory']

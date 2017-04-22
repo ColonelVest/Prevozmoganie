@@ -9,11 +9,11 @@ class ListenersNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $listener)
     {
-        return $this->objectNormalizer->normalize($listener, null, ['groups' => ['concise']]);
+        return $this->normalize($listener, null, ['groups' => ['concise']]);
     }
 
     public function fullNormalize(BaseEntity $listener)
     {
-        return $this->objectNormalizer->normalize($listener, null, ['groups' => ['concise']]);
+        return $this->normalize($listener, null, ['groups' => ['concise']]);
     }
 }

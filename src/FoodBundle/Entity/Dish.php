@@ -4,8 +4,10 @@ namespace FoodBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity
@@ -23,6 +25,8 @@ class Dish extends BaseEntity
     /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="FoodBundle\Entity\Recipe", mappedBy="dish", cascade={"persist", "remove"})
+     * @Groups({"full"})
+     * @MaxDepth(1)
      */
     private $recipes;
 
@@ -32,6 +36,11 @@ class Dish extends BaseEntity
      * @Groups({"full"})
      */
     private $description;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -53,18 +62,18 @@ class Dish extends BaseEntity
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getRecipes(): ?ArrayCollection
+    public function getRecipes(): ?Collection
     {
         return $this->recipes;
     }
 
     /**
-     * @param ArrayCollection $recipes
+     * @param Collection $recipes
      * @return Dish
      */
-    public function setRecipes(ArrayCollection $recipes): Dish
+    public function setRecipes(Collection $recipes): Dish
     {
         $this->recipes = $recipes;
 

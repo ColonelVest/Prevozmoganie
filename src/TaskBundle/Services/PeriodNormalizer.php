@@ -9,7 +9,7 @@ class PeriodNormalizer extends EntityNormalizer
 {
     public function conciseNormalize(BaseEntity $period)
     {
-        $this->objectNormalizer->setCallbacks(
+        $this->setCallbacks(
             [
                 'begin' => $this->getTimeCallback(),
                 'end' => $this->getTimeCallback(),
@@ -17,14 +17,14 @@ class PeriodNormalizer extends EntityNormalizer
             ]
         );
 
-        $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('concise')));
+        $data = $this->normalize($period, null, array('groups' => array('concise')));
 
         return $data;
     }
 
     public function fullNormalize(BaseEntity $period)
     {
-        $this->objectNormalizer->setCallbacks(
+        $this->setCallbacks(
             [
                 'begin' => $this->getTimeCallback(),
                 'end' => $this->getTimeCallback(),
@@ -32,7 +32,7 @@ class PeriodNormalizer extends EntityNormalizer
             ]
         );
 
-        $data = $this->objectNormalizer->normalize($period, null, array('groups' => array('full')));
+        $data = $this->normalize($period, null, array('groups' => array('full')));
 
         return $data;
     }
