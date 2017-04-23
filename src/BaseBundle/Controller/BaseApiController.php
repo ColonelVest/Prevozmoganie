@@ -146,7 +146,6 @@ abstract class BaseApiController extends FOSRestController
             if (!$userResult->getIsSuccess()) {
                 return $userResult;
             }
-            //TODO: Мб добавить интерфейс и проверку на него
             $entity->setUser($userResult->getData());
         }
 

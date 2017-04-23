@@ -3,20 +3,40 @@
 namespace BaseBundle\Services;
 
 use BaseBundle\Entity\BaseEntity;
+use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-abstract class EntityNormalizer extends ObjectNormalizer
+class EntityNormalizer extends ObjectNormalizer
 {
-    abstract public function conciseNormalize(BaseEntity $entity);
-    abstract public function fullNormalize(BaseEntity $entity);
+    /** @var  AnnotationReader $reader */
+    private $annotationReader;
 
-    public function __construct(ClassMetadataFactory $factory)
+    public function __construct(ClassMetadataFactory $factory, AnnotationReader $annotationReader = null)
     {
         parent::__construct($factory);
+        $this->annotationReader = $annotationReader;
     }
+
+    public function normalize($object, $format = null, array $context = array())
+    {
+        return parent::normalize($object, $format, $context);
+    }
+
+    public function conciseNormalize(BaseEntity $entity)
+    {
+        return $this->normalize($entity, null, ['groups' => ['concise']]);
+    }
+
+    public function fullNormalize(BaseEntity $entity)
+    {
+        return $this->normalize($entity, null, ['groups' => ['full']]);
+    }
+//
+//    private function getCallbacks($className)
+//    {
+//        $cols = $em->getClassMetadata(get_class($entity))->getColumnNames();
+//    }
 
     public function conciseNormalizeEntities($entities)
     {

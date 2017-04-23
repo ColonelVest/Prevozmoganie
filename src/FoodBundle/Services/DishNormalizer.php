@@ -39,6 +39,6 @@ class DishNormalizer extends EntityNormalizer
             'recipes' => $recipesCallback
         ]);
 
-        return $this->normalize($dish, null, ['groups' => ['concise'], self::ENABLE_MAX_DEPTH => true]);
+        return $this->normalize($dish, null, ['groups' => ['full'], self::ENABLE_MAX_DEPTH => true]);
     }
 }

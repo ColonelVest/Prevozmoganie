@@ -56,7 +56,7 @@ class RecipeNormalizer extends EntityNormalizer
         };
 
         $dishCallback = function ($dish) {
-            return $this->dishNormalizer->conciseNormalize($dish);
+            return $this->normalize($dish, null, ['groups' => ['concise']]);
         };
 
         $this->setCallbacks(

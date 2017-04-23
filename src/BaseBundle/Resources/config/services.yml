@@ -9,11 +9,14 @@ services:
 
   metadata_factory:
     class: Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory
-    arguments: ['@annotaion_loader']
-
+    arguments: ['@pv.annotation_loader']
 
   annotaion_loader:
     class: Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader
+    arguments: ['@annotations.cached_reader']
+
+  pv.annotation_loader:
+    class: BaseBundle\Lib\Serialization\Mapping\Loader\PVAnnotationLoader
     arguments: ['@annotations.cached_reader']
 
   base_helper:
@@ -22,3 +25,10 @@ services:
   token_handler:
     class: BaseBundle\Services\UserTokenHandler
     arguments: ['@user_handler']
+
+  pv_normalizer:
+    class: BaseBundle\Services\PVNormalizer
+    arguments:
+      - '@metadata_factory'
+      - '@doctrine.orm.entity_manager'
+      - '@annotations.reader'

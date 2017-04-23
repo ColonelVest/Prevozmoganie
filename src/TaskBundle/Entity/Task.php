@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity()
@@ -27,6 +28,7 @@ class Task extends BaseEntity implements UserReferable
      * @ORM\Column(type="string")
      * @Groups({"concise", "full"})
      * @Assert\NotBlank()
+     * @Normal\Entity(className="TaskBundle\Entity\Task")
      */
     private $title;
 

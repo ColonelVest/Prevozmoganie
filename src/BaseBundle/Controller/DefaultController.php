@@ -15,10 +15,12 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      * @Method({"GET"})
+     * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
+        $meta = $this->get('pv_normalizer')->getMetadata($em->getRepository('TaskBundle:Task')->findOneBy([]));
 //        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);
 //        $this->get('achievement_manager')->generate();
