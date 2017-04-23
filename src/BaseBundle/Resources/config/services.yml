@@ -32,3 +32,4 @@ services:
       - '@metadata_factory'
       - '@doctrine.orm.entity_manager'
       - '@annotations.reader'
+    calls: [[setSerializer, ['@serializer']]]

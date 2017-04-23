@@ -12,6 +12,7 @@ use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity\User;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity(repositoryClass="ErrorRepository")
@@ -79,6 +80,7 @@ class Error extends BaseEntity implements UserReferable
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @Normal\Entity(className="UserBundle\Entity\User")
      */
     private $user;
 

@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity(repositoryClass="NoteRepository")
@@ -36,6 +37,7 @@ class Note extends BaseEntity implements UserReferable
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @Normal\Entity(className="UserBundle\Entity\User")
      */
     private $user;
 

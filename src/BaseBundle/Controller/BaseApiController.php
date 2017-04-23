@@ -5,8 +5,8 @@ namespace BaseBundle\Controller;
 use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
-use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
+use BaseBundle\Services\PVNormalizer;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -18,14 +18,15 @@ abstract class BaseApiController extends FOSRestController
 {
     /** @var  EntityManager $em */
     protected $em;
+    /** @var  PVNormalizer $normalizer */
+    protected $normalizer;
 
     abstract protected function getHandler(): EntityHandler;
-
-    abstract protected function getNormalizer(): EntityNormalizer;
 
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
+        $this->normalizer = $this->get('pv_normalizer');
         $this->em = $container->get('doctrine.orm.default_entity_manager');
     }
 
@@ -57,7 +58,7 @@ abstract class BaseApiController extends FOSRestController
             }
             $result = $this->getHandler()->getEntities($criteria);
             if ($result->getIsSuccess()) {
-                $normalisedEntities = $this->getNormalizer()->conciseNormalizeEntities($result->getData());
+                $normalisedEntities = $this->normalizer->conciseNormalizeEntities($result->getData());
                 $result = Result::createSuccessResult($normalisedEntities);
             }
         }
@@ -188,11 +189,10 @@ abstract class BaseApiController extends FOSRestController
     private function normalizeByResult(Result $result, $isFullNormalization = false)
     {
         if (!is_null($result->getData())) {
-            $normalizer = $this->getNormalizer();
             if ($isFullNormalization) {
-                $normalizedPeriod = $normalizer->fullNormalize($result->getData());
+                $normalizedPeriod = $this->normalizer->fullNormalize($result->getData());
             } else {
-                $normalizedPeriod = $normalizer->conciseNormalize($result->getData());
+                $normalizedPeriod = $this->normalizer->conciseNormalize($result->getData());
             }
             $result->setData($normalizedPeriod);
         }

@@ -23,6 +23,11 @@ final class Entity implements Annotation
      */
     public $className;
 
+    /**
+     * @var bool
+     */
+    public $isMultiple = false;
+
     public function __construct()
     {
         //TODO: Здесь можно реализовать валидацию значений

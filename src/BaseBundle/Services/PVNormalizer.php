@@ -2,6 +2,8 @@
 
 namespace BaseBundle\Services;
 
+use BaseBundle\Lib\Serialization\Annotation\Normal\Entity;
+use BaseBundle\Lib\Serialization\Mapping\PVAttributeMetadata;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -21,28 +23,67 @@ class PVNormalizer extends ObjectNormalizer
         $this->reader = $reader;
     }
 
-    public function getMetadata($obj)
+    //TODO: Тут все конечно уродливо, но потом отрефакторю
+    public function normalize($object, $format = null, array $context = array())
     {
-        return $this->classMetadataFactory->getMetadataFor($obj);
+        $metadata = $this->classMetadataFactory->getMetadataFor($object);
+        foreach ($metadata->getAttributesMetadata() as $propertyData) {
+            if ($propertyData instanceof PVAttributeMetadata) {
+                /** @var Entity $entityData */
+                if ($entityData = $propertyData->getClassData()) {
+                    if ($entityData->isMultiple) {
+                        $callback = function ($entities) {
+                            return $this->conciseNormalizeEntities($entities);
+                        };
+                    } else {
+                        $callback = $this->getNormalizeEntityCallback();
+                    }
+                    $this->callbacks[$propertyData->getName()] = $callback;
+                } elseif ($entityData = $propertyData->getDateTimeFormat()) {
+                    $callback = function ($dateTime) use ($propertyData) {
+                        return $this->normalizeDateTime($dateTime, $propertyData->getDateTimeFormat());
+                    };
+                    $this->callbacks[$propertyData->getName()] = $callback;
+                }
+            }
+        }
+
+        $context[self::ENABLE_MAX_DEPTH] = true;
+
+        return parent::normalize($object, $format, $context);
     }
 
-//    private $isCallbacksInit = false;
-//    private $callbacks = [];
-//    public function getCallbacks($className)
-//    {
-//        if (!$this->isCallbacksInit) {
-//            $reflectionClass = new \ReflectionClass($className);
-//            foreach ($reflectionClass->getProperties() as $property) {
-//
-//            }
-//            $cols = $this->em->getClassMetadata($className)->getColumnNames();
-//            foreach ($cols as $propertyName) {
-//                $annotation = $this->reader->getPropertyAnnotations(new \ReflectionProperty($className, $propertyName));
-//
-//            }
-//            $this->isCallbacksInit = true;
-//        }
-//
-//        return $this->callbacks;
-//    }
+    public function conciseNormalize($entity)
+    {
+        return $this->normalize($entity, null, ['groups' => ['concise']]);
+    }
+
+    public function conciseNormalizeEntities($entities)
+    {
+        $data = [];
+        if (is_array($entities)) {
+            foreach ($entities as $entity) {
+                $data[] = $this->conciseNormalize($entity);
+            }
+        }
+
+        return $data;
+    }
+
+    public function fullNormalize($entity)
+    {
+        return $this->normalize($entity, null, ['groups' => ['full']]);
+    }
+
+    protected function getNormalizeEntityCallback()
+    {
+        return function ($entity) {
+            return $this->conciseNormalize($entity);
+        };
+    }
+
+    protected function normalizeDateTime($date, $format)
+    {
+        return $date instanceof \DateTime ? $date->format($format) : '';
+    }
 }

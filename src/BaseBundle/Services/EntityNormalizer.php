@@ -32,11 +32,6 @@ class EntityNormalizer extends ObjectNormalizer
     {
         return $this->normalize($entity, null, ['groups' => ['full']]);
     }
-//
-//    private function getCallbacks($className)
-//    {
-//        $cols = $em->getClassMetadata(get_class($entity))->getColumnNames();
-//    }
 
     public function conciseNormalizeEntities($entities)
     {

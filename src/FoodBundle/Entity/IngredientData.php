@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity
@@ -18,6 +19,7 @@ class IngredientData extends BaseEntity
      * @var Ingredient
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Ingredient")
      * @Serializer\Groups({"full"})
+     * @Normal\Entity(className="FoodBundle\Entity\Ingredient")
      */
     private $ingredient;
 
@@ -32,6 +34,8 @@ class IngredientData extends BaseEntity
      * @var Recipe
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Recipe")
      * @Serializer\MaxDepth(1)
+     * @Serializer\Groups({"full"})
+     * @Normal\Entity(className="FoodBundle\Entity\Recipe")
      */
     private $recipe;
 

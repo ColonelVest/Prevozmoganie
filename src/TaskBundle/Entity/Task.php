@@ -28,7 +28,6 @@ class Task extends BaseEntity implements UserReferable
      * @ORM\Column(type="string")
      * @Groups({"concise", "full"})
      * @Assert\NotBlank()
-     * @Normal\Entity(className="TaskBundle\Entity\Task")
      */
     private $title;
 
@@ -42,17 +41,19 @@ class Task extends BaseEntity implements UserReferable
     /**
      * @var Task
      * @ORM\ManyToOne(targetEntity="Task", inversedBy="children")
+     * @Normal\Entity(className="TaskBundle\Entity\Task")
      */
     private $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="Task", mappedBy="parent", cascade={"persist", "remove"})
+     * @Normal\Entity(className="TaskBundle\Entity\Task", isMultiple=true)
      */
     private $children;
 
     /**
      * @ORM\OneToOne(targetEntity="Period", inversedBy="task")
-     *
+     * @Normal\Entity(className="TaskBundle\Entity\Period")
      */
     private $period;
 
@@ -67,6 +68,7 @@ class Task extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
      * @Groups({"full", "concise"})
+     * @Normal\DateTime()
      */
     private $date;
 
@@ -74,6 +76,7 @@ class Task extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="time", nullable=true)
      * @Groups({"full", "concise"})
+     * @Normal\DateTime(type="time")
      */
     private $beginTime;
 
@@ -81,6 +84,7 @@ class Task extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="time", nullable=true)
      * @Groups({"full", "concise"})
+     * @Normal\DateTime(type="time")
      */
     private $endTime;
 
@@ -88,6 +92,7 @@ class Task extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
      * @Groups({"full", "concise"})
+     * @Normal\DateTime()
      */
     private $deadline;
 

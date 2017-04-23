@@ -53,6 +53,8 @@ class RecipeNormalizer extends EntityNormalizer
             foreach ($ingredientsData as $ingredientData) {
                 $result[] = $this->ingredientDataNormalizer->fullNormalize($ingredientData);
             }
+
+            return $result;
         };
 
         $dishCallback = function ($dish) {

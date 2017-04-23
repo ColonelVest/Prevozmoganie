@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Serializer\Annotation as Serializer;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity
@@ -29,6 +30,7 @@ class Recipe extends BaseEntity
      * @Serializer\Groups({"full"})
      * @ORM\OneToMany(targetEntity="FoodBundle\Entity\IngredientData", mappedBy="recipe", cascade={"persist", "remove"})
      * @Serializer\MaxDepth(1)
+     * @Normal\Entity(className="FoodBundle\Entity\IngredientData", isMultiple=true)
      */
     private $ingredientsData;
 
@@ -44,6 +46,7 @@ class Recipe extends BaseEntity
      * @var Dish
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Dish")
      * @Serializer\MaxDepth(1)
+     * @Normal\Entity(className="FoodBundle\Entity\Dish")
      */
     private $dish;
 

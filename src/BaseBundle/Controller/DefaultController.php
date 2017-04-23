@@ -20,7 +20,14 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $meta = $this->get('pv_normalizer')->getMetadata($em->getRepository('TaskBundle:Task')->findOneBy([]));
+        $tasks = $em->getRepository('TaskBundle:Task')->findAll();
+
+        $result = [];
+        foreach ($tasks as $task) {
+            $result[] = $this->get('pv_normalizer')->normalize($task, null, ['groups' => ['full']]);
+        }
+
+//        $this->get('food.services.recipe_normalizer')->fullNormalize($em->getRepository('FoodBundle:Recipe')->findOneBy([]));
 //        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);
 //        $this->get('achievement_manager')->generate();

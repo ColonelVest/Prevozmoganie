@@ -2,29 +2,30 @@
 
 namespace BaseBundle\Lib\Serialization\Mapping;
 
+use BaseBundle\Lib\Serialization\Annotation\Normal\Entity;
 use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 
 class PVAttributeMetadata extends AttributeMetadata
 {
-    public $className;
+    public $classData;
 
     public $dateTimeFormat;
 
     /**
      * @return mixed
      */
-    public function getClassName()
+    public function getClassData()
     {
-        return $this->className;
+        return $this->classData;
     }
 
     /**
-     * @param mixed $className
+     * @param Entity $entityData
      * @return PVAttributeMetadata
      */
-    public function setClassName($className)
+    public function setClassData(Entity $entityData)
     {
-        $this->className = $className;
+        $this->classData = $entityData;
 
         return $this;
     }

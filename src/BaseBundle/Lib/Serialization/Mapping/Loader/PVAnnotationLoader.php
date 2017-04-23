@@ -2,6 +2,7 @@
 
 namespace BaseBundle\Lib\Serialization\Mapping\Loader;
 
+use BaseBundle\Lib\Serialization\Annotation\Normal\DateTime;
 use BaseBundle\Lib\Serialization\Annotation\Normal\Entity;
 use BaseBundle\Lib\Serialization\Mapping\PVAttributeMetadata;
 use Doctrine\Common\Annotations\Reader;
@@ -111,7 +112,14 @@ class PVAnnotationLoader implements LoaderInterface
         } elseif ($annotation instanceof MaxDepth) {
             $attributesMetadata[$property->name]->setMaxDepth($annotation->getMaxDepth());
         } elseif ($annotation instanceof Entity) {
-            $attributesMetadata[$property->name]->setClassName($annotation->className);
+            $attributesMetadata[$property->name]->setClassData($annotation);
+        } elseif ($annotation instanceof DateTime) {
+            if ($annotation->format) {
+                $format = $annotation->format;
+            } else {
+                $format = $annotation::FORMATS[$annotation->type];
+            }
+            $attributesMetadata[$property->name]->setDateTimeFormat($format);
         }
     }
 }

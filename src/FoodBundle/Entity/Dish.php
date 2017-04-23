@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity
@@ -27,6 +28,7 @@ class Dish extends BaseEntity
      * @ORM\OneToMany(targetEntity="FoodBundle\Entity\Recipe", mappedBy="dish", cascade={"persist", "remove"})
      * @Groups({"full"})
      * @MaxDepth(1)
+     * @Normal\Entity(className="FoodBundle\Entity\Recipe", isMultiple=true)
      */
     private $recipes;
 
