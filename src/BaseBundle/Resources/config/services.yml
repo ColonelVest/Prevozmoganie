@@ -11,10 +11,6 @@ services:
     class: Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory
     arguments: ['@pv.annotation_loader']
 
-  annotaion_loader:
-    class: Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader
-    arguments: ['@annotations.cached_reader']
-
   pv.annotation_loader:
     class: BaseBundle\Lib\Serialization\Mapping\Loader\PVAnnotationLoader
     arguments: ['@annotations.cached_reader']

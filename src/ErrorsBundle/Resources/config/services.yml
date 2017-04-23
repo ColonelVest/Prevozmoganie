@@ -2,7 +2,3 @@ services:
     errors_handler:
         class: ErrorsBundle\Services\ErrorsHandler
         arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
-
-    errors_normalizer:
-        class: ErrorsBundle\Services\ErrorNormalizer
-        arguments: ['@metadata_factory']

@@ -12,43 +12,12 @@ services:
             - '@api_response_formatter'
             - '@validator'
 
-    food.services.dish_normalizer:
-        class: FoodBundle\Services\DishNormalizer
-        arguments:
-            - '@metadata_factory'
-            - '@food.services.recipe_normalizer_concise'
-        calls: [[setSerializer, ['@serializer']]]
-
-    food.services.dish_normalizer_concise:
-        class: FoodBundle\Services\DishNormalizer
-        arguments: ['@metadata_factory']
-        calls:
-            - [setSerializer, ['@serializer']]
-
-    food.services.recipe_normalizer:
-        class: FoodBundle\Services\RecipeNormalizer
-        arguments:
-            - '@metadata_factory'
-            - '@food.services.dish_normalizer_concise'
-            - '@food.services.ingredient_data_normalizer'
-        calls: [[setSerializer, ['@serializer']]]
-
-    food.services.recipe_normalizer_concise:
-        class: FoodBundle\Services\RecipeNormalizer
-        arguments: ['@metadata_factory']
-        calls: [[setSerializer, ['@serializer']]]
-
     food.services.recipe_handler:
         class: FoodBundle\Services\RecipeHandler
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@api_response_formatter'
             - '@validator'
-
-    food.services.ingredient_data_normalizer:
-        class: FoodBundle\Services\IngredientDataNormalizer
-        arguments: [ '@metadata_factory', '@food.services.ingredient_normalizer']
-        calls: [[setSerializer, ['@serializer']]]
 
     food.services.recipe_subscriber:
         class: FoodBundle\EventListener\RecipeSubscriber

@@ -4,9 +4,6 @@ services:
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@security.password_encoder'
-  user_normalizer:
-    class: UserBundle\Services\UserNormalizer
-    arguments: ['@metadata_factory']
   achievement_manager:
     class: UserBundle\Services\AchievementManager
     arguments:

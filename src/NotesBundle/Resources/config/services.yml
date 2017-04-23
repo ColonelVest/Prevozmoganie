@@ -3,17 +3,9 @@ services:
         class: NotesBundle\Services\ListenersHandler
         arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
 
-    listeners_normalizer:
-        class: NotesBundle\Services\ListenersNormalizer
-        arguments: ['@metadata_factory']
-
     notes_handler:
         class: NotesBundle\Services\NotesHandler
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@api_response_formatter'
             - '@validator'
-
-    notes_normalizer:
-        class: NotesBundle\Services\NotesNormalizer
-        arguments: ['@metadata_factory']
