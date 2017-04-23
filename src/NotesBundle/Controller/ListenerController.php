@@ -3,7 +3,6 @@
 namespace NotesBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use NotesBundle\Entity\Listener;
@@ -60,10 +59,5 @@ class ListenerController extends BaseApiController
     protected function getHandler(): EntityHandler
     {
         return $this->get('listeners_handler');
-    }
-
-    protected function getNormalizer(): EntityNormalizer
-    {
-        return $this->get('listeners_normalizer');
     }
 }

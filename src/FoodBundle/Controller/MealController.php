@@ -13,9 +13,4 @@ class MealController extends BaseApiController
     {
         // TODO: Implement getHandler() method.
     }
-
-    protected function getNormalizer(): EntityNormalizer
-    {
-        // TODO: Implement getNormalizer() method.
-    }
 }

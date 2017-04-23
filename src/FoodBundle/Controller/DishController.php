@@ -3,7 +3,6 @@
 namespace FoodBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use FoodBundle\Entity\Dish;
@@ -71,10 +70,5 @@ class DishController extends BaseApiController
     protected function getHandler(): EntityHandler
     {
         return $this->get('food.services.dish_handler');
-    }
-
-    protected function getNormalizer(): EntityNormalizer
-    {
-        return $this->get('food.services.dish_normalizer');
     }
 }

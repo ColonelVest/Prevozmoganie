@@ -3,7 +3,6 @@
 namespace FoodBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use FoodBundle\Entity\Ingredient;
@@ -75,10 +74,5 @@ class IngredientController extends BaseApiController
     protected function getHandler(): EntityHandler
     {
         return $this->get('food.services.ingredient_handler');
-    }
-
-    protected function getNormalizer(): EntityNormalizer
-    {
-        return $this->get('food.services.ingredient_normalizer');
     }
 }
