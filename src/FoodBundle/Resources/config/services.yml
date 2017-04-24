@@ -19,6 +19,13 @@ services:
             - '@api_response_formatter'
             - '@validator'
 
+    food.services.meal_handler:
+        class: FoodBundle\Services\MealHandler
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'
+
     food.services.recipe_subscriber:
         class: FoodBundle\EventListener\RecipeSubscriber
         tags:

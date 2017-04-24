@@ -30,6 +30,7 @@ class ErrorMessages
     const INCORRECT_TOKEN = 11;
     const NOT_AUTHORIZED = 12;
     const PERMISSION_DENIED = 13;
+    const MEALS_DATE_INCORRECT = 14;
 
     public function getErrorMessageByCode($code)
     {
@@ -58,6 +59,7 @@ class ErrorMessages
         10 => 'incorrect_password',
         11 => 'incorrect_token',
         12 => 'not_authorized',
-        13 => 'permission_denied'
+        13 => 'permission_denied',
+        14 => 'meals_date_incorrect'
     ];
 }

@@ -7,8 +7,14 @@ use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 
 class PVAttributeMetadata extends AttributeMetadata
 {
+    /**
+     * @var array
+     */
     public $classData;
 
+    /**
+     * @var string
+     */
     public $dateTimeFormat;
 
     /**
