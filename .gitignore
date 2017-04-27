@@ -13,3 +13,4 @@
 /.idea/
 /src/BaseBundle/Services/UserTokenHandler.php
 *.php~
+/src/BaseBundle/Controller/DefaultController.php
