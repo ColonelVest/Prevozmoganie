@@ -6,6 +6,8 @@ use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Entity\UserReferable;
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
+use Symfony\Component\Serializer\Annotation as Serializer;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity
@@ -16,6 +18,8 @@ class MealEntry extends BaseEntity implements UserReferable
     /**
      * @var Meal
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Meal")
+     * @Serializer\Groups({"full", "concise"})
+     * @Normal\Entity(className="FoodBundle\Entity\Meal")
      */
     private $meal;
 
@@ -28,12 +32,15 @@ class MealEntry extends BaseEntity implements UserReferable
     /**
      * @var \DateTime
      * @ORM\Column(type="date")
+     * @Serializer\Groups({"full", "concise"})
+     * @Normal\DateTime()
      */
     private $date;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean")
+     * @Serializer\Groups({"full", "concise"})
      */
     private $isPerformed = false;
 

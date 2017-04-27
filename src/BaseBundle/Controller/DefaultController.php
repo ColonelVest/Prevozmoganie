@@ -3,7 +3,9 @@
 namespace BaseBundle\Controller;
 
 use FoodBundle\Entity\IngredientData;
+use FoodBundle\Entity\MealEntry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,18 +17,12 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      * @Method({"GET"})
-     * @return Response
+     * @Template()
+     * @return array
      */
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $tasks = $em->getRepository('TaskBundle:Task')->findAll();
-
-        $result = [];
-        foreach ($tasks as $task) {
-            $result[] = $this->get('pv_normalizer')->normalize($task, null, ['groups' => ['full']]);
-        }
-
 //        $this->get('food.services.recipe_normalizer')->fullNormalize($em->getRepository('FoodBundle:Recipe')->findOneBy([]));
 //        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);
@@ -37,6 +33,6 @@ class DefaultController extends Controller
 //        $task->setDate((clone($task->getDate())->modify('-1 day')));
 //        $em->flush();
 
-        return new Response();
+        return [];
     }
 }

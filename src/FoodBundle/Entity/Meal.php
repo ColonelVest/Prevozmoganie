@@ -5,7 +5,7 @@ namespace FoodBundle\Entity;
 use BaseBundle\Entity\BaseEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,12 +20,14 @@ class Meal extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Serializer\Groups({"full", "concise"})
      */
     private $title;
 
     /**
      * @var MealType
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\MealType")
+     * @Serializer\Groups({"full", "concise"})
      */
     private $mealType;
 
@@ -36,6 +38,7 @@ class Meal extends BaseEntity
      *      joinColumns={@ORM\JoinColumn(name="meal_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id")}
      *      )
+     * @Serializer\Groups({"full", "concise"})
      */
     private $dishes;
 

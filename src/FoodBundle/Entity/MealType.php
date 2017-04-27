@@ -5,7 +5,7 @@ namespace FoodBundle\Entity;
 use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Entity\UserReferable;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
@@ -19,6 +19,7 @@ class MealType extends BaseEntity implements UserReferable
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Serializer\Groups({"full", "concise"})
      */
     private $title;
 

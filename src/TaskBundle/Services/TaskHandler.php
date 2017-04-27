@@ -50,7 +50,6 @@ class TaskHandler extends EntityHandler
                         ->setDeadline($deadlineDate)
                         ->setDate($day);
                     $this->em->persist($newTask);
-
                 }
             }
         }
