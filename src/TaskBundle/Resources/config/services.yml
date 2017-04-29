@@ -4,4 +4,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
     task_handler:
         class: TaskBundle\Services\TaskHandler
-        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'
+            - '@base_helper'

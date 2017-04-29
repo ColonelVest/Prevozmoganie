@@ -9,6 +9,9 @@ use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use FoodBundle\Entity\Meal;
 use FoodBundle\Form\MealForm;
+use FoodBundle\Form\RepetitiveMealForm;
+use FoodBundle\Model\RepetitiveMeal;
+use FoodBundle\Services\MealHandler;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
@@ -70,11 +73,24 @@ class MealController extends BaseApiController
         return $this->createEntity($request, Meal::class, MealForm::class, true);
     }
 
-    public function postRMealsAction(Request $request)
+    /**
+     * @Rest\View()
+     * @param Request $request
+     * @return array
+     */
+    public function postRmealsAction(Request $request)
     {
+        $result = $this->fillEntityByRequest(new RepetitiveMeal(), $request, RepetitiveMealForm::class, true);
+        if ($result->getIsSuccess()) {
+            $result = $this->getHandler()->generateMealEntries($result->getData());
+        }
 
+        return $this->getResponseByResultObj($result);
     }
 
+    /**
+     * @return EntityHandler|MealHandler
+     */
     protected function getHandler(): EntityHandler
     {
         return $this->get('food.services.meal_handler');

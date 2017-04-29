@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="MealEntryRepository")
  * @ORM\Table(name="meal_entry")
  */
 class MealEntry extends BaseEntity implements UserReferable

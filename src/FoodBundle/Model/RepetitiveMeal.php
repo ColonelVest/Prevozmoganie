@@ -2,11 +2,14 @@
 
 namespace FoodBundle\Model;
 
+use BaseBundle\Entity\UserReferable;
+use BaseBundle\Models\RepetitiveInterface;
+use Doctrine\Common\Collections\Collection;
 use FoodBundle\Entity\Dish;
 use FoodBundle\Entity\MealType;
 use UserBundle\Entity\User;
 
-class RepetitiveMeal
+class RepetitiveMeal implements RepetitiveInterface, UserReferable
 {
     private $title;
 
@@ -43,7 +46,7 @@ class RepetitiveMeal
     /**
      * @var bool
      */
-    private $newTasksCreate = false;
+    private $newMealsCreateTask = false;
 
     /**
      * @var User
@@ -89,9 +92,9 @@ class RepetitiveMeal
     }
 
     /**
-     * @return Dish[]
+     * @return Collection|Dish[]|null
      */
-    public function getDishes(): ?array
+    public function getDishes(): ?Collection
     {
         return $this->dishes;
     }
@@ -100,7 +103,7 @@ class RepetitiveMeal
      * @param Dish[] $dishes
      * @return RepetitiveMeal
      */
-    public function setDishes(array $dishes): RepetitiveMeal
+    public function setDishes($dishes): RepetitiveMeal
     {
         $this->dishes = $dishes;
 
@@ -165,9 +168,9 @@ class RepetitiveMeal
     }
 
     /**
-     * @return number
+     * @return int|null|number
      */
-    public function getWeekFrequency(): ?number
+    public function getWeekFrequency(): ?int
     {
         return $this->weekFrequency;
     }
@@ -176,7 +179,7 @@ class RepetitiveMeal
      * @param number $weekFrequency
      * @return RepetitiveMeal
      */
-    public function setWeekFrequency(number $weekFrequency): RepetitiveMeal
+    public function setWeekFrequency($weekFrequency): RepetitiveMeal
     {
         $this->weekFrequency = $weekFrequency;
 
@@ -186,18 +189,18 @@ class RepetitiveMeal
     /**
      * @return bool
      */
-    public function isNewTasksCreate(): ?bool
+    public function isNewMealsCreateTask(): ?bool
     {
-        return $this->newTasksCreate;
+        return $this->newMealsCreateTask;
     }
 
     /**
-     * @param bool $newTasksCreate
+     * @param bool $newMealsCreateTask
      * @return RepetitiveMeal
      */
-    public function setNewTasksCreate(bool $newTasksCreate): RepetitiveMeal
+    public function setNewMealsCreateTask(bool $newMealsCreateTask): RepetitiveMeal
     {
-        $this->newTasksCreate = $newTasksCreate;
+        $this->newMealsCreateTask = $newMealsCreateTask;
 
         return $this;
     }

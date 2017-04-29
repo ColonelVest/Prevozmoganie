@@ -3,6 +3,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\UserReferable;
+use BaseBundle\Models\RepetitiveInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity\User;
@@ -11,7 +12,7 @@ use UserBundle\Entity\User;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class RepetitiveTask implements UserReferable
+class RepetitiveTask implements UserReferable, RepetitiveInterface
 {
     /**
      * @var string
@@ -247,9 +248,9 @@ class RepetitiveTask implements UserReferable
     }
 
     /**
-     * @return number
+     * @return int|null|number
      */
-    public function getWeekFrequency()
+    public function getWeekFrequency() : ?int
     {
         return $this->weekFrequency;
     }

@@ -4,14 +4,33 @@ namespace TaskBundle\Services;
 
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
+use BaseBundle\Services\ApiResponseFormatter;
+use BaseBundle\Services\BaseHelper;
 use BaseBundle\Services\EntityHandler;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Validator\Validator\RecursiveValidator;
 use TaskBundle\Entity\RepetitiveTask;
 use TaskBundle\Entity\Task;
+use UserBundle\Entity\User;
 
 class TaskHandler extends EntityHandler
 {
+    /**
+     * @var BaseHelper
+     */
+    private $helper;
     protected $notExistsMessage = ErrorMessages::REQUESTED_TASK_NOT_EXISTS;
+
+    public function __construct(
+        EntityManager $em,
+        ApiResponseFormatter $apiResponseFormatter,
+        RecursiveValidator $validator,
+        BaseHelper $helper
+    ) {
+        parent::__construct($em, $apiResponseFormatter, $validator);
+        $this->helper = $helper;
+    }
 
     protected function getRepository(): EntityRepository
     {
@@ -19,54 +38,56 @@ class TaskHandler extends EntityHandler
     }
 
     /**
-     * @param RepetitiveTask $task
+     * @param RepetitiveTask $repetitiveTask
      * @return Result
      */
-    public function generateRepetitiveTasks(RepetitiveTask $task)
+    public function generateRepetitiveTasks(RepetitiveTask $repetitiveTask)
     {
-        $capitalizedDaysOfWeek = [];
-        foreach ($task->getDaysOfWeek() as $dayOfWeek) {
-            $capitalizedDaysOfWeek[] = ucfirst($dayOfWeek);
-        }
+        $days = $this->helper->getDaysFromRepetitiveEntity($repetitiveTask);
 
-        $end = (clone $task->getEndDate())->add(new \DateInterval('P1D'));
         $templateTask = (new Task())
-            ->setBeginTime($task->getBeginTime())
-            ->setEndTime($task->getEndTime())
-            ->setDescription($task->getDescription())
-            ->setUser($task->getUser())
-            ->setTitle($task->getTitle());
+            ->setBeginTime($repetitiveTask->getBeginTime())
+            ->setEndTime($repetitiveTask->getEndTime())
+            ->setDescription($repetitiveTask->getDescription())
+            ->setUser($repetitiveTask->getUser())
+            ->setTitle($repetitiveTask->getTitle());
 
-        $period = new \DatePeriod($task->getBeginDate(), new \DateInterval('P1D'), $end);
-        foreach ($period as $dayNumber => $day) {
-            $weekNumber = floor($dayNumber / 7);
-            /** @var \DateTime $day */
-            if (($weekNumber % $task->getWeekFrequency()) == 0) {
-                $dayOfWeek = $day->format('D');
-                if (in_array($dayOfWeek, $capitalizedDaysOfWeek)) {
-                    $deadlineDate = (clone $day)->modify('+' . $task->getDaysBeforeDeadline() . 'days');
-
-                    $newTask = (clone $templateTask)
-                        ->setDeadline($deadlineDate)
-                        ->setDate($day);
-                    $this->em->persist($newTask);
-                }
-            }
+        foreach ($days as $day) {
+            $deadlineDate = (clone $day)->modify('+'.$repetitiveTask->getDaysBeforeDeadline().'days');
+            $task = (clone $templateTask)
+                ->setDate($day)
+                ->setDeadline($deadlineDate);
+            $this->em->persist($task);
         }
 
-        if ($task->isNewTasksCreate()) {
-            $newTasksCreateTask = (new Task())
-                ->setDate($task->getEndDate())
-                ->setTitle('Создать новые задачи типа "' .$task->getTitle() . '"')
-                ->setUser($task->getUser())
-                ->setDeadline(clone($task->getEndDate())->modify('+10 days'));
-            ;
-
-            $this->em->persist($newTasksCreateTask);
+        if ($repetitiveTask->isNewTasksCreate()) {
+            $title = 'Создать новые задачи типа "'.$repetitiveTask->getTitle().'"';
+            $this->createTaskOfCreationNewEntities($repetitiveTask->getEndDate(), $repetitiveTask->getUser(), $title);
         }
 
         $this->em->flush();
 
         return Result::createSuccessResult();
+    }
+
+    /**
+     * @param \DateTime $date
+     * @param User $user
+     * @param $title
+     * @param int $deadLineOffset
+     * @return Task
+     */
+    public function createTaskOfCreationNewEntities(\DateTime $date, User $user, $title, $deadLineOffset = 10)
+    {
+        $newTasksCreateTask = (new Task())
+            ->setDate($date)
+            ->setTitle($title)
+            ->setUser($user)
+            ->setDeadline((clone $date)->modify('+'.$deadLineOffset.'days'));
+
+        $this->em->persist($newTasksCreateTask);
+        $this->em->flush($newTasksCreateTask);
+
+        return $newTasksCreateTask;
     }
 }

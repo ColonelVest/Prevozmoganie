@@ -25,6 +25,15 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@api_response_formatter'
             - '@validator'
+            - '@base_helper'
+            - '@task_handler'
+
+    food.services.meal_type_handler:
+        class: FoodBundle\Services\MealTypeHandler
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'
 
     food.services.recipe_subscriber:
         class: FoodBundle\EventListener\RecipeSubscriber

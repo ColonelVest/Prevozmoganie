@@ -42,9 +42,25 @@ class Meal extends BaseEntity
      */
     private $dishes;
 
+    /**
+     * @var MealEntry[]
+     * @ORM\OneToMany(targetEntity="FoodBundle\Entity\MealEntry", mappedBy="meal", cascade={"persist", "remove"})
+     * @Serializer\Groups({"full"})
+     */
+    private $mealEntries;
+
     public function __construct()
     {
         $this->dishes = new ArrayCollection();
+        $this->mealEntries = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection|MealEntry[]
+     */
+    public function getMealEntries()
+    {
+        return $this->mealEntries;
     }
 
     /**
