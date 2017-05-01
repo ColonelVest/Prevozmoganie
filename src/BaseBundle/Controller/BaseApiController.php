@@ -186,7 +186,7 @@ abstract class BaseApiController extends FOSRestController
         return $this->get('token_handler')->getUserByToken($result->getData());
     }
 
-    private function normalizeByResult(Result $result, $isFullNormalization = false)
+    protected function normalizeByResult(Result $result, $isFullNormalization = false)
     {
         if (!is_null($result->getData())) {
             if ($isFullNormalization) {

@@ -12,6 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Table(name="periods")
@@ -46,6 +47,7 @@ class Period extends BaseEntity implements UserReferable
      * @var Task
      * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
      * @Groups({"full"})
+     * @Normal\Entity(className="TaskBundle\Entity\Task")
      */
     private $task;
 
@@ -53,6 +55,7 @@ class Period extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="time")
      * @Groups({"full", "concise"})
+     * @Normal\DateTime(type="time")
      */
     private $begin;
 
@@ -61,6 +64,7 @@ class Period extends BaseEntity implements UserReferable
      * @Groups({"full", "concise"})
      * @ORM\Column(type="time")
      * @Assert\NotNull()
+     * @Normal\DateTime(type="time")
      */
     private $end;
 
@@ -68,6 +72,7 @@ class Period extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="date", nullable=false)
      * @Groups({"full", "concise"})
+     * @Normal\DateTime(type="date")
      */
     private $date;
 

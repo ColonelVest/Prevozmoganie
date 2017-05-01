@@ -40,7 +40,7 @@ class ApiResponseFormatter
 
     public function addResponseMessage(int $errorCode, $messageType = null)
     {
-        $messageType = $messageType ? $messageType : ($this->isSuccess ? 'Warnings' : 'Errors');
+        $messageType = $messageType ? $messageType : ($this->isSuccess ? 'warnings' : 'errors');
         $this->response[$messageType][] = $this->messageHandler->getErrorMessageByCode($errorCode);
 
         return $this;

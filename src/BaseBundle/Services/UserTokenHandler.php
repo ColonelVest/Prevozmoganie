@@ -36,7 +36,6 @@ class UserTokenHandler
     public function isTokenCorrect($token)
     {
         return $this->getUserByToken($token);
-
     }
     
     public function getUserByToken($token)

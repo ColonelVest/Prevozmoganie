@@ -2,12 +2,15 @@
 
 namespace UserBundle\Controller;
 
+use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Models\Result;
+use BaseBundle\Services\EntityHandler;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
-class SecurityController extends FOSRestController
+class SecurityController extends BaseApiController
 {
     /**
      * @Rest\View
@@ -26,5 +29,23 @@ class SecurityController extends FOSRestController
         }
 
         return $this->get('api_response_formatter')->createResponseFromResultObj($result);
+    }
+
+    /**
+     * @Rest\View
+     * @Rest\Get("is_authorized/{token}")
+     * @param $token
+     * @return Result
+     */
+    public function isAuthorizedAction($token)
+    {
+        $result = $this->normalizeByResult($this->get('token_handler')->isTokenCorrect($token));
+
+        return $this->get('api_response_formatter')->createResponseFromResultObj($result);
+    }
+
+    protected function getHandler(): EntityHandler
+    {
+        return null;
     }
 }

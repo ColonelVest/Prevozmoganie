@@ -71,16 +71,16 @@ class MealHandler extends EntityHandler
         $entriesByDates = $this->helper->getArrayWithKeysByDate($existedMealEntries);
 
         foreach ($days as $day) {
+            if (isset($entriesByDates[$day->format('d.m.Y')])) {
+                $oldMealEntry = $entriesByDates[$day->format('d.m.Y')];
+                $this->em->remove($oldMealEntry);
+            }
+
             $mealEntry = (new MealEntry())
                 ->setMeal($meal)
                 ->setUser($repetitiveMeal->getUser())
                 ->setDate($day);
             $this->em->persist($mealEntry);
-
-            if (isset($entriesByDates[$day->format('d.m.Y')])) {
-                $oldMealEntry = $entriesByDates[$day->format('d.m.Y')];
-                $this->em->remove($oldMealEntry);
-            }
         }
 
         $this->em->flush();

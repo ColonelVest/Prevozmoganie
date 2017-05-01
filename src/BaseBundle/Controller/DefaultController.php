@@ -26,6 +26,12 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
+        foreach ($em->getRepository('FoodBundle:M')->findAll() as $item) {
+            $em->remove($item);
+        }
+        $em->flush();
+
+
 //        $this->get('food.services.recipe_normalizer')->fullNormalize($em->getRepository('FoodBundle:Recipe')->findOneBy([]));
 //        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);

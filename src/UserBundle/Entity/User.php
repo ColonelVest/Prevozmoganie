@@ -10,6 +10,8 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Blameable\Traits\BlameableEntity;
+use Symfony\Component\Serializer\Annotation as Serializer;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity(repositoryClass="UserRepository")
@@ -30,8 +32,10 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Groups({"full", "concise"})
      */
     protected $id;
+
     /**
      * Hook softdeleteable behavior
      * deletedAt field
@@ -53,6 +57,7 @@ class User extends BaseUser
     /**
      * @var string
      * @ORM\Column()
+     * @Serializer\Groups({"full", "concise"})
      */
     private $displayedName;
 
@@ -63,6 +68,8 @@ class User extends BaseUser
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="achievement_id", referencedColumnName="id")}
      *      )
+     * @Serializer\Groups({"full"})
+     * @Normal\Entity(className="UserBundle\Entity\Achievement", isMultiple=true)
      */
     private $achievements;
 

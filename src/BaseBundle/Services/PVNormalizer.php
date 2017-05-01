@@ -23,9 +23,13 @@ class PVNormalizer extends ObjectNormalizer
         $this->reader = $reader;
     }
 
-    //TODO: Тут все конечно уродливо, но потом отрефакторю
+    //TODO: Отрефакторить
     public function normalize($object, $format = null, array $context = array())
     {
+        if (is_null($object)) {
+            return null;
+        }
+
         $metadata = $this->classMetadataFactory->getMetadataFor($object);
         foreach ($metadata->getAttributesMetadata() as $propertyData) {
             if ($propertyData instanceof PVAttributeMetadata) {
