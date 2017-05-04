@@ -16,23 +16,28 @@
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
-            <directory>../src/*Bundle/Tests</directory>
+            <directory>../tests</directory>
         </testsuite>
     </testsuites>
 
+    <!--<filter>-->
+        <!--<whitelist>-->
+            <!--<directory>../src</directory>-->
+            <!--<exclude>-->
+                <!--<directory>../src/*Bundle/Resources</directory>-->
+                <!--<directory>../src/*/*Bundle/Resources</directory>-->
+                <!--<directory>../src/*/Bundle/*Bundle/Resources</directory>-->
+            <!--</exclude>-->
+        <!--</whitelist>-->
+    <!--</filter>-->
+
     <filter>
-        <whitelist>
-            <directory>../src</directory>
-            <exclude>
-                <directory>../src/*Bundle/Resources</directory>
-                <directory>../src/*Bundle/Tests</directory>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
-            </exclude>
-        </whitelist>
+        <blacklist>
+            <directory>config</directory>
+            <directory>vendor</directory>
+            <directory>module/*/config</directory>
+            <directory suffix=".php">../src/BaseBundle/Lib/Tests/*</directory>
+        </blacklist>
     </filter>
+
 </phpunit>

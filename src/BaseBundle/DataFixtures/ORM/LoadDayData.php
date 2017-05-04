@@ -20,25 +20,25 @@ class LoadDayData extends AbstractFixture implements OrderedFixtureInterface, Co
     public function load(ObjectManager $manager) {
         $day = new Day();
         $day->setDate(new \DateTime());
-        $day->setUser($this->getReference('fixt_user'));
+//        $day->setUser($this->getReference('fixt_user'));
         $manager->persist($day);
         $this->setReference('day1', $day);
 
         $day = new Day();
         $day->setDate(new \DateTime('- 1 hour'));
-        $day->setUser($this->getReference('fixt_user'));
+//        $day->setUser($this->getReference('fixt_user'));
         $manager->persist($day);
         $this->setReference('day2', $day);
 
         $day = new Day();
         $day->setDate(new \DateTime('+1 day'));
-        $day->setUser($this->getReference('fixt_user2'));
+//        $day->setUser($this->getReference('fixt_user2'));
         $manager->persist($day);
         $this->setReference('day3', $day);
 
         $day = new Day();
         $day->setDate(new \DateTime('-1 day'));
-        $day->setUser($this->getReference('fixt_user2'));
+//        $day->setUser($this->getReference('fixt_user2'));
         $manager->persist($day);
         $this->setReference('day4', $day);
 
