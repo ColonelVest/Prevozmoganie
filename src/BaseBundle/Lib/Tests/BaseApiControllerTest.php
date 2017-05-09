@@ -45,9 +45,16 @@ abstract class BaseApiControllerTest extends WebTestCase
         self::command('doctrine:fixtures:load');
     }
 
-    protected function gets($url)
+    protected function gets($entitiesName, $params = [])
     {
+        self::clearDB();
+        $this->initDB();
         $client = static::createClient();
+        $token = $this->getUserToken();
+        $url = '/api/v1/'. $entitiesName .'?token=' . $token->getData();
+        foreach ($params as $paramName => $value) {
+            $url .= '&' . $paramName . '=' . $value;
+        }
 
         $client->request('GET', $url);
 

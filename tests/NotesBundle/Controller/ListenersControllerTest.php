@@ -10,9 +10,6 @@ class ListenersControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTes
 {
     public function testGetListeners()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/listeners?token=' . $token->getData());
+        $this->gets('listeners');
     }
 }

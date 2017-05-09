@@ -12,9 +12,6 @@ class ErrorsControllerTest extends BaseApiControllerTest
 {
     public function testGetErrors()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/errors?token=' . $token->getData());
+        $this->gets('errors');
     }
 }

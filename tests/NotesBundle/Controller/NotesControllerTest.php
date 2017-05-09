@@ -12,9 +12,6 @@ class NotesControllerTest extends BaseApiControllerTest
 {
     public function testGetNotes()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/notes?token=' . $token->getData());
+        $this->gets('notes');
     }
 }

@@ -10,9 +10,6 @@ class RecipeControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
 {
     public function testGetRecipes()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/recipes?token=' . $token->getData());
+        $this->gets('recipes');
     }
 }

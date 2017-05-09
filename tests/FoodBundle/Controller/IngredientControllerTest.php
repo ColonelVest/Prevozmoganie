@@ -10,9 +10,6 @@ class IngredientControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTe
 {
     public function testGetIngredients()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/ingredients?token=' . $token->getData());
+        $this->gets('ingredients');
     }
 }

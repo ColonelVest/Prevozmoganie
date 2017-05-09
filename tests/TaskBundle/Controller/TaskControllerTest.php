@@ -12,9 +12,11 @@ class TaskControllerTest extends BaseApiControllerTest
 {
     public function testGetTasks()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/tasks?token=' . $token->getData());
+        $this->gets('tasks');
+        $params = [
+            'date' => '06052017'
+        ];
+
+        $this->gets('tasks', $params);
     }
 }

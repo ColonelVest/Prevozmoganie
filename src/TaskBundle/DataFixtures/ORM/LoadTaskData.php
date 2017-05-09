@@ -21,11 +21,24 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         foreach ($this->tasks as $index => $item) {
-            $task = new Task();
-            $task->setTitle($item[0]);
-            $task->setDescription($item[1]);
-            $manager->persist($task);
-            $this->addReference('task'.$index, $task);
+            if (isset($item[2])) {
+                foreach ($item[2] as $dateString) {
+                    $task = new Task();
+                    $task->setTitle($item[0]);
+                    $task->setDescription($item[1]);
+                    $date = \DateTime::createFromFormat('dmY', $dateString);
+                    $task->setDate($date);
+                    $task->setDeadline((clone $date)->add(new \DateInterval('P1D')));
+                    $manager->persist($task);
+                    $this->addReference('task'.$index.$dateString, $task);
+                }
+            } else {
+                $task = new Task();
+                $task->setTitle($item[0]);
+                $task->setDescription($item[1]);
+                $manager->persist($task);
+                $this->addReference('task'.$index, $task);
+            }
         }
         $manager->flush();
     }
@@ -36,7 +49,8 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
         ["Купить картошку", "Купить картошку 5кг"],
         ["Поесть", "Поесть человеческую пищу"],
         ["Покодить", 'Писать код'],
-        ['Погамать', 'Погамать в готику']
+        ['Погамать', 'Погамать в готику'],
+        ['Постирать пол', 'Постирать пол', ['05052017', '06052017', '07052017']],
     ];
 
     /**

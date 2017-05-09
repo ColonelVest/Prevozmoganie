@@ -10,9 +10,6 @@ class MealControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
 {
     public function testGetMeals()
     {
-        $this->clearDB();
-        $this->initDB();
-        $token = $this->getUserToken();
-        $this->gets('/api/v1/meals?token=' . $token->getData());
+        $this->gets('meals');
     }
 }
