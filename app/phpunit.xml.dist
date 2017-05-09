@@ -16,7 +16,8 @@
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>../tests/*/*ControllerO</directory>
+            <file>../tests/TaskBundle/Controller/TaskControllerTest.php</file>
+            <!--<directory>../tests/*/Controller</directory>-->
         </testsuite>
     </testsuites>
 

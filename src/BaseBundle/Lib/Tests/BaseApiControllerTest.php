@@ -10,6 +10,7 @@
 namespace BaseBundle\Lib\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Entity\User;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -17,6 +18,11 @@ use Symfony\Component\Console\Output\NullOutput;
 
 abstract class BaseApiControllerTest extends WebTestCase
 {
+    abstract protected function tPostAction();
+    abstract protected function tPutAction();
+    abstract protected function tGetAction();
+    abstract protected function tDeleteAction();
+
     /**
      * Run console command
      * @param string $name
@@ -45,6 +51,16 @@ abstract class BaseApiControllerTest extends WebTestCase
         self::command('doctrine:fixtures:load');
     }
 
+    protected function getContainer()
+    {
+        return static::$kernel->getContainer();
+    }
+
+    protected function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
+    }
+
     protected function gets($entitiesName, $params = [])
     {
         self::clearDB();
@@ -59,9 +75,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $client->request('GET', $url);
 
         $response = $client->getResponse();
-        $this->assertTrue($client->getResponse()->isSuccessful(), 'response status is not 2xx');
+        $this->assertTrue($response->isSuccessful(), 'response status is not 2xx');
         $this->assertTrue(
-            $client->getResponse()->headers->contains(
+            $response->headers->contains(
                 'Content-Type',
                 'application/json; charset=UTF-8'
             ),
@@ -75,8 +91,7 @@ abstract class BaseApiControllerTest extends WebTestCase
 
     protected function getUserToken(User $user = null)
     {
-        $client = static::createClient();
-        $container = $client->getContainer();
+        $container = $this->getContainer();
 
         if (is_null($user)) {
             $user = $container->get('doctrine.orm.default_entity_manager')
@@ -85,5 +100,40 @@ abstract class BaseApiControllerTest extends WebTestCase
         }
 
         return $container->get('token_handler')->encode($user->getUsername(), $user->getPassword());
+    }
+
+    protected function assertApiResponse(Response $response)
+    {
+        $this->assertTrue($response->isSuccessful(), 'response status is not 2xx');
+        $this->assertTrue(
+            $response->headers->contains(
+                'Content-Type',
+                'application/json; charset=UTF-8'
+            ),
+            'the "Content-Type" header is "application/json; charset=UTF-8"'
+        );
+
+        $decodedResponse = json_decode($response->getContent(), true);
+        $errors = '';
+        if (isset($decodedResponse['errors'])) {
+            $errorsList = $decodedResponse['errors'];
+            $errors = 'Errors: ' . join(', ', $errorsList);
+        }
+        $this->assertTrue($decodedResponse['success'], $errors);
+    }
+
+    protected function assertPostSingleObjectResponse(Response $response, $entityName)
+    {
+        $decodedResponse = json_decode($response->getContent(), true);
+        $createdObject = $this->getEntityManager()->find($entityName, $decodedResponse['data']['id']);
+        $this->assertNotNull($createdObject, 'new object' . $entityName . 'not found');
+    }
+
+    public function testCRUD()
+    {
+        $this->tPostAction();
+        $this->tGetAction();
+        $this->tPutAction();
+        $this->tDeleteAction();
     }
 }

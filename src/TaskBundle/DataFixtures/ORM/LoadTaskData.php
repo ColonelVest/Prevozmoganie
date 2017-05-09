@@ -31,6 +31,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
                     $task->setDeadline((clone $date)->add(new \DateInterval('P1D')));
                     $manager->persist($task);
                     $this->addReference('task'.$index.$dateString, $task);
+                    $task->setUser($this->getReference('fixt_user'));
                 }
             } else {
                 $task = new Task();
@@ -38,6 +39,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
                 $task->setDescription($item[1]);
                 $manager->persist($task);
                 $this->addReference('task'.$index, $task);
+                $task->setUser($this->getReference('fixt_user'));
             }
         }
         $manager->flush();
