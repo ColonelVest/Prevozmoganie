@@ -3,14 +3,12 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
-use BaseBundle\Entity\UserReferable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
-use UserBundle\Entity\User;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
@@ -19,7 +17,7 @@ use BaseBundle\Lib\Serialization\Annotation\Normal;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Task extends BaseEntity implements UserReferable
+class Task extends BaseEntity
 {
     use SoftDeleteableEntity;
 
@@ -51,26 +49,6 @@ class Task extends BaseEntity implements UserReferable
      */
     private $children;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Period", inversedBy="task")
-     * @Normal\Entity(className="TaskBundle\Entity\Period")
-     */
-    private $period;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     * @Groups({"full", "concise"})
-     */
-    private $isCompleted = false;
-
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="date", nullable=true)
-     * @Groups({"full", "concise"})
-     * @Normal\DateTime()
-     */
-    private $date;
 
     /**
      * @var \DateTime
@@ -95,12 +73,6 @@ class Task extends BaseEntity implements UserReferable
      * @Normal\DateTime()
      */
     private $deadline;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     */
-    private $user;
 
     public function __construct()
     {
@@ -216,21 +188,6 @@ class Task extends BaseEntity implements UserReferable
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPeriod() {
-        return $this->period;
-    }
-
-    /**
-     * @param mixed $period
-     * @return Task
-     */
-    public function setPeriod($period) {
-        $this->period = $period;
-        return $this;
-    }
 
     public function removeChild(Task $task)
     {
@@ -267,62 +224,5 @@ class Task extends BaseEntity implements UserReferable
     public function setParent($parent)
     {
         $this->parent = $parent;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isIsCompleted(): bool
-    {
-        return $this->isCompleted;
-    }
-
-    /**
-     * @param bool $isCompleted
-     * @return Task
-     */
-    public function setIsCompleted(bool $isCompleted): Task
-    {
-        $this->isCompleted = $isCompleted;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDate(): ?\DateTime
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param \DateTime $date
-     * @return Task
-     */
-    public function setDate(?\DateTime $date): Task
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser() : ?User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User $user
-     * @return Task
-     */
-    public function setUser(?User $user)
-    {
-        $this->user = $user;
-
-        return $this;
     }
 }

@@ -21,22 +21,18 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
     public function load(ObjectManager $manager)
     {
         foreach ($this->tasks as $index => $item) {
+            $task = new Task();
+            $task->setTitle($item[0]);
+            $task->setDescription($item[1]);
             if (isset($item[2])) {
                 foreach ($item[2] as $dateString) {
-                    $task = new Task();
-                    $task->setTitle($item[0]);
-                    $task->setDescription($item[1]);
                     $date = \DateTime::createFromFormat('dmY', $dateString);
                     $task->setDate($date);
-                    $task->setDeadline((clone $date)->add(new \DateInterval('P1D')));
                     $manager->persist($task);
                     $this->addReference('task'.$index.$dateString, $task);
                     $task->setUser($this->getReference('fixt_user'));
                 }
             } else {
-                $task = new Task();
-                $task->setTitle($item[0]);
-                $task->setDescription($item[1]);
                 $manager->persist($task);
                 $this->addReference('task'.$index, $task);
                 $task->setUser($this->getReference('fixt_user'));
