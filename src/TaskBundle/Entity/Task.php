@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
@@ -24,7 +25,7 @@ class Task extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"concise", "full"})
+     * @Groups({"concise", "full", "nested"})
      * @Assert\NotBlank()
      */
     private $title;
@@ -32,7 +33,7 @@ class Task extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      */
     private $description;
 
@@ -49,11 +50,10 @@ class Task extends BaseEntity
      */
     private $children;
 
-
     /**
      * @var \DateTime
      * @ORM\Column(type="time", nullable=true)
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      * @Normal\DateTime(type="time")
      */
     private $beginTime;
@@ -61,39 +61,52 @@ class Task extends BaseEntity
     /**
      * @var \DateTime
      * @ORM\Column(type="time", nullable=true)
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      * @Normal\DateTime(type="time")
      */
     private $endTime;
 
     /**
-     * @var \DateTime
-     * @ORM\Column(type="date", nullable=true)
+     * @var ArrayCollection|TaskEntry[]
+     * @ORM\OneToMany(targetEntity="TaskBundle\Entity\TaskEntry", mappedBy="task")
      * @Groups({"full", "concise"})
-     * @Normal\DateTime()
+     * @MaxDepth(1)
+     * @Normal\Entity(className="TaskBundle\Entity\TaskEntry", isMultiple=true)
      */
-    private $deadline;
+    private $taskEntries;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->taskEntries = new ArrayCollection();
     }
 
     /**
-     * @return \DateTime
+     * @return ArrayCollection|TaskEntry[]
      */
-    public function getDeadline(): ?\DateTime
+    public function getTaskEntries()
     {
-        return $this->deadline;
+        return $this->taskEntries;
     }
 
     /**
-     * @param \DateTime $deadline
+     * @param TaskEntry $taskEntry
      * @return Task
      */
-    public function setDeadline(?\DateTime $deadline): Task
+    public function addTaskEntry(TaskEntry $taskEntry)
     {
-        $this->deadline = $deadline;
+        $this->taskEntries->add($taskEntry);
+
+        return $this;
+    }
+
+    /**
+     * @param TaskEntry $taskEntry
+     * @return Task
+     */
+    public function removeTaskEntry(TaskEntry $taskEntry)
+    {
+        $this->taskEntries->remove($taskEntry);
 
         return $this;
     }

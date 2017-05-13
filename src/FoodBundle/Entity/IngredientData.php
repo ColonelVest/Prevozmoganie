@@ -26,7 +26,7 @@ class IngredientData extends BaseEntity
     /**
      * @var float
      * @ORM\Column(type="float")
-     * @Serializer\Groups({"concise", "full"})
+     * @Serializer\Groups({"concise", "full", "nested"})
      */
     private $count;
 

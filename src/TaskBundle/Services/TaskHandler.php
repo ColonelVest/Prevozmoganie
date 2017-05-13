@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use TaskBundle\Entity\RepetitiveTask;
 use TaskBundle\Entity\Task;
+use TaskBundle\Entity\TaskEntry;
 use UserBundle\Entity\User;
 
 class TaskHandler extends EntityHandler
@@ -34,7 +35,7 @@ class TaskHandler extends EntityHandler
 
     protected function getRepository(): EntityRepository
     {
-        return $this->em->getRepository('TaskBundle:Task');
+        return $this->em->getRepository('TaskBundle:TaskEntry');
     }
 
     /**
@@ -45,19 +46,19 @@ class TaskHandler extends EntityHandler
     {
         $days = $this->helper->getDaysFromRepetitiveEntity($repetitiveTask);
 
-        $templateTask = (new Task())
+        $task = (new Task())
             ->setBeginTime($repetitiveTask->getBeginTime())
             ->setEndTime($repetitiveTask->getEndTime())
             ->setDescription($repetitiveTask->getDescription())
-            ->setUser($repetitiveTask->getUser())
+            ->setDaysBeforeDeadline($repetitiveTask->getDaysBeforeDeadline())
             ->setTitle($repetitiveTask->getTitle());
-
+        $this->em->persist($task);
         foreach ($days as $day) {
-            $deadlineDate = (clone $day)->modify('+'.$repetitiveTask->getDaysBeforeDeadline().'days');
-            $task = (clone $templateTask)
+            $taskEntry = (new TaskEntry())
                 ->setDate($day)
-                ->setDeadline($deadlineDate);
-            $this->em->persist($task);
+                ->setUser($repetitiveTask->getUser())
+                ->setTask($task);
+            $this->em->persist($taskEntry);
         }
 
         if ($repetitiveTask->isNewTasksCreate()) {
@@ -79,15 +80,29 @@ class TaskHandler extends EntityHandler
      */
     public function createTaskOfCreationNewEntities(\DateTime $date, User $user, $title, $deadLineOffset = 10)
     {
-        $newTasksCreateTask = (new Task())
-            ->setDate($date)
+        $taskOfCreationEntities = (new Task())
             ->setTitle($title)
+            ->setDaysBeforeDeadline($deadLineOffset);
+        $this->em->persist($taskOfCreationEntities);
+
+        $taskEntry = (new TaskEntry())
+            ->setTask($taskOfCreationEntities)
             ->setUser($user)
-            ->setDeadline((clone $date)->modify('+'.$deadLineOffset.'days'));
+            ->setDate($date);
+        $this->em->persist($taskEntry);
 
-        $this->em->persist($newTasksCreateTask);
-        $this->em->flush($newTasksCreateTask);
+        $this->em->flush($taskOfCreationEntities);
 
-        return $newTasksCreateTask;
+        return $taskOfCreationEntities;
+    }
+
+    /**
+     * @param $title
+     * @return null|object
+     */
+    protected function getTaskByName($title)
+    {
+        //TODO: Тут должен быть Id существующей записи. Пока не использую
+        return $this->getRepository()->findOneBy(['title' => $title]);
     }
 }

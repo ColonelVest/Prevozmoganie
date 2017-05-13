@@ -30,7 +30,7 @@ class Listener extends BaseEntity implements UserReferable
     /**
      * @var array
      * @ORM\Column(name="actions", type="array")
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      */
     private $actions = [];
 
@@ -38,7 +38,7 @@ class Listener extends BaseEntity implements UserReferable
      * @var string
      * @ORM\Column(type="string")
      * @Assert\NotNull()
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      */
     private $event;
 

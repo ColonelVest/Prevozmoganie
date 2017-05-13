@@ -19,7 +19,7 @@ class MealType extends BaseEntity implements UserReferable
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      */
     private $title;
 

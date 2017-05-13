@@ -58,7 +58,7 @@ abstract class BaseApiController extends FOSRestController
             }
             $result = $this->getHandler()->getEntities($criteria);
             if ($result->getIsSuccess()) {
-                $normalisedEntities = $this->normalizer->conciseNormalizeEntities($result->getData());
+                $normalisedEntities = $this->normalizer->normalizerNestedEntities($result->getData());
                 $result = Result::createSuccessResult($normalisedEntities);
             }
         }
@@ -192,7 +192,7 @@ abstract class BaseApiController extends FOSRestController
             if ($isFullNormalization) {
                 $normalizedPeriod = $this->normalizer->fullNormalize($result->getData());
             } else {
-                $normalizedPeriod = $this->normalizer->conciseNormalize($result->getData());
+                $normalizedPeriod = $this->normalizer->normalizeNested($result->getData());
             }
             $result->setData($normalizedPeriod);
         }

@@ -19,7 +19,7 @@ class Dish extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"concise", "full"})
+     * @Groups({"concise", "full", "nested"})
      */
     private $title;
 

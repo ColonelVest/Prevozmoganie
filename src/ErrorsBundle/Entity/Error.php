@@ -37,7 +37,7 @@ class Error extends BaseEntity implements UserReferable
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"concise", "full"})
+     * @Groups({"concise", "full", "nested"})
      */
     private $title;
 
@@ -66,7 +66,7 @@ class Error extends BaseEntity implements UserReferable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      */
     private $isFixed = false;
 

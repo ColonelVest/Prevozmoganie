@@ -19,8 +19,33 @@ class TaskControllerTest extends BaseApiControllerTest
 
         $this->gets('tasks', $params);
     }
+//
+//    public function testPostRTasksAction()
+//    {
+//        $client = static::createClient();
+//        $token = $this->getUserToken();
+//
+//        $data = [
+//            'token' => $token->getData(),
+//            'task' => [
+//                'title' => 'test task',
+//                'description' => 'test task description',
+//                'beginDate' => (new \DateTime())->format('dmY'),
+//                'endDate' => (new \DateTime('+5 days'))->format('dmY'),
+//                'weekFrequency' => 1,
+//                'beginTime' => '15:00',
+//                'endTime' => '17:00',
+//                'daysBeforeDeadline' => 4
+//            ],
+//        ];
+//
+//        $url = '/api/v1/rtasks';
+//        $client->request('POST', $url, $data);
+//        $response = $client->getResponse();
+//        $this->assertApiResponse($response);
+//    }
 
-    protected function tPostAction()
+    public function testPostAction()
     {
         $client = static::createClient();
         $token = $this->getUserToken();
@@ -44,7 +69,10 @@ class TaskControllerTest extends BaseApiControllerTest
         $this->assertPostSingleObjectResponse($response, \TaskBundle\Entity\Task::class);
     }
 
-    protected function tPutAction()
+    /**
+     * @depends testGetAction
+     */
+    public function testPutAction()
     {
         $client = static::createClient();
         $token = $this->getUserToken();
@@ -68,7 +96,10 @@ class TaskControllerTest extends BaseApiControllerTest
         $this->assertPostSingleObjectResponse($response, \TaskBundle\Entity\Task::class);
     }
 
-    protected function tGetAction()
+    /**
+     * @depends testPostAction
+     */
+    public function testGetAction()
     {
         $client = static::createClient();
         $token = $this->getUserToken();
@@ -84,7 +115,10 @@ class TaskControllerTest extends BaseApiControllerTest
         //TODO: Добавить возврат нужного объекта, когда будет очередность вызова методов
     }
 
-    protected function tDeleteAction()
+    /**
+     * @depends testPutAction
+     */
+    public function testDeleteAction()
     {
         $client = static::createClient();
         $token = $this->getUserToken();

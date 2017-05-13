@@ -9,3 +9,9 @@ services:
             - '@api_response_formatter'
             - '@validator'
             - '@base_helper'
+    task_entry_handler:
+        class: TaskBundle\Services\TaskEntryHandler
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@api_response_formatter'
+            - '@validator'

@@ -3,6 +3,7 @@
 namespace BaseBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use UserBundle\Entity\User;
 
 class DayRepository extends EntityRepository
 {

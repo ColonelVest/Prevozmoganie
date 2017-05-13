@@ -39,7 +39,7 @@ class Period extends BaseEntity implements UserReferable
      * @var string
      * Gedmo\Versioned
      * @ORM\Column(type="string")
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      */
     private $description;
 
@@ -54,14 +54,14 @@ class Period extends BaseEntity implements UserReferable
     /**
      * @var \DateTime
      * @ORM\Column(type="time")
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      * @Normal\DateTime(type="time")
      */
     private $begin;
 
     /**
      * @var \DateTime
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      * @ORM\Column(type="time")
      * @Assert\NotNull()
      * @Normal\DateTime(type="time")
@@ -71,7 +71,7 @@ class Period extends BaseEntity implements UserReferable
     /**
      * @var \DateTime
      * @ORM\Column(type="date", nullable=false)
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      * @Normal\DateTime(type="date")
      */
     private $date;

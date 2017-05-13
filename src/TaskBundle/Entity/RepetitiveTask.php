@@ -52,7 +52,7 @@ class RepetitiveTask implements UserReferable, RepetitiveInterface
     /**
      * @var number
      */
-    private $weekFrequency;
+    private $weekFrequency = 1;
 
     /**
      * @var bool

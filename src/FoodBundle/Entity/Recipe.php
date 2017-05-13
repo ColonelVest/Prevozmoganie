@@ -20,7 +20,7 @@ class Recipe extends BaseEntity
 
     /**
      * @var string
-     * @Serializer\Groups({"concise", "full"})
+     * @Serializer\Groups({"concise", "full", "nested"})
      * @ORM\Column(type="string")
      */
     private $title;

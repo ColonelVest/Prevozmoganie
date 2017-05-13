@@ -18,11 +18,6 @@ use Symfony\Component\Console\Output\NullOutput;
 
 abstract class BaseApiControllerTest extends WebTestCase
 {
-    abstract protected function tPostAction();
-    abstract protected function tPutAction();
-    abstract protected function tGetAction();
-    abstract protected function tDeleteAction();
-
     /**
      * Run console command
      * @param string $name
@@ -127,13 +122,5 @@ abstract class BaseApiControllerTest extends WebTestCase
         $decodedResponse = json_decode($response->getContent(), true);
         $createdObject = $this->getEntityManager()->find($entityName, $decodedResponse['data']['id']);
         $this->assertNotNull($createdObject, 'new object' . $entityName . 'not found');
-    }
-
-    public function testCRUD()
-    {
-        $this->tPostAction();
-        $this->tGetAction();
-        $this->tPutAction();
-        $this->tDeleteAction();
     }
 }

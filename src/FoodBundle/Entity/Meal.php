@@ -20,14 +20,14 @@ class Meal extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      */
     private $title;
 
     /**
      * @var MealType
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\MealType")
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      */
     private $mealType;
 
@@ -38,7 +38,7 @@ class Meal extends BaseEntity
      *      joinColumns={@ORM\JoinColumn(name="meal_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="dish_id", referencedColumnName="id")}
      *      )
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      */
     private $dishes;
 

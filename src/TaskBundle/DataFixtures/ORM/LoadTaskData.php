@@ -8,6 +8,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use TaskBundle\Entity\Task;
+use TaskBundle\Entity\TaskEntry;
+use UserBundle\Entity\User;
 
 class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -20,24 +22,34 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     public function load(ObjectManager $manager)
     {
+        /** @var User $user */
+        $user = $this->getReference('fixt_user');
         foreach ($this->tasks as $index => $item) {
-            $task = new Task();
-            $task->setTitle($item[0]);
-            $task->setDescription($item[1]);
+            $task = (new Task())
+                ->setTitle($item[0])
+                ->setDescription($item[1])
+                ->setDaysBeforeDeadline(2);
+            $manager->persist($task);
+            $this->addReference('task'.$index, $task);
+
             if (isset($item[2])) {
                 foreach ($item[2] as $dateString) {
                     $date = \DateTime::createFromFormat('dmY', $dateString);
-                    $task->setDate($date);
-                    $manager->persist($task);
-                    $this->addReference('task'.$index.$dateString, $task);
-                    $task->setUser($this->getReference('fixt_user'));
+                    $taskEntry = (new TaskEntry())
+                        ->setDate($date)
+                        ->setTask($task)
+                        ->setUser($user);
+                    $manager->persist($taskEntry);
+                    $this->addReference('task_entry'.$index.$dateString, $task);
                 }
             } else {
-                $manager->persist($task);
-                $this->addReference('task'.$index, $task);
-                $task->setUser($this->getReference('fixt_user'));
+                $taskEntry = (new TaskEntry())
+                    ->setTask($task)
+                    ->setUser($user);
+                $manager->persist($taskEntry);
             }
         }
+
         $manager->flush();
     }
 

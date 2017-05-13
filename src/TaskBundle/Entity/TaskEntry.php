@@ -12,6 +12,7 @@ use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Entity\UserReferable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use UserBundle\Entity\User;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
 
@@ -25,7 +26,8 @@ class TaskEntry extends BaseEntity implements UserReferable
 {
     /**
      * @var \DateTime
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
+     * @Normal\DateTime()
      */
     protected $date;
 
@@ -38,7 +40,7 @@ class TaskEntry extends BaseEntity implements UserReferable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      */
     protected $isCompleted = false;
 
@@ -46,7 +48,8 @@ class TaskEntry extends BaseEntity implements UserReferable
      * @var Task
      * @ORM\ManyToOne(targetEntity="TaskBundle\Entity\Task")
      * @Normal\Entity(className="TaskBundle\Entity\Task")
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
+     * @MaxDepth(1)
      */
     protected $task;
 
@@ -55,6 +58,33 @@ class TaskEntry extends BaseEntity implements UserReferable
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
     protected $user;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="date", nullable=true)
+     * @Normal\DateTime()
+     * @Groups({"full", "concise", "nested"})
+     */
+    protected $deadLine;
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeadLine(): ?\DateTime
+    {
+        return $this->deadLine;
+    }
+
+    /**
+     * @param \DateTime $deadLine
+     * @return TaskEntry
+     */
+    public function setDeadLine(?\DateTime $deadLine): TaskEntry
+    {
+        $this->deadLine = $deadLine;
+
+        return $this;
+    }
 
     /**
      * @return \DateTime

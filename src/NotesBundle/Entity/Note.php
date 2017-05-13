@@ -46,14 +46,14 @@ class Note extends BaseEntity implements UserReferable
      * @ORM\Column(type="string")
      * @Assert\Length(max=50, maxMessage="too_long_note_title"))
      * @Gedmo\Versioned
-     * @Groups({"concise", "full"})
+     * @Groups({"concise", "full", "nested"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=2048)
      * @Gedmo\Versioned
-     * @Groups({"concise", "full"})
+     * @Groups({"concise", "full", "nested"})
      */
     private $body;
 

@@ -18,7 +18,7 @@ class MealEntry extends BaseEntity implements UserReferable
     /**
      * @var Meal
      * @ORM\ManyToOne(targetEntity="FoodBundle\Entity\Meal")
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      * @Normal\Entity(className="FoodBundle\Entity\Meal")
      */
     private $meal;
@@ -32,7 +32,7 @@ class MealEntry extends BaseEntity implements UserReferable
     /**
      * @var \DateTime
      * @ORM\Column(type="date")
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      * @Normal\DateTime()
      */
     private $date;
@@ -40,7 +40,7 @@ class MealEntry extends BaseEntity implements UserReferable
     /**
      * @var bool
      * @ORM\Column(type="boolean")
-     * @Serializer\Groups({"full", "concise"})
+     * @Serializer\Groups({"full", "concise", "nested"})
      */
     private $isPerformed = false;
 

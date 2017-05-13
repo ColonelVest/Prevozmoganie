@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use TaskBundle\Entity\Task;
+use UserBundle\Entity\User;
 
 class DefaultController extends Controller
 {
@@ -26,12 +27,9 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        foreach ($em->getRepository('FoodBundle:M')->findAll() as $item) {
-            $em->remove($item);
-        }
-        $em->flush();
-
-
+        /** @var User $user */
+        $user = $em->getRepository('UserBundle:User')->findOneBy(['username' => 'angry']);
+        $token = $this->get('token_handler')->encode('angry', $user->getPassword());
 //        $this->get('food.services.recipe_normalizer')->fullNormalize($em->getRepository('FoodBundle:Recipe')->findOneBy([]));
 //        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
 //        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);

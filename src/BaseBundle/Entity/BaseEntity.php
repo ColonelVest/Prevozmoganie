@@ -23,7 +23,7 @@ class BaseEntity
     /**
      * @var integer
      * @ORM\Id
-     * @Groups({"full", "concise"})
+     * @Groups({"full", "concise", "nested"})
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */

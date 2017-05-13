@@ -37,7 +37,7 @@ class PVNormalizer extends ObjectNormalizer
                 if ($entityData = $propertyData->getClassData()) {
                     if ($entityData->isMultiple) {
                         $callback = function ($entities) {
-                            return $this->conciseNormalizeEntities($entities);
+                            return $this->normalizerNestedEntities($entities);
                         };
                     } else {
                         $callback = $this->getNormalizeEntityCallback();
@@ -57,17 +57,17 @@ class PVNormalizer extends ObjectNormalizer
         return parent::normalize($object, $format, $context);
     }
 
-    public function conciseNormalize($entity)
+    public function normalizeNested($entity)
     {
-        return $this->normalize($entity, null, ['groups' => ['concise']]);
+        return $this->normalize($entity, null, ['groups' => ['nested']]);
     }
 
-    public function conciseNormalizeEntities($entities)
+    public function normalizerNestedEntities($entities)
     {
         $data = [];
         if (is_array($entities)) {
             foreach ($entities as $entity) {
-                $data[] = $this->conciseNormalize($entity);
+                $data[] = $this->normalizeNested($entity);
             }
         }
 
@@ -82,7 +82,7 @@ class PVNormalizer extends ObjectNormalizer
     protected function getNormalizeEntityCallback()
     {
         return function ($entity) {
-            return $this->conciseNormalize($entity);
+            return $this->normalizeNested($entity);
         };
     }
 
