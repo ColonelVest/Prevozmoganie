@@ -45,11 +45,11 @@ class Period extends BaseEntity implements UserReferable
 
     /**
      * @var Task
-     * @ORM\OneToOne(targetEntity="Task", mappedBy="period")
+     * @ORM\OneToOne(targetEntity="TaskBundle\Entity\TaskEntry", mappedBy="period")
      * @Groups({"full"})
-     * @Normal\Entity(className="TaskBundle\Entity\Task")
+     * @Normal\Entity(className="TaskBundle\Entity\TaskEntry")
      */
-    private $task;
+    private $taskEntry;
 
     /**
      * @var \DateTime
@@ -139,15 +139,18 @@ class Period extends BaseEntity implements UserReferable
     /**
      * @return mixed
      */
-    public function getTask() {
-        return $this->task;
+    public function getTaskEntry() {
+        return $this->taskEntry;
     }
 
     /**
-     * @param mixed $task
+     * @param TaskEntry $taskEntry
+     * @return Period
      */
-    public function setTask($task) {
-        $this->task = $task;
+    public function setTaskEntry($taskEntry) {
+        $this->taskEntry = $taskEntry;
+
+        return $this;
     }
 
     /**

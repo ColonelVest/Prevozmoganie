@@ -27,19 +27,22 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        /** @var User $user */
-        $user = $em->getRepository('UserBundle:User')->findOneBy(['username' => 'angry']);
-        $token = $this->get('token_handler')->encode('angry', $user->getPassword());
-//        $this->get('food.services.recipe_normalizer')->fullNormalize($em->getRepository('FoodBundle:Recipe')->findOneBy([]));
-//        $user = $em->find('UserBundle:User', 1)->getAchievements()->toArray();
-//        $result = $this->get('base_helper')->getArrayWithKeysByMethodName($entities);
-//        $this->get('achievement_manager')->generate();
-//        /** @var Task $task */
-//        $task = $em->getRepository('TaskBundle:Task')->findOneBy(['title' => 'Прибраться в квартире', 'date' => \DateTime::createFromFormat('dmY', '09042017')]);
-//        $task->setIsCompleted(false);
-//        $task->setDate((clone($task->getDate())->modify('-1 day')));
+        $data = [
+            'title' => 'test task',
+            'description' => 'test task description',
+            'taskEntries' => [
+                [
+                    'isCompleted' => true,
+                ]
+            ],
+//            'date' => (new \DateTime())->format('dmY'),
+//            'beginTime' => new \DateTime(),
+            'endTime' => '17:00',
+//            'deadline' => (new \DateTime('+4 days'))->format('dmY')
+        ];
+        $normalizer = $this->get('pv_normalizer');
+        $task = $this->get('pv_normalizer')->denormalize($data, Task::class);
 //        $em->flush();
-        /** @var MealEntry $item */
 
         return [];
     }

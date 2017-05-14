@@ -6,7 +6,11 @@ use BaseBundle\Lib\Serialization\Annotation\Normal\Entity;
 use BaseBundle\Lib\Serialization\Mapping\PVAttributeMetadata;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class PVNormalizer extends ObjectNormalizer
@@ -16,9 +20,15 @@ class PVNormalizer extends ObjectNormalizer
     /** @var  AnnotationReader $reader */
     private $reader;
 
-    public function __construct(ClassMetadataFactory $factory, EntityManager $em, AnnotationReader $reader)
-    {
-        parent::__construct($factory);
+    public function __construct(
+        ClassMetadataFactory $factory,
+        NameConverterInterface $nameConverter,
+        PropertyAccessorInterface $propertyAccessor,
+        PropertyTypeExtractorInterface $propertyTypeExtractor,
+        EntityManager $em,
+        AnnotationReader $reader
+    ) {
+        parent::__construct($factory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
         $this->em = $em;
         $this->reader = $reader;
     }
@@ -37,7 +47,7 @@ class PVNormalizer extends ObjectNormalizer
                 if ($entityData = $propertyData->getClassData()) {
                     if ($entityData->isMultiple) {
                         $callback = function ($entities) {
-                            return $this->normalizerNestedEntities($entities);
+                            return $this->normalizeNestedEntities($entities);
                         };
                     } else {
                         $callback = $this->getNormalizeEntityCallback();
@@ -57,12 +67,17 @@ class PVNormalizer extends ObjectNormalizer
         return parent::normalize($object, $format, $context);
     }
 
+    public function denormalize($data, $class, $format = null, array $context = array())
+    {
+        return parent::denormalize($data, $class, $format, $context);
+    }
+
     public function normalizeNested($entity)
     {
         return $this->normalize($entity, null, ['groups' => ['nested']]);
     }
 
-    public function normalizerNestedEntities($entities)
+    public function normalizeNestedEntities($entities)
     {
         $data = [];
         if (is_array($entities)) {
@@ -72,6 +87,14 @@ class PVNormalizer extends ObjectNormalizer
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDenormalization($data, $type, $format = null)
+    {
+        return $type !== 'DateTime' && class_exists($type);
     }
 
     public function fullNormalize($entity)

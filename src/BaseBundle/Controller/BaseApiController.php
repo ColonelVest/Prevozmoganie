@@ -58,7 +58,7 @@ abstract class BaseApiController extends FOSRestController
             }
             $result = $this->getHandler()->getEntities($criteria);
             if ($result->getIsSuccess()) {
-                $normalisedEntities = $this->normalizer->normalizerNestedEntities($result->getData());
+                $normalisedEntities = $this->normalizer->normalizeNestedEntities($result->getData());
                 $result = Result::createSuccessResult($normalisedEntities);
             }
         }

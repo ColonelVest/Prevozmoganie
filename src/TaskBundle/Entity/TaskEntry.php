@@ -28,11 +28,12 @@ class TaskEntry extends BaseEntity implements UserReferable
      * @var \DateTime
      * @ORM\Column(type="date", nullable=true)
      * @Normal\DateTime()
+     * @Groups({"full", "concise", "nested"})
      */
     protected $date;
 
     /**
-     * @ORM\OneToOne(targetEntity="Period", inversedBy="task")
+     * @ORM\OneToOne(targetEntity="Period", inversedBy="taskEntry")
      * @Normal\Entity(className="TaskBundle\Entity\Period")
      */
     protected $period;
@@ -46,10 +47,9 @@ class TaskEntry extends BaseEntity implements UserReferable
 
     /**
      * @var Task
-     * @ORM\ManyToOne(targetEntity="TaskBundle\Entity\Task")
+     * @ORM\ManyToOne(targetEntity="TaskBundle\Entity\Task", inversedBy="taskEntries")
      * @Normal\Entity(className="TaskBundle\Entity\Task")
      * @Groups({"full", "concise", "nested"})
-     * @MaxDepth(1)
      */
     protected $task;
 

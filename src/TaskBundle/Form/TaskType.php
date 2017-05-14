@@ -18,20 +18,11 @@ class TaskType extends AbstractType
         $builder
             ->add('title', TextType::class)
             ->add('description', TextType::class)
-            ->add('isCompleted', CheckboxType::class)
-            ->add('date', DateType::class, [
-                'format' => 'ddMMyyyy',
-                'widget' => 'single_text',
-            ])
             ->add('id', IntegerType::class, ['mapped' => false])
             ->add('beginTime', TimeType::class, [
                 'widget' => 'single_text'
             ])
             ->add('endTime', TimeType::class, ['widget' => 'single_text'])
-            ->add('deadline', DateType::class, [
-                'format' => 'ddMMyyyy',
-                'widget' => 'single_text',
-            ])
         ;
     }
 

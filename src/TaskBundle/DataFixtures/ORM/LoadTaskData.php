@@ -27,8 +27,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
         foreach ($this->tasks as $index => $item) {
             $task = (new Task())
                 ->setTitle($item[0])
-                ->setDescription($item[1])
-                ->setDaysBeforeDeadline(2);
+                ->setDescription($item[1]);
             $manager->persist($task);
             $this->addReference('task'.$index, $task);
 
@@ -38,6 +37,7 @@ class LoadTaskData extends AbstractFixture implements OrderedFixtureInterface, C
                     $taskEntry = (new TaskEntry())
                         ->setDate($date)
                         ->setTask($task)
+                        ->setDeadLine((clone $date)->add(new \DateInterval('P2D')))
                         ->setUser($user);
                     $manager->persist($taskEntry);
                     $this->addReference('task_entry'.$index.$dateString, $task);

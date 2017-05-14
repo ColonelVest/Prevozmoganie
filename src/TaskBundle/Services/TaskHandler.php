@@ -50,13 +50,13 @@ class TaskHandler extends EntityHandler
             ->setBeginTime($repetitiveTask->getBeginTime())
             ->setEndTime($repetitiveTask->getEndTime())
             ->setDescription($repetitiveTask->getDescription())
-            ->setDaysBeforeDeadline($repetitiveTask->getDaysBeforeDeadline())
             ->setTitle($repetitiveTask->getTitle());
         $this->em->persist($task);
         foreach ($days as $day) {
             $taskEntry = (new TaskEntry())
                 ->setDate($day)
                 ->setUser($repetitiveTask->getUser())
+                ->setDeadLine((clone $day)->modify('+' . $repetitiveTask->getDaysBeforeDeadline() . 'days'))
                 ->setTask($task);
             $this->em->persist($taskEntry);
         }
@@ -81,14 +81,14 @@ class TaskHandler extends EntityHandler
     public function createTaskOfCreationNewEntities(\DateTime $date, User $user, $title, $deadLineOffset = 10)
     {
         $taskOfCreationEntities = (new Task())
-            ->setTitle($title)
-            ->setDaysBeforeDeadline($deadLineOffset);
+            ->setTitle($title);
         $this->em->persist($taskOfCreationEntities);
 
         $taskEntry = (new TaskEntry())
             ->setTask($taskOfCreationEntities)
             ->setUser($user)
-            ->setDate($date);
+            ->setDate($date)
+            ->setDeadLine((clone $date)->modify('+' . $deadLineOffset . 'days'));
         $this->em->persist($taskEntry);
 
         $this->em->flush($taskOfCreationEntities);

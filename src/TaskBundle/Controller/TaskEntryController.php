@@ -8,7 +8,6 @@
 
 namespace TaskBundle\Controller;
 
-
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
@@ -16,6 +15,8 @@ use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use TaskBundle\Entity\TaskEntry;
+use TaskBundle\Form\TaskEntryType;
 
 class TaskEntryController extends BaseApiController
 {
@@ -51,6 +52,38 @@ class TaskEntryController extends BaseApiController
         $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
 
         return $this->getEntitiesByCriteria($request, $criteria);
+    }
+
+    /**
+     * @Rest\View
+     * @param Request $request
+     * @return array
+     */
+    public function postTaskentriesAction(Request $request)
+    {
+        return $this->createEntity($request, TaskEntry::class, TaskEntryType::class);
+    }
+
+    /**
+     * @Rest\View
+     * @param $taskEntryId
+     * @param Request $request
+     * @return array
+     */
+    public function deleteTaskentryAction($taskEntryId, Request $request)
+    {
+        return $this->removeEntityById($taskEntryId, $request);
+    }
+
+    /**
+     * @Rest\View
+     * @param Request $request
+     * @param $taskEntryId
+     * @return array
+     */
+    public function putTaskentriesAction(Request $request, $taskEntryId)
+    {
+        return $this->editEntity($request, $taskEntryId, TaskEntryType::class);
     }
     
     protected function getHandler(): EntityHandler
