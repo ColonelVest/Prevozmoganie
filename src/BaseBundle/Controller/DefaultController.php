@@ -33,12 +33,12 @@ class DefaultController extends Controller
             'taskEntries' => [
                 [
                     'isCompleted' => true,
+                    'date' => '22021991'
                 ]
             ],
 //            'date' => (new \DateTime())->format('dmY'),
-//            'beginTime' => new \DateTime(),
+            'beginTime' => '15:00',
             'endTime' => '17:00',
-//            'deadline' => (new \DateTime('+4 days'))->format('dmY')
         ];
         $normalizer = $this->get('pv_normalizer');
         $task = $this->get('pv_normalizer')->denormalize($data, Task::class);
