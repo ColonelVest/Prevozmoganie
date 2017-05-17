@@ -76,6 +76,49 @@ class PVNormalizer extends ObjectNormalizer
         return parent::normalize($object, $format, $context);
     }
 
+    //TODO: Кучу всяческих валидаций
+    public function fillEntity($entity, $dataToFill, $byIds = true)
+    {
+        $metadata = $this->classMetadataFactory->getMetadataFor($entity)->getAttributesMetadata();
+        foreach ($dataToFill as $fieldName => $value) {
+            /** @var PVAttributeMetadata $fieldMeta */
+            $fieldMeta = $metadata[$fieldName];
+            if (!is_null($fieldMeta->getDateTimeFormat())) {
+                $fieldData = \DateTime::createFromFormat($fieldMeta->getDateTimeFormat(), $value);
+            } elseif (!is_null($classData = $fieldMeta->getClassData())) {
+                $fieldData = $this->fillEntityField($value, $classData->className, $classData->isMultiple, $byIds);
+            } else {
+                $fieldData = $value;
+            }
+
+            $this->setAttributeValue($entity, $fieldName, $fieldData);
+        }
+
+        return $entity;
+    }
+
+    private function fillEntityField($data, $className, $isMultiple, $byIds)
+    {
+        if ($isMultiple) {
+            $fieldData = [];
+            foreach ($data as $item) {
+                if ($byIds) {
+                    $fieldData[] = $this->getEntityById($className, $item);
+                } else {
+                    $fieldData[] = $this->denormalize($item, $className);
+                }
+            }
+        } else {
+            if ($byIds) {
+                $fieldData = $this->getEntityById($className, $data);
+            } else {
+                $fieldData = $this->denormalize($data, $className);
+            }
+        }
+
+        return $fieldData;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -133,6 +176,11 @@ class PVNormalizer extends ObjectNormalizer
         return $object;
     }
 
+    private function getEntityById($className, $id)
+    {
+        return $this->em->find($className, $id);
+    }
+
     public function normalizeNested($entity)
     {
         return $this->normalize($entity, null, ['groups' => ['nested']]);
@@ -178,7 +226,7 @@ class PVNormalizer extends ObjectNormalizer
         $expectedTypes = array();
         foreach ($types as $type) {
             if (null === $data && $type->isNullable()) {
-                return;
+                return null;
             }
 
             if ($type->isCollection() && null !== ($collectionValueType = $type->getCollectionValueType()) && Type::BUILTIN_TYPE_OBJECT === $collectionValueType->getBuiltinType()) {

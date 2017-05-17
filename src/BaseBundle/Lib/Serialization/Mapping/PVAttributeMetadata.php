@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Mapping\AttributeMetadata;
 class PVAttributeMetadata extends AttributeMetadata
 {
     /**
-     * @var array
+     * @var Entity
      */
     public $classData;
 
@@ -18,7 +18,7 @@ class PVAttributeMetadata extends AttributeMetadata
     public $dateTimeFormat;
 
     /**
-     * @return mixed
+     * @return Entity
      */
     public function getClassData()
     {

@@ -136,11 +136,11 @@ abstract class BaseApiController extends FOSRestController
      *
      * @param $entity
      * @param Request $request
-     * @param $type
+     * @param $entityName
      * @param bool $setUser
      * @return Result
      */
-    protected function fillEntityByRequest($entity, Request $request, $type, $setUser = false): Result
+    protected function fillEntityByRequest($entity, Request $request, $entityName, $setUser = false): Result
     {
         if ($setUser && $entity instanceof UserReferable) {
             $userResult = $this->getRequestUser($request);
@@ -149,12 +149,10 @@ abstract class BaseApiController extends FOSRestController
             }
             $entity->setUser($userResult->getData());
         }
-
-        $form = $this->createForm($type, $entity);
-        $form->submit($request->get($form->getName()));
-        if (!$form->isValid()) {
+        $this->get('pv_normalizer')->fillEntity($entity, $request->get($entityName));
+        if (!($errors = $this->get('validator')->validate($entity))) {
             $result = Result::createErrorResult();
-            foreach ($form->getErrors(true) as $error) {
+            foreach ($errors as $error) {
                 /** @var FormError $error */
                 $message = $error->getMessage();
                 $result->addError(intval($message));
