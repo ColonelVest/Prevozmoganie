@@ -3,6 +3,7 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Entity\DateCondition;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
@@ -10,9 +11,8 @@ use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
-use TaskBundle\Entity\RepetitiveTask;
+use Symfony\Component\HttpKernel\KernelEvents;
 use TaskBundle\Entity\Task;
-use TaskBundle\Form\RepetitiveTaskType;
 use TaskBundle\Form\TaskType;
 
 class TaskController extends BaseApiController
@@ -53,6 +53,7 @@ class TaskController extends BaseApiController
                 return $this->getResponseByResultObj($result);
             }
         }
+//        KernelEvents::CONTROLLER
         $expr = Criteria::expr();
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
@@ -71,15 +72,15 @@ class TaskController extends BaseApiController
         return $this->removeEntityById($id, $request);
     }
 
-    /**
-     * @Rest\View
-     * @param Request $request
-     * @return Task
-     */
-    public function postTasksAction(Request $request)
-    {
-        return $this->createEntity($request, Task::class, TaskType::class);
-    }
+//    /**
+//     * @Rest\View
+//     * @param Request $request
+//     * @return Task
+//     */
+//    public function postTasksAction(Request $request)
+//    {
+//        return $this->createEntity($request, Task::class, 'task');
+//    }
 
     /**
      * @Rest\View
@@ -88,8 +89,10 @@ class TaskController extends BaseApiController
      */
     public function postRtasksAction(Request $request)
     {
-        $result = $this->fillEntityByRequest(new RepetitiveTask(), $request, RepetitiveTaskType::class, true);
+        $result = $this->fillEntityByRequest(new Task(), $request, 'task', true);
         if ($result->getIsSuccess()) {
+            $task = $result->getData();
+            $this->getUser();
             $result = $this->get('task_handler')->generateRepetitiveTasks($result->getData());
         }
 

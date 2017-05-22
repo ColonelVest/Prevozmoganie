@@ -7,6 +7,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use FoodBundle\Entity\Dish;
 use FoodBundle\Entity\Recipe;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class DishSubscriber implements EventSubscriber
 {
@@ -18,7 +20,7 @@ class DishSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::prePersist => 'prePersist'
+            Events::prePersist => 'prePersist',
         ];
     }
 

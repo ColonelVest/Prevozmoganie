@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class BaseApiController extends FOSRestController
+abstract class BaseApiController extends FOSRestController implements TokenAuthenticatedController
 {
     /** @var  EntityManager $em */
     protected $em;
@@ -77,9 +77,9 @@ abstract class BaseApiController extends FOSRestController
         return $this->getResponseByResultObj($result);
     }
 
-    protected function createEntity(Request $request, $entityType, $entityForm, $withUser = true)
+    protected function createEntity(Request $request, $entityType, $entityName, $withUser = true)
     {
-        $result = $this->fillEntityByRequest(new $entityType(), $request, $entityForm, $withUser);
+        $result = $this->fillEntityByRequest(new $entityType(), $request, $entityName, $withUser);
         if ($result->getIsSuccess()) {
             $result = $this->getHandler()->create($result->getData());
             $result = $this->normalizeByResult($result, true);
@@ -138,9 +138,10 @@ abstract class BaseApiController extends FOSRestController
      * @param Request $request
      * @param $entityName
      * @param bool $setUser
+     * @param array $unMappedFields
      * @return Result
      */
-    protected function fillEntityByRequest($entity, Request $request, $entityName, $setUser = false): Result
+    protected function fillEntityByRequest($entity, Request $request, $entityName, $setUser = false, $unMappedFields = []): Result
     {
         if ($setUser && $entity instanceof UserReferable) {
             $userResult = $this->getRequestUser($request);
@@ -149,7 +150,7 @@ abstract class BaseApiController extends FOSRestController
             }
             $entity->setUser($userResult->getData());
         }
-        $this->get('pv_normalizer')->fillEntity($entity, $request->get($entityName));
+        $this->get('pv_normalizer')->fillEntity($entity, $request->get($entityName), $unMappedFields);
         if (!($errors = $this->get('validator')->validate($entity))) {
             $result = Result::createErrorResult();
             foreach ($errors as $error) {

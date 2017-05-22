@@ -30,18 +30,12 @@ class DefaultController extends Controller
         $data = [
             'title' => 'test task',
             'description' => 'test task description',
-            'taskEntries' => [
-                [
-                    'isCompleted' => true
-                ],
-                [
-                    'isCompleted' => false
-                ]
-            ],
+            'taskEntries' => [12],
 //            'date' => (new \DateTime())->format('dmY'),
             'beginTime' => '15:00',
             'endTime' => '17:00',
         ];
+        $em->persist(new Task());
         $normalizer = $this->get('pv_normalizer');
         $task = $this->get('pv_normalizer')->fillEntity(new Task(), $data, false);
 //        $em->flush();

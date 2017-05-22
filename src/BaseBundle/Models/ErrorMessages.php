@@ -29,6 +29,7 @@ class ErrorMessages
     const INCORRECT_PASSWORD = 10;
     const INCORRECT_TOKEN = 11;
     const NOT_AUTHORIZED = 12;
+    const TOKEN_MISSING = 15;
     const PERMISSION_DENIED = 13;
     const MEALS_DATE_INCORRECT = 14;
 

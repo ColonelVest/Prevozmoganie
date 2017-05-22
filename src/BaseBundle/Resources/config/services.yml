@@ -34,3 +34,12 @@ services:
     calls: [[setSerializer, ['@serializer']]]
     tags:
         - { name: serializer.normalizer }
+
+  pv.authentication_subscriber:
+    class: BaseBundle\EventListener\AuthenticationSubscriber
+    arguments:
+        - '@token_handler'
+        - '@security.token_storage'
+        - '%fos_user.firewall_name%'
+    tags:
+        - {name: kernel.event_subscriber}

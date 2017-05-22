@@ -77,43 +77,39 @@ class PVNormalizer extends ObjectNormalizer
     }
 
     //TODO: Кучу всяческих валидаций
-    public function fillEntity($entity, $dataToFill, $byIds = true)
+    public function fillEntity($entity, $dataToFill, $unMappedFields = [])
     {
         $metadata = $this->classMetadataFactory->getMetadataFor($entity)->getAttributesMetadata();
         foreach ($dataToFill as $fieldName => $value) {
-            /** @var PVAttributeMetadata $fieldMeta */
-            $fieldMeta = $metadata[$fieldName];
-            if (!is_null($fieldMeta->getDateTimeFormat())) {
-                $fieldData = \DateTime::createFromFormat($fieldMeta->getDateTimeFormat(), $value);
-            } elseif (!is_null($classData = $fieldMeta->getClassData())) {
-                $fieldData = $this->fillEntityField($value, $classData->className, $classData->isMultiple, $byIds);
-            } else {
-                $fieldData = $value;
-            }
+            if (isset($metadata[$fieldName])) {
+                /** @var PVAttributeMetadata $fieldMeta */
+                $fieldMeta = $metadata[$fieldName];
+                if (!is_null($fieldMeta->getDateTimeFormat())) {
+                    $fieldData = \DateTime::createFromFormat($fieldMeta->getDateTimeFormat(), $value);
+                } elseif (!is_null($classData = $fieldMeta->getClassData())) {
+                    $fieldData = $this->fillEntityField($value, $classData->className, $classData->isMultiple);
+                } else {
+                    $fieldData = $value;
+                }
 
-            $this->setAttributeValue($entity, $fieldName, $fieldData);
+                $this->setAttributeValue($entity, $fieldName, $fieldData);
+            } elseif (!in_array($fieldName, $unMappedFields)) {
+                throw new NormalizationException('field "' . $fieldName . '" is extra');
+            }
         }
 
         return $entity;
     }
 
-    private function fillEntityField($data, $className, $isMultiple, $byIds)
+    private function fillEntityField($data, $className, $isMultiple)
     {
         if ($isMultiple) {
             $fieldData = [];
             foreach ($data as $item) {
-                if ($byIds) {
-                    $fieldData[] = $this->getEntityById($className, $item);
-                } else {
-                    $fieldData[] = $this->denormalize($item, $className);
-                }
+                $fieldData[] = $this->getEntityById($className, $item);
             }
         } else {
-            if ($byIds) {
-                $fieldData = $this->getEntityById($className, $data);
-            } else {
-                $fieldData = $this->denormalize($data, $className);
-            }
+            $fieldData = $this->getEntityById($className, $data);
         }
 
         return $fieldData;
@@ -134,7 +130,7 @@ class PVNormalizer extends ObjectNormalizer
             $format = $context['metadata']->dateTimeFormat;
             $object = \DateTime::createFromFormat($format, $data);
             if (!($object instanceof \DateTime)) {
-                throw new NormalizationException('Incorrect format of ' . $context['field'] . ' field');
+                throw new NormalizationException('Incorrect format of '.$context['field'].' field');
             }
         } else {
             $reflectionClass = new \ReflectionClass($class);
@@ -206,11 +202,11 @@ class PVNormalizer extends ObjectNormalizer
     /**
      * Validates the submitted data and denormalizes it.
      *
-     * @param string      $currentClass
-     * @param string      $attribute
-     * @param mixed       $data
+     * @param string $currentClass
+     * @param string $attribute
+     * @param mixed $data
      * @param string|null $format
-     * @param array       $context
+     * @param array $context
      *
      * @return mixed
      *
@@ -219,7 +215,11 @@ class PVNormalizer extends ObjectNormalizer
      */
     private function validateAndDenormalize($currentClass, $attribute, $data, $format, array $context)
     {
-        if (null === $this->propertyTypeExtractor || null === $types = $this->propertyTypeExtractor->getTypes($currentClass, $attribute)) {
+        if (null === $this->propertyTypeExtractor || null === $types = $this->propertyTypeExtractor->getTypes(
+                $currentClass,
+                $attribute
+            )
+        ) {
             return $data;
         }
 
@@ -229,7 +229,9 @@ class PVNormalizer extends ObjectNormalizer
                 return null;
             }
 
-            if ($type->isCollection() && null !== ($collectionValueType = $type->getCollectionValueType()) && Type::BUILTIN_TYPE_OBJECT === $collectionValueType->getBuiltinType()) {
+            if ($type->isCollection() && null !== ($collectionValueType = $type->getCollectionValueType(
+                )) && Type::BUILTIN_TYPE_OBJECT === $collectionValueType->getBuiltinType()
+            ) {
                 $builtinType = Type::BUILTIN_TYPE_OBJECT;
                 $class = $collectionValueType->getClassName().'[]';
 
@@ -245,7 +247,13 @@ class PVNormalizer extends ObjectNormalizer
 
             if (Type::BUILTIN_TYPE_OBJECT === $builtinType) {
                 if (!$this->serializer instanceof DenormalizerInterface) {
-                    throw new LogicException(sprintf('Cannot denormalize attribute "%s" for class "%s" because injected serializer is not a denormalizer', $attribute, $class));
+                    throw new LogicException(
+                        sprintf(
+                            'Cannot denormalize attribute "%s" for class "%s" because injected serializer is not a denormalizer',
+                            $attribute,
+                            $class
+                        )
+                    );
                 }
 
                 if ($this->serializer->supportsDenormalization($data, $class, $format)) {
@@ -259,8 +267,12 @@ class PVNormalizer extends ObjectNormalizer
             // PHP's json_decode automatically converts Numbers without a decimal part to integers.
             // To circumvent this behavior, integers are converted to floats when denormalizing JSON based formats and when
             // a float is expected.
-            if (Type::BUILTIN_TYPE_FLOAT === $builtinType && is_int($data) && false !== strpos($format, JsonEncoder::FORMAT)) {
-                return (float) $data;
+            if (Type::BUILTIN_TYPE_FLOAT === $builtinType && is_int($data) && false !== strpos(
+                    $format,
+                    JsonEncoder::FORMAT
+                )
+            ) {
+                return (float)$data;
             }
 
             if (call_user_func('is_'.$builtinType, $data)) {
@@ -268,7 +280,15 @@ class PVNormalizer extends ObjectNormalizer
             }
         }
 
-        throw new UnexpectedValueException(sprintf('The type of the "%s" attribute for class "%s" must be one of "%s" ("%s" given).', $attribute, $currentClass, implode('", "', array_keys($expectedTypes)), gettype($data)));
+        throw new UnexpectedValueException(
+            sprintf(
+                'The type of the "%s" attribute for class "%s" must be one of "%s" ("%s" given).',
+                $attribute,
+                $currentClass,
+                implode('", "', array_keys($expectedTypes)),
+                gettype($data)
+            )
+        );
     }
 
     protected function getNormalizeEntityCallback()
@@ -282,7 +302,7 @@ class PVNormalizer extends ObjectNormalizer
      * Gets the cache key to use.
      *
      * @param string|null $format
-     * @param array       $context
+     * @param array $context
      *
      * @return bool|string
      */
