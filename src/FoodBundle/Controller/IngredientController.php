@@ -18,36 +18,33 @@ class IngredientController extends BaseApiController
 {
     /**
      * @Rest\View()
-     * @param Request $request
      * @param $ingredientId
      * @return array
      */
-    public function getIngredientAction(Request $request, $ingredientId)
+    public function getIngredientAction($ingredientId)
     {
-        return $this->getEntityResultById($request, $ingredientId);
+        return $this->getEntityResultById($ingredientId);
     }
 
     /**
      * @Rest\View()
-     * @param Request $request
      * @return array
      */
-    public function getIngredientsAction(Request $request)
+    public function getIngredientsAction()
     {
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($request, $criteria, false);
+        return $this->getEntitiesByCriteria($criteria, false);
     }
 
     /**
      * @Rest\View
      * @param $id
-     * @param Request $request
      * @return array
      */
-    public function deleteIngredientAction($id, Request $request)
+    public function deleteIngredientAction($id)
     {
-        return $this->removeEntityById($id, $request);
+        return $this->removeEntityById($id);
     }
 
     /**

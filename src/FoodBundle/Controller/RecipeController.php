@@ -14,25 +14,23 @@ class RecipeController extends BaseApiController
 {
     /**
      * @Rest\View
-     * @param Request $request
      * @param $recipeId
      * @return array
      */
-    public function getRecipeAction(Request $request, $recipeId)
+    public function getRecipeAction($recipeId)
     {
-        return $this->getEntityResultById($request, $recipeId);
+        return $this->getEntityResultById($recipeId);
     }
 
     /**
      * @Rest\View
-     * @param Request $request
      * @return array
      */
-    public function getRecipesAction(Request $request)
+    public function getRecipesAction()
     {
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($request, $criteria, false);
+        return $this->getEntitiesByCriteria($criteria, false);
     }
 
     /**
@@ -58,13 +56,12 @@ class RecipeController extends BaseApiController
 
     /**
      * @Rest\View
-     * @param Request $request
      * @param $recipeId
      * @return array
      */
-    public function deleteDishesAction(Request $request, $recipeId)
+    public function deleteDishesAction($recipeId)
     {
-        return $this->removeEntityById($recipeId, $request);
+        return $this->removeEntityById($recipeId);
     }
 
     protected function getHandler(): EntityHandler

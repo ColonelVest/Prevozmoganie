@@ -22,13 +22,12 @@ class TaskEntryController extends BaseApiController
 {
     /**
      * @Rest\View
-     * @param Request $request
      * @param $entryId
      * @return array
      */
-    public function getTaskentryAction(Request $request, $entryId)
+    public function getTaskentryAction($entryId)
     {
-        return $this->getEntityResultById($request, $entryId);
+        return $this->getEntityResultById($entryId);
     }
 
     /**
@@ -51,7 +50,7 @@ class TaskEntryController extends BaseApiController
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
 
-        return $this->getEntitiesByCriteria($request, $criteria);
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
@@ -67,12 +66,11 @@ class TaskEntryController extends BaseApiController
     /**
      * @Rest\View
      * @param $taskEntryId
-     * @param Request $request
      * @return array
      */
-    public function deleteTaskentryAction($taskEntryId, Request $request)
+    public function deleteTaskentryAction($taskEntryId)
     {
-        return $this->removeEntityById($taskEntryId, $request);
+        return $this->removeEntityById($taskEntryId);
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Entity\DateCondition;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
@@ -11,14 +10,12 @@ use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelEvents;
 use TaskBundle\Entity\Task;
 use TaskBundle\Form\TaskType;
 
 class TaskController extends BaseApiController
 {
     /**
-     * @param Request $request
      * @param $taskId
      * @return array
      * @Rest\View()
@@ -32,9 +29,9 @@ class TaskController extends BaseApiController
      *   }
      * )
      */
-    public function getTaskAction(Request $request, $taskId)
+    public function getTaskAction($taskId)
     {
-        return $this->getEntityResultById($request, $taskId);
+        return $this->getEntityResultById($taskId);
     }
 
     /**
@@ -58,18 +55,17 @@ class TaskController extends BaseApiController
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
 
-        return $this->getEntitiesByCriteria($request, $criteria);
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
      * @Rest\View
      * @param $id
-     * @param Request $request
      * @return array
      */
-    public function deleteTaskAction($id, Request $request)
+    public function deleteTaskAction($id)
     {
-        return $this->removeEntityById($id, $request);
+        return $this->removeEntityById($id);
     }
 
 //    /**

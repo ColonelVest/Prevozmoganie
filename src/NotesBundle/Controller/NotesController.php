@@ -14,36 +14,33 @@ class NotesController extends BaseApiController
 {
     /**
      * @Rest\View
-     * @param Request $request
      * @param $noteId
      * @return array
      */
-    public function getNoteAction(Request $request, $noteId)
+    public function getNoteAction($noteId)
     {
-        return $this->getEntityResultById($request, $noteId);
+        return $this->getEntityResultById($noteId);
     }
 
     /**
      * @Rest\View
-     * @param Request $request
      * @return array
      */
-    public function getNotesAction(Request $request)
+    public function getNotesAction()
     {
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($request, $criteria);
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
      * @Rest\View
      * @param $noteId
-     * @param Request $request
      * @return array
      */
-    public function deleteNoteAction($noteId, Request $request)
+    public function deleteNoteAction($noteId)
     {
-        return $this->removeEntityById($noteId, $request);
+        return $this->removeEntityById($noteId);
     }
 
     /**

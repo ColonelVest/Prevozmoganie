@@ -3,7 +3,6 @@
 namespace ErrorsBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
-use BaseBundle\Services\EntityNormalizer;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use ErrorsBundle\Entity\Error;
@@ -15,34 +14,31 @@ class ErrorsController extends BaseApiController
 {
     /**
      * @Rest\View
-     * @param Request $request
      * @param $errorId
      * @return array
      */
-    public function getErrorAction(Request $request, $errorId)
+    public function getErrorAction($errorId)
     {
-        return $this->getEntityResultById($request, $errorId);
+        return $this->getEntityResultById($errorId);
     }
 
     /**
      * @Rest\View
-     * @param Request $request
      * @return array
      */
-    public function getErrorsAction(Request $request)
+    public function getErrorsAction()
     {
-        return $this->getEntitiesByCriteria($request, Criteria::create());
+        return $this->getEntitiesByCriteria(Criteria::create());
     }
 
     /**
      * @Rest\View
      * @param $errorId
-     * @param Request $request
      * @return array
      */
-    public function deleteErrorAction($errorId, Request $request)
+    public function deleteErrorAction($errorId)
     {
-        return $this->removeEntityById($errorId, $request);
+        return $this->removeEntityById($errorId);
     }
 
     /**
@@ -69,10 +65,5 @@ class ErrorsController extends BaseApiController
     protected function getHandler(): EntityHandler
     {
         return $this->get('errors_handler');
-    }
-
-    protected function getNormalizer(): EntityNormalizer
-    {
-        return $this->get('errors_normalizer');
     }
 }

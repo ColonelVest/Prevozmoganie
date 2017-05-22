@@ -48,12 +48,11 @@ class ListenerController extends BaseApiController
     /**
      * @Rest\View
      * @param $listenerId
-     * @param Request $request
      * @return array
      */
-    public function deleteListenerAction($listenerId, Request $request)
+    public function deleteListenerAction($listenerId)
     {
-        return $this->removeEntityById($listenerId, $request);
+        return $this->removeEntityById($listenerId);
     }
 
     protected function getHandler(): EntityHandler

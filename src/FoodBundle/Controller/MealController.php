@@ -55,12 +55,11 @@ class MealController extends BaseApiController
     /**
      * @Rest\View
      * @param $mealId
-     * @param Request $request
      * @return array
      */
-    public function deleteMealAction($mealId, Request $request)
+    public function deleteMealAction($mealId)
     {
-        return $this->removeEntityById($mealId, $request);
+        return $this->removeEntityById($mealId);
     }
 
     /**

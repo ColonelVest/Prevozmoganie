@@ -17,13 +17,12 @@ class PeriodController extends BaseApiController
 {
     /**
      * @Rest\View()
-     * @param Request $request
      * @param $periodId
      * @return Period
      */
-    public function getPeriodAction(Request $request, $periodId = null)
+    public function getPeriodAction($periodId)
     {
-        return $this->getEntityResultById($request, $periodId);
+        return $this->getEntityResultById($periodId);
     }
 
     /**
@@ -41,7 +40,7 @@ class PeriodController extends BaseApiController
         }
         $expr = Criteria::expr()->eq('date', $date);
 
-        return $this->getEntitiesByCriteria($request, (Criteria::create())->where($expr));
+        return $this->getEntitiesByCriteria((Criteria::create())->where($expr));
     }
 
     /**
@@ -69,12 +68,11 @@ class PeriodController extends BaseApiController
     /**
      * @Rest\View()
      * @param $periodId
-     * @param Request $request
      * @return View
      */
-    public function deletePeriodAction($periodId, Request $request)
+    public function deletePeriodAction($periodId)
     {
-        return $this->removeEntityById($periodId, $request);
+        return $this->removeEntityById($periodId);
     }
 
     protected function getHandler(): EntityHandler

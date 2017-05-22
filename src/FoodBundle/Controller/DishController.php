@@ -14,36 +14,33 @@ class DishController extends BaseApiController
 {
     /**
      * @Rest\View
-     * @param Request $request
      * @param $dishId
      * @return array
      */
-    public function getDishAction(Request $request, $dishId)
+    public function getDishAction($dishId)
     {
-        return $this->getEntityResultById($request, $dishId);
+        return $this->getEntityResultById($dishId);
     }
 
     /**
      * @Rest\View
-     * @param Request $request
      * @return array
      */
-    public function getDishesAction(Request $request)
+    public function getDishesAction()
     {
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($request, $criteria, false);
+        return $this->getEntitiesByCriteria($criteria, false);
     }
 
     /**
      * @Rest\View
-     * @param Request $request
      * @param $dishId
      * @return array
      */
-    public function deleteDishesAction(Request $request, $dishId)
+    public function deleteDishesAction($dishId)
     {
-        return $this->removeEntityById($dishId, $request);
+        return $this->removeEntityById($dishId);
     }
 
     /**

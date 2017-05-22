@@ -30,49 +30,38 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         $this->em = $container->get('doctrine.orm.default_entity_manager');
     }
 
-    protected function getEntityResultById(Request $request, $id, $isFullNormalized = true)
+    protected function getEntityResultById($id, $isFullNormalized = true)
     {
-        $result = $this->checkToken($request);
-        if ($result->getIsSuccess()) {
-            $user = $result->getData();
-            $result = $this->getHandler()->getById($id);
+        $result = $this->getHandler()->getById($id);
 
-            if ($result->getIsSuccess()
-                && $result->getData() instanceOf UserReferable
-                && $result->getData()->getUser() != $user
-            ) {
-                $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
-            }
+        if ($result->getIsSuccess()
+            && $result->getData() instanceOf UserReferable
+            && $result->getData()->getUser() != $this->getUser()
+        ) {
+            $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
         }
 
         return $this->getResponseByResultObj($this->normalizeByResult($result, $isFullNormalized));
     }
 
-    protected function getEntitiesByCriteria(Request $request, Criteria $criteria, $byUser = true)
+    protected function getEntitiesByCriteria(Criteria $criteria, $byUser = true)
     {
-        $result = $this->checkToken($request);
+        $user = $this->getUser();
+        if ($byUser) {
+            $criteria->andWhere(Criteria::expr()->eq('user', $user));
+        }
+        $result = $this->getHandler()->getEntities($criteria);
         if ($result->getIsSuccess()) {
-            $user = $result->getData();
-            if ($byUser) {
-                $criteria->andWhere(Criteria::expr()->eq('user', $user));
-            }
-            $result = $this->getHandler()->getEntities($criteria);
-            if ($result->getIsSuccess()) {
-                $normalisedEntities = $this->normalizer->normalizeNestedEntities($result->getData());
-                $result = Result::createSuccessResult($normalisedEntities);
-            }
+            $normalisedEntities = $this->normalizer->normalizeNestedEntities($result->getData());
+            $result = Result::createSuccessResult($normalisedEntities);
         }
 
         return $this->getResponseByResultObj($result);
     }
 
-    protected function removeEntityById($id, Request $request)
+    protected function removeEntityById($id)
     {
-        $result = $this->checkToken($request);
-        if ($result->getIsSuccess()) {
-            $user = $result->getData();
-            $result = $this->getHandler()->removeById($id, $user);
-        }
+        $result = $this->getHandler()->removeById($id, $this->getUser());
 
         return $this->getResponseByResultObj($result);
     }
@@ -90,21 +79,17 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
 
     protected function editEntity(Request $request, $entityId, $entityForm)
     {
-        $result = $this->checkToken($request);
+        $handler = $this->getHandler();
+        $result = $this->getHandler()->getById($entityId);
         if ($result->getIsSuccess()) {
-            $user = $result->getData();
-            $handler = $this->getHandler();
-            $result = $this->getHandler()->getById($entityId);
-            if ($result->getIsSuccess()) {
-                if ($result->getData() instanceof UserReferable && $result->getData()->getUser() == $user) {
-                    $result = $this->fillEntityByRequest($result->getData(), $request, $entityForm);
-                    if ($result->getIsSuccess()) {
-                        $result = $handler->edit($result->getData());
-                        $result = $this->normalizeByResult($result, true);
-                    }
-                } else {
-                    $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
+            if ($result->getData() instanceof UserReferable && $result->getData()->getUser() == $this->getUser()) {
+                $result = $this->fillEntityByRequest($result->getData(), $request, $entityForm);
+                if ($result->getIsSuccess()) {
+                    $result = $handler->edit($result->getData());
+                    $result = $this->normalizeByResult($result, true);
                 }
+            } else {
+                $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);
             }
         }
 
@@ -141,8 +126,13 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
      * @param array $unMappedFields
      * @return Result
      */
-    protected function fillEntityByRequest($entity, Request $request, $entityName, $setUser = false, $unMappedFields = []): Result
-    {
+    protected function fillEntityByRequest(
+        $entity,
+        Request $request,
+        $entityName,
+        $setUser = false,
+        $unMappedFields = []
+    ): Result {
         if ($setUser && $entity instanceof UserReferable) {
             $userResult = $this->getRequestUser($request);
             if (!$userResult->getIsSuccess()) {
