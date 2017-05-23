@@ -69,7 +69,7 @@ class MealController extends BaseApiController
      */
     public function postMealsAction(Request $request)
     {
-        return $this->createEntity($request, Meal::class, MealForm::class, true);
+        return $this->createEntity($request, Meal::class, MealForm::class);
     }
 
     /**
@@ -79,7 +79,7 @@ class MealController extends BaseApiController
      */
     public function postRmealsAction(Request $request)
     {
-        $result = $this->fillEntityByRequest(new RepetitiveMeal(), $request, RepetitiveMealForm::class, true);
+        $result = $this->fillEntityByRequestData(new RepetitiveMeal(), $request, RepetitiveMealForm::class);
         if ($result->getIsSuccess()) {
             $result = $this->getHandler()->generateMealEntries($result->getData());
         }

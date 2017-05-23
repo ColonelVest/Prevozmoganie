@@ -2,6 +2,7 @@
 
 namespace TaskBundle\Services;
 
+use BaseBundle\Entity\DateCondition;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\ApiResponseFormatter;
@@ -10,7 +11,6 @@ use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
-use TaskBundle\Entity\RepetitiveTask;
 use TaskBundle\Entity\Task;
 use TaskBundle\Entity\TaskEntry;
 use UserBundle\Entity\User;
@@ -39,31 +39,34 @@ class TaskHandler extends EntityHandler
     }
 
     /**
-     * @param RepetitiveTask $repetitiveTask
+     * @param DateCondition $condition
+     * @param Task $task
+     * @param User $user
      * @return Result
      */
-    public function generateRepetitiveTasks(RepetitiveTask $repetitiveTask)
+    public function generateRepetitiveTasks(DateCondition $condition, Task $task, User $user)
     {
-        $days = $this->helper->getDaysFromRepetitiveEntity($repetitiveTask);
-
-        $task = (new Task())
-            ->setBeginTime($repetitiveTask->getBeginTime())
-            ->setEndTime($repetitiveTask->getEndTime())
-            ->setDescription($repetitiveTask->getDescription())
-            ->setTitle($repetitiveTask->getTitle());
+        $this->em->persist($condition);
         $this->em->persist($task);
+        $this->em->flush();
+
+        $days = $this->helper->getDaysByDateCondition($condition);
+
+        /** @var \DateTime $day */
         foreach ($days as $day) {
+            $deadline = (clone $day)->modify('+' . $condition->getDaysBeforeDeadline() . 'days');
             $taskEntry = (new TaskEntry())
                 ->setDate($day)
-                ->setUser($repetitiveTask->getUser())
-                ->setDeadLine((clone $day)->modify('+' . $repetitiveTask->getDaysBeforeDeadline() . 'days'))
+                ->setUser($user)
+                ->setDeadLine($deadline)
+                ->setDateCondition($condition)
                 ->setTask($task);
             $this->em->persist($taskEntry);
         }
 
-        if ($repetitiveTask->isNewTasksCreate()) {
-            $title = 'Создать новые задачи типа "'.$repetitiveTask->getTitle().'"';
-            $this->createTaskOfCreationNewEntities($repetitiveTask->getEndDate(), $repetitiveTask->getUser(), $title);
+        if ($condition->isNewTasksCreate()) {
+            $title = 'Создать новые задачи типа "'.$task->getTitle().'"';
+            $this->createTaskOfCreationNewEntities($condition->getEndDate(), $user, $title);
         }
 
         $this->em->flush();

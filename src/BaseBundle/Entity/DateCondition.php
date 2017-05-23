@@ -133,10 +133,10 @@ class DateCondition extends BaseEntity
     }
 
     /**
-     * @param number $weekFrequency
+     * @param int $weekFrequency
      * @return DateCondition
      */
-    public function setWeekFrequency(number $weekFrequency): DateCondition
+    public function setWeekFrequency(int $weekFrequency): DateCondition
     {
         $this->weekFrequency = $weekFrequency;
 

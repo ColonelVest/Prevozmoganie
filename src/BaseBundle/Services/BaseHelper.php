@@ -2,6 +2,7 @@
 
 namespace BaseBundle\Services;
 
+use BaseBundle\Entity\DateCondition;
 use BaseBundle\Models\RepetitiveInterface;
 
 class BaseHelper
@@ -50,22 +51,22 @@ class BaseHelper
     }
 
     /**
-     * @param RepetitiveInterface $repetitive
+     * @param DateCondition $condition
      * @return \DateTime[]
      */
-    public function getDaysFromRepetitiveEntity(RepetitiveInterface $repetitive)
+    public function getDaysByDateCondition(DateCondition $condition)
     {
         $days = [];
-        $end = (clone $repetitive->getEndDate())->add(new \DateInterval('P1D'));
+        $end = (clone $condition->getEndDate())->add(new \DateInterval('P1D'));
 
-        $period = new \DatePeriod($repetitive->getBeginDate(), new \DateInterval('P1D'), $end);
+        $period = new \DatePeriod($condition->getBeginDate(), new \DateInterval('P1D'), $end);
         foreach ($period as $dayNumber => $day) {
             $weekNumber = floor($dayNumber / 7);
             /** @var \DateTime $day */
-            if (($weekNumber % $repetitive->getWeekFrequency()) == 0) {
+            if (($weekNumber % $condition->getWeekFrequency()) == 0) {
                 $dayOfWeek = $day->format('D');
-                if (count($repetitive->getDaysOfWeek()) == 0
-                    || in_array(strtolower($dayOfWeek), $repetitive->getDaysOfWeek())
+                if (count($condition->getDaysOfWeek()) == 0
+                    || in_array(strtolower($dayOfWeek), $condition->getDaysOfWeek())
                 ) {
                     $days[] = $day;
                 }

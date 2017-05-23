@@ -3,6 +3,7 @@
 namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Entity\DateCondition;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
@@ -85,11 +86,16 @@ class TaskController extends BaseApiController
      */
     public function postRtasksAction(Request $request)
     {
-        $result = $this->fillEntityByRequest(new Task(), $request, 'task', true);
+        $tasksData = $request->request->get('tasks');
+        $result = $this->fillEntityByRequestData(new Task(), $tasksData['task']);
         if ($result->getIsSuccess()) {
+            /** @var Task $task */
             $task = $result->getData();
-            $this->getUser();
-            $result = $this->get('task_handler')->generateRepetitiveTasks($result->getData());
+            $result = $this->fillEntityByRequestData(new DateCondition(), $tasksData['condition']);
+            if ($result->getIsSuccess()) {
+                $result = $this->get('task_handler')
+                    ->generateRepetitiveTasks($result->getData(), $task, $this->getUser());
+            }
         }
 
         return $this->getResponseByResultObj($result);

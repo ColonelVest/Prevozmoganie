@@ -48,7 +48,7 @@ class ErrorsController extends BaseApiController
      */
     public function postErrorsAction(Request $request)
     {
-        return $this->createEntity($request, Error::class, ErrorType::class);
+        return $this->createEntity(Error::class, $request->request->get('error'));
     }
 
     /**

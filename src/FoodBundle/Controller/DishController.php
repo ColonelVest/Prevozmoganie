@@ -50,7 +50,7 @@ class DishController extends BaseApiController
      */
     public function postDishAction(Request $request)
     {
-        return $this->createEntity($request, Dish::class, DishType::class, false);
+        return $this->createEntity(Dish::class, $request);
     }
 
     /**

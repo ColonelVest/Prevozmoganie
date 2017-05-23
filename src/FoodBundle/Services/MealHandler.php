@@ -52,7 +52,7 @@ class MealHandler extends EntityHandler
      */
     public function generateMealEntries(RepetitiveMeal $repetitiveMeal)
     {
-        $days = $this->helper->getDaysFromRepetitiveEntity($repetitiveMeal);
+        $days = $this->helper->getDaysByDateCondition($repetitiveMeal);
         $meal = (new Meal())
             ->setMealType($repetitiveMeal->getMealType())
             ->setTitle($repetitiveMeal->getTitle());

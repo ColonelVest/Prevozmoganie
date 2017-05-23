@@ -9,10 +9,10 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\DateCondition;
 use BaseBundle\Entity\UserReferable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use UserBundle\Entity\User;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
 
@@ -66,6 +66,33 @@ class TaskEntry extends BaseEntity implements UserReferable
      * @Groups({"full", "concise", "nested"})
      */
     protected $deadLine;
+
+    /**
+     * @var DateCondition
+     * @ORM\ManyToOne(targetEntity="BaseBundle\Entity\DateCondition")
+     * @Normal\Entity(className="BaseBundle\Entity\DateCondition")
+     * @Groups({"full"})
+     */
+    protected $dateCondition;
+
+    /**
+     * @return DateCondition
+     */
+    public function getDateCondition(): ?DateCondition
+    {
+        return $this->dateCondition;
+    }
+
+    /**
+     * @param DateCondition $dateCondition
+     * @return TaskEntry
+     */
+    public function setDateCondition(DateCondition $dateCondition): TaskEntry
+    {
+        $this->dateCondition = $dateCondition;
+
+        return $this;
+    }
 
     /**
      * @return \DateTime

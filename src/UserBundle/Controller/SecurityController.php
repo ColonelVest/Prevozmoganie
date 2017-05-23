@@ -10,7 +10,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
-class SecurityController extends BaseApiController
+class SecurityController extends FOSRestController
 {
     /**
      * @Rest\View
@@ -39,9 +39,10 @@ class SecurityController extends BaseApiController
      */
     public function isAuthorizedAction($token)
     {
-        $result = $this->normalizeByResult($this->get('token_handler')->isTokenCorrect($token));
+        $result = $this->get('token_handler')->isTokenCorrect($token);
+        $resultResponse = (new Result())->setIsSuccess($result->getIsSuccess());
 
-        return $this->get('api_response_formatter')->createResponseFromResultObj($result);
+        return $this->get('api_response_formatter')->createResponseFromResultObj($resultResponse);
     }
 
     protected function getHandler(): EntityHandler
