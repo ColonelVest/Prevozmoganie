@@ -6,7 +6,7 @@ use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
-use BaseBundle\Services\PVNormalizer;
+use BaseBundle\Services\PVSerializer;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -18,15 +18,15 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
 {
     /** @var  EntityManager $em */
     protected $em;
-    /** @var  PVNormalizer $normalizer */
-    protected $normalizer;
+    /** @var  PVSerializer $serializer */
+    protected $serializer;
 
     abstract protected function getHandler(): EntityHandler;
 
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
-        $this->normalizer = $this->get('pv_normalizer');
+        $this->serializer = $this->get('pv_serializer');
         $this->em = $container->get('doctrine.orm.default_entity_manager');
     }
 
@@ -52,7 +52,7 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         }
         $result = $this->getHandler()->getEntities($criteria);
         if ($result->getIsSuccess()) {
-            $normalisedEntities = $this->normalizer->normalizeNestedEntities($result->getData());
+            $normalisedEntities = $this->serializer->normalizeNestedEntities($result->getData());
             $result = Result::createSuccessResult($normalisedEntities);
         }
 
@@ -150,9 +150,9 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
     {
         if (!is_null($result->getData())) {
             if ($isFullNormalization) {
-                $normalizedPeriod = $this->normalizer->fullNormalize($result->getData());
+                $normalizedPeriod = $this->serializer->fullNormalize($result->getData());
             } else {
-                $normalizedPeriod = $this->normalizer->normalizeNested($result->getData());
+                $normalizedPeriod = $this->serializer->normalizeNested($result->getData());
             }
             $result->setData($normalizedPeriod);
         }

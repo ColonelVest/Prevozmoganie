@@ -22,7 +22,13 @@ services:
     class: BaseBundle\Services\UserTokenHandler
     arguments: ['@user_handler']
 
+  pv_serializer:
+    class: BaseBundle\Services\PVSerializer
+    arguments:
+        - '@serializer'
+
   pv_normalizer:
+    public: false
     class: BaseBundle\Services\PVNormalizer
     arguments:
       - '@metadata_factory'
@@ -31,7 +37,6 @@ services:
       - '@doctrine.orm.default_entity_manager.property_info_extractor'
       - '@doctrine.orm.entity_manager'
       - '@annotations.reader'
-    calls: [[setSerializer, ['@serializer']]]
     tags:
         - { name: serializer.normalizer }
 
