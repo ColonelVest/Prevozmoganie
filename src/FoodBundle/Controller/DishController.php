@@ -61,7 +61,7 @@ class DishController extends BaseApiController
      */
     public function putDishesAction(Request $request, $dishId)
     {
-        return $this->editEntity($request, $dishId, DishType::class);
+        return $this->editEntity($request, $dishId);
     }
 
     protected function getHandler(): EntityHandler

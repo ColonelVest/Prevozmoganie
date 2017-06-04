@@ -35,7 +35,7 @@ class TaskHandler extends EntityHandler
 
     protected function getRepository(): EntityRepository
     {
-        return $this->em->getRepository('TaskBundle:TaskEntry');
+        return $this->em->getRepository('TaskBundle:Task');
     }
 
     /**

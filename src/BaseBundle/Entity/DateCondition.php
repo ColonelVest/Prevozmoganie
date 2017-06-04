@@ -68,6 +68,31 @@ class DateCondition extends BaseEntity
     private $daysBeforeDeadline;
 
     /**
+     * @var array
+     * @ORM\Column(type="array")
+     */
+    private $dates = [];
+
+    /**
+     * @return array
+     */
+    public function getDates()
+    {
+        return $this->dates;
+    }
+
+    /**
+     * @param array $dates
+     * @return DateCondition
+     */
+    public function setDates(array $dates): DateCondition
+    {
+        $this->dates = $dates;
+
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getBeginDate(): ?\DateTime

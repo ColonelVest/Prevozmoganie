@@ -109,7 +109,7 @@ class TaskController extends BaseApiController
      */
     public function putTaskAction(Request $request, $taskId)
     {
-        return $this->editEntity($request, $taskId, TaskType::class);
+        return $this->editEntity($request, $taskId);
     }
 
     protected function getHandler(): EntityHandler

@@ -49,7 +49,7 @@ class MealController extends BaseApiController
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->eq('date', $date)));
 
-        return $this->getEntitiesByCriteria($request, $criteria);
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
@@ -69,7 +69,7 @@ class MealController extends BaseApiController
      */
     public function postMealsAction(Request $request)
     {
-        return $this->createEntity($request, Meal::class, MealForm::class);
+        return $this->createEntity(Meal::class, $request);
     }
 
     /**
@@ -79,7 +79,7 @@ class MealController extends BaseApiController
      */
     public function postRmealsAction(Request $request)
     {
-        $result = $this->fillEntityByRequestData(new RepetitiveMeal(), $request, RepetitiveMealForm::class);
+        $result = $this->fillEntityByRequestData(new RepetitiveMeal(), $request);
         if ($result->getIsSuccess()) {
             $result = $this->getHandler()->generateMealEntries($result->getData());
         }

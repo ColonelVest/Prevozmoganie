@@ -28,7 +28,6 @@ services:
         - '@serializer'
 
   pv_normalizer:
-    public: false
     class: BaseBundle\Services\PVNormalizer
     arguments:
       - '@metadata_factory'

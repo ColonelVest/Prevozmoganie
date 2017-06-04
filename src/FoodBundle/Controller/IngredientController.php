@@ -54,7 +54,7 @@ class IngredientController extends BaseApiController
      */
     public function postIngredientsAction(Request $request)
     {
-        return $this->createEntity($request, Ingredient::class, IngredientType::class, false);
+        return $this->createEntity(Ingredient::class, $request);
     }
 
     /**
@@ -65,7 +65,7 @@ class IngredientController extends BaseApiController
      */
     public function putIngredientsAction(Request $request, $ingredientId)
     {
-        return $this->editEntity($request, $ingredientId, IngredientType::class);
+        return $this->editEntity($request, $ingredientId);
     }
 
     protected function getHandler(): EntityHandler

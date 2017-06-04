@@ -80,13 +80,19 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         return $this->getResponseByResultObj($result);
     }
 
-    protected function editEntity(Request $request, $entityId, $entityForm)
+    protected function getEntityName($entity)
+    {
+        return strtolower((new \ReflectionClass($entity))->getShortName());
+    }
+
+    protected function editEntity(Request $request, $entityId)
     {
         $handler = $this->getHandler();
         $result = $this->getHandler()->getById($entityId);
         if ($result->getIsSuccess()) {
-            if ($result->getData() instanceof UserReferable && $result->getData()->getUser() == $this->getUser()) {
-                $result = $this->fillEntityByRequestData($result->getData(), $request, $entityForm);
+            if (!$result->getData() instanceof UserReferable || $result->getData()->getUser() == $this->getUser()) {
+                $entityName = $this->getEntityName($result->getData());
+                $result = $this->fillEntityByRequestData($result->getData(), $request->request->get($entityName));
                 if ($result->getIsSuccess()) {
                     $result = $handler->edit($result->getData());
                     $result = $this->normalizeByResult($result, true);

@@ -9,6 +9,7 @@
 
 namespace BaseBundle\Lib\Tests;
 
+use BaseBundle\Models\Result;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Entity\User;
@@ -84,7 +85,7 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertTrue(is_array($decodedResponse['data']), 'response data is not array');
     }
 
-    protected function getUserToken(User $user = null)
+    protected function getUserToken(User $user = null) :Result
     {
         $container = $this->getContainer();
 
@@ -99,7 +100,7 @@ abstract class BaseApiControllerTest extends WebTestCase
 
     protected function assertApiResponse(Response $response)
     {
-        $this->assertTrue($response->isSuccessful(), 'response status is not 2xx');
+        $this->assertTrue($response->isSuccessful(), $response->getContent());
         $this->assertTrue(
             $response->headers->contains(
                 'Content-Type',

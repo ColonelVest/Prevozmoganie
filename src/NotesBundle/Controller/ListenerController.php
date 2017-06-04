@@ -16,12 +16,12 @@ class ListenerController extends BaseApiController
      * @Rest\View
      * @return array
      */
-    public function getListenersAction(Request $request)
+    public function getListenersAction()
     {
 //        $expr = Criteria::expr();
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($request, $criteria);
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
@@ -31,7 +31,7 @@ class ListenerController extends BaseApiController
      */
     public function postListenerAction(Request $request)
     {
-        return $this->createEntity($request, Listener::class, ListenerType::class);
+        return $this->createEntity( Listener::class, $request);
     }
 
     /**
@@ -42,7 +42,7 @@ class ListenerController extends BaseApiController
      */
     public function putListenerAction(Request $request, $listenerId)
     {
-        return $this->editEntity($request, $listenerId, ListenerType::class);
+        return $this->editEntity($request, $listenerId);
     }
 
     /**
