@@ -31,14 +31,14 @@ class DateCondition extends BaseEntity
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @Normal\DateTime()
      */
     protected $beginDate;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @Normal\DateTime()
      */
     protected $endDate;

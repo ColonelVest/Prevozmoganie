@@ -57,18 +57,24 @@ class BaseHelper
     public function getDaysByDateCondition(DateCondition $condition)
     {
         $days = [];
-        $end = (clone $condition->getEndDate())->add(new \DateInterval('P1D'));
+        if (count($condition->getDates()) > 0) {
+            foreach ($condition->getDates() as $date) {
+                $days[] = $this->createDateFromString($date);
+            }
+        } else {
+            $end = (clone $condition->getEndDate())->add(new \DateInterval('P1D'));
 
-        $period = new \DatePeriod($condition->getBeginDate(), new \DateInterval('P1D'), $end);
-        foreach ($period as $dayNumber => $day) {
-            $weekNumber = floor($dayNumber / 7);
-            /** @var \DateTime $day */
-            if (($weekNumber % $condition->getWeekFrequency()) == 0) {
-                $dayOfWeek = $day->format('D');
-                if (count($condition->getDaysOfWeek()) == 0
-                    || in_array(strtolower($dayOfWeek), $condition->getDaysOfWeek())
-                ) {
-                    $days[] = $day;
+            $period = new \DatePeriod($condition->getBeginDate(), new \DateInterval('P1D'), $end);
+            foreach ($period as $dayNumber => $day) {
+                $weekNumber = floor($dayNumber / 7);
+                /** @var \DateTime $day */
+                if (($weekNumber % $condition->getWeekFrequency()) == 0) {
+                    $dayOfWeek = $day->format('D');
+                    if (count($condition->getDaysOfWeek()) == 0
+                        || in_array(strtolower($dayOfWeek), $condition->getDaysOfWeek())
+                    ) {
+                        $days[] = $day;
+                    }
                 }
             }
         }

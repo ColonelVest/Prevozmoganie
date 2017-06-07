@@ -10,19 +10,6 @@ use BaseBundle\Lib\Tests\BaseApiControllerTest;
 
 class TaskControllerTest extends BaseApiControllerTest
 {
-    /**
-     * @depends testPostRTasksAction
-     */
-    public function testGetTasks()
-    {
-        $this->gets('tasks');
-        $params = [
-            'date' => (new \DateTime('+5 days'))->format('dmY'),
-        ];
-
-        $this->gets('tasks', $params);
-    }
-
     public function testPostRTasksAction()
     {
         $client = static::createClient();
@@ -31,15 +18,15 @@ class TaskControllerTest extends BaseApiControllerTest
         $data = [
             'token' => $token->getData(),
             'tasks' => [
-                'task' => [
+                'entity' => [
                     'title' => 'test task',
                     'description' => 'test task description',
                     'beginTime' => '15:00',
                     'endTime' => '17:00',
                 ],
                 'condition' => [
-                    'beginDate' => '20052017',
-                    'endDate' => '20062017',
+                    'beginDate' => (new \DateTime('-5 days'))->format('dmY'),
+                    'endDate' => (new \DateTime('+20 days'))->format('dmY'),
                     'weekFrequency' => 1,
                     'daysBeforeDeadline' => 4,
                 ],
@@ -51,30 +38,65 @@ class TaskControllerTest extends BaseApiControllerTest
         $response = $client->getResponse();
         $this->assertApiResponse($response);
     }
-//
-//    public function testPostAction()
-//    {
-//        $client = static::createClient();
-//        $token = $this->getUserToken();
-//
-//        $data = [
-//            'token' => $token->getData(),
-//            'task' => [
-//                'title' => 'test task',
-//                'description' => 'test task description',
-//                'date' => (new \DateTime())->format('dmY'),
-//                'beginTime' => '15:00',
-//                'endTime' => '17:00',
-//                'deadline' => (new \DateTime('+4 days'))->format('dmY')
-//            ],
-//        ];
-//
-//        $url = '/api/v1/tasks';
-//        $client->request('POST', $url, $data);
-//        $response = $client->getResponse();
-//        $this->assertApiResponse($response);
-//        $this->assertPostSingleObjectResponse($response, \TaskBundle\Entity\Task::class);
-//    }
+
+    /**
+     * @depends testPostRTasksAction
+     */
+    public function testGetTasks()
+    {
+        $this->gets('taskentries');
+        $params = [
+            'date' => (new \DateTime('+5 days'))->format('dmY'),
+        ];
+
+        $this->gets('taskentries', $params);
+    }
+
+    public function testPostAction()
+    {
+        $client = static::createClient();
+        $token = $this->getUserToken();
+
+        $data = [
+            'token' => $token->getData(),
+            'tasks' => [
+                'entity' => [
+                    'title' => 'test single task',
+                    'description' => 'test task description',
+                    'beginTime' => '15:00',
+                    'endTime' => '17:00',
+                ],
+                'condition' => [
+                    'dates' => [(new \DateTime())->format('dmY')],
+                    'daysBeforeDeadline' => 4,
+                ],
+            ],
+        ];
+
+        $url = '/api/v1/tasks';
+        $client->request('POST', $url, $data);
+        $response = $client->getResponse();
+        $this->assertApiResponse($response);
+        $this->assertPostSingleObjectResponse($response, \TaskBundle\Entity\TaskEntry::class);
+    }
+
+    /**
+     * @depends testPostAction
+     */
+    public function testGetAction()
+    {
+        $client = static::createClient();
+        $token = $this->getUserToken();
+
+        $testEntity = $this->getEntityManager()
+            ->getRepository('TaskBundle:Task')
+            ->findOneBy(['title' => 'test single task']);
+        $this->assertNotNull($testEntity, 'searched task not found');
+        $url = '/api/v1/tasks/'.$testEntity->getId().'?token='.$token->getData();
+        $client->request('GET', $url);
+        $response = $client->getResponse();
+        $this->assertApiResponse($response);
+    }
 
     /**
      * @depends testGetAction
@@ -87,7 +109,7 @@ class TaskControllerTest extends BaseApiControllerTest
         $data = [
             'token' => $token->getData(),
             'task' => [
-                'title' => 'updated test task',
+                'title' => 'updated single test task',
                 'description' => 'updated test task description',
                 'beginTime' => '14:00',
                 'endTime' => '17:00',
@@ -104,24 +126,6 @@ class TaskControllerTest extends BaseApiControllerTest
     }
 
     /**
-     * @depends testPostAction
-     */
-    public function testGetAction()
-    {
-        $client = static::createClient();
-        $token = $this->getUserToken();
-
-        $testEntity = $this->getEntityManager()
-            ->getRepository('TaskBundle:Task')
-            ->findOneBy(['title' => 'test task']);
-        $this->assertNotNull($testEntity, 'searched task not found');
-        $url = '/api/v1/tasks/'.$testEntity->getId().'?token='.$token->getData();
-        $client->request('GET', $url);
-        $response = $client->getResponse();
-        $this->assertApiResponse($response);
-    }
-
-    /**
      * @depends testPutAction
      */
     public function testDeleteAction()
@@ -131,7 +135,7 @@ class TaskControllerTest extends BaseApiControllerTest
 
         $testEntity = $this->getEntityManager()
             ->getRepository('TaskBundle:Task')
-            ->findOneBy(['title' => 'updated test task']);
+            ->findOneBy(['title' => 'updated single test task']);
         $this->assertNotNull($testEntity, 'searched task not found');
 
         $url = '/api/v1/tasks/'.$testEntity->getId().'?token='.$token->getData();

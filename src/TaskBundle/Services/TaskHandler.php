@@ -42,15 +42,17 @@ class TaskHandler extends EntityHandler
      * @param DateCondition $condition
      * @param Task $task
      * @param User $user
+     * @param bool $isReturnSingle
      * @return Result
      */
-    public function generateRepetitiveTasks(DateCondition $condition, Task $task, User $user)
+    public function generateRepetitiveTasks(DateCondition $condition, Task $task, User $user, $isReturnSingle = false)
     {
         $this->em->persist($condition);
         $this->em->persist($task);
         $this->em->flush();
 
         $days = $this->helper->getDaysByDateCondition($condition);
+        $taskEntries = [];
 
         /** @var \DateTime $day */
         foreach ($days as $day) {
@@ -62,6 +64,7 @@ class TaskHandler extends EntityHandler
                 ->setDateCondition($condition)
                 ->setTask($task);
             $this->em->persist($taskEntry);
+            $taskEntries[] = $taskEntry;
         }
 
         if ($condition->isNewTasksCreate()) {
@@ -70,8 +73,9 @@ class TaskHandler extends EntityHandler
         }
 
         $this->em->flush();
+        $result = Result::createSuccessResult();
 
-        return Result::createSuccessResult();
+        return $isReturnSingle ? $result->setData($taskEntries[0]) : $result;
     }
 
     /**

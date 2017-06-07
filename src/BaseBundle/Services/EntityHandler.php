@@ -63,7 +63,7 @@ abstract class EntityHandler
     {
         $result = $this->getById($id);
         if ($result->getIsSuccess()) {
-            if ($result->getData() instanceof UserReferable && $result->getData()->getUser() == $user) {
+            if (!$result->getData() instanceof UserReferable || $result->getData()->getUser() == $user) {
                 return $this->remove($result->getData());
             } else {
                 $result = Result::createErrorResult(ErrorMessages::PERMISSION_DENIED);

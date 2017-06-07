@@ -12,7 +12,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Task;
-use TaskBundle\Form\TaskType;
 
 class TaskController extends BaseApiController
 {
@@ -35,29 +34,28 @@ class TaskController extends BaseApiController
         return $this->getEntityResultById($taskId);
     }
 
-    /**
-     * @Rest\View
-     * @param Request $request
-     * @return array
-     */
-    public function getTasksAction(Request $request)
-    {
-        $date = null;
-        if ($request->get('date')) {
-            $date = $this->getDateFromRequest($request, 'date');
-            if ($date === false) {
-                $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
-
-                return $this->getResponseByResultObj($result);
-            }
-        }
-//        KernelEvents::CONTROLLER
-        $expr = Criteria::expr();
-        $criteria = Criteria::create();
-        $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
-
-        return $this->getEntitiesByCriteria($criteria);
-    }
+//    /**
+//     * @Rest\View
+//     * @param Request $request
+//     * @return array
+//     */
+//    public function getTasksAction(Request $request)
+//    {
+//        $date = null;
+//        if ($request->get('date')) {
+//            $date = $this->getDateFromRequest($request, 'date');
+//            if ($date === false) {
+//                $result = Result::createErrorResult(ErrorMessages::PERIOD_DATE_INCORRECT);
+//
+//                return $this->getResponseByResultObj($result);
+//            }
+//        }
+//        $expr = Criteria::expr();
+//        $criteria = Criteria::create();
+//        $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
+//
+//        return $this->getEntitiesByCriteria($criteria);
+//    }
 
     /**
      * @Rest\View
@@ -69,15 +67,15 @@ class TaskController extends BaseApiController
         return $this->removeEntityById($id);
     }
 
-//    /**
-//     * @Rest\View
-//     * @param Request $request
-//     * @return Task
-//     */
-//    public function postTasksAction(Request $request)
-//    {
-//        return $this->createEntity($request, Task::class, 'task');
-//    }
+    /**
+     * @Rest\View
+     * @param Request $request
+     * @return array
+     */
+    public function postTasksAction(Request $request)
+    {
+        return $this->generateWithEntries($request, 'tasks', true);
+    }
 
     /**
      * @Rest\View
@@ -86,15 +84,26 @@ class TaskController extends BaseApiController
      */
     public function postRtasksAction(Request $request)
     {
-        $tasksData = $request->request->get('tasks');
-        $result = $this->fillEntityByRequestData(new Task(), $tasksData['task']);
+        return $this->generateWithEntries($request, 'tasks');
+    }
+
+    /**
+     * @param Request $request
+     * @param $name
+     * @param bool $returnSingle
+     * @return array
+     */
+    private function generateWithEntries(Request $request, $name, $returnSingle = false)
+    {
+        $tasksData = $request->request->get($name);
+        $result = $this->fillEntityByRequestData(new Task(), $tasksData['entity']);
         if ($result->getIsSuccess()) {
             /** @var Task $task */
             $task = $result->getData();
             $result = $this->fillEntityByRequestData(new DateCondition(), $tasksData['condition']);
             if ($result->getIsSuccess()) {
                 $result = $this->get('task_handler')
-                    ->generateRepetitiveTasks($result->getData(), $task, $this->getUser());
+                    ->generateRepetitiveTasks($result->getData(), $task, $this->getUser(), $returnSingle);
             }
         }
 

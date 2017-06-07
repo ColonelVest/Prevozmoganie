@@ -59,8 +59,8 @@ abstract class BaseApiControllerTest extends WebTestCase
 
     protected function gets($entitiesName, $params = [])
     {
-        self::clearDB();
-        $this->initDB();
+//        self::clearDB();
+//        $this->initDB();
         $client = static::createClient();
         $token = $this->getUserToken();
         $url = '/api/v1/'. $entitiesName .'?token=' . $token->getData();
@@ -121,7 +121,10 @@ abstract class BaseApiControllerTest extends WebTestCase
     protected function assertPostSingleObjectResponse(Response $response, $entityName)
     {
         $decodedResponse = json_decode($response->getContent(), true);
-        $createdObject = $this->getEntityManager()->find($entityName, $decodedResponse['data']['id']);
-        $this->assertNotNull($createdObject, 'new object' . $entityName . 'not found');
+        $newEntity = $decodedResponse['data'];
+        $this->assertNotNull($newEntity, $newEntity['id']);
+        $entityId = $newEntity['id'];
+        $createdObject = $this->getEntityManager()->find($entityName, $entityId);
+        $this->assertNotNull($createdObject, 'new object ' . $entityName . ' with id ' . $entityId . ' not found');
     }
 }

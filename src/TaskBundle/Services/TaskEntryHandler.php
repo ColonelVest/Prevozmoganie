@@ -10,6 +10,7 @@ namespace TaskBundle\Services;
 
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityRepository;
+use TaskBundle\Entity\TaskEntry;
 
 class TaskEntryHandler extends EntityHandler
 {
