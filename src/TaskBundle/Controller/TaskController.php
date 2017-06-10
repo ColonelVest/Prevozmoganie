@@ -74,7 +74,7 @@ class TaskController extends BaseApiController
      */
     public function postTasksAction(Request $request)
     {
-        return $this->generateWithEntries($request, 'tasks', true);
+        return $this->generateWithEntries($request, 'task', true);
     }
 
     /**
@@ -84,7 +84,7 @@ class TaskController extends BaseApiController
      */
     public function postRtasksAction(Request $request)
     {
-        return $this->generateWithEntries($request, 'tasks');
+        return $this->generateWithEntries($request, 'task');
     }
 
     /**

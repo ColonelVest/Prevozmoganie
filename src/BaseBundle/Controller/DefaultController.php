@@ -27,6 +27,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
+        $sdfsdf = 123;
 //        $data = [
 //            'title' => 'test task',
 //            'description' => 'test task description',

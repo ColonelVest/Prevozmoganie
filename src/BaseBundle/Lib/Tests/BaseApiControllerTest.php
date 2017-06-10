@@ -59,8 +59,8 @@ abstract class BaseApiControllerTest extends WebTestCase
 
     protected function gets($entitiesName, $params = [])
     {
-//        self::clearDB();
-//        $this->initDB();
+        self::clearDB();
+        $this->initDB();
         $client = static::createClient();
         $token = $this->getUserToken();
         $url = '/api/v1/'. $entitiesName .'?token=' . $token->getData();

@@ -17,7 +17,7 @@ class TaskControllerTest extends BaseApiControllerTest
 
         $data = [
             'token' => $token->getData(),
-            'tasks' => [
+            'task' => [
                 'entity' => [
                     'title' => 'test task',
                     'description' => 'test task description',
@@ -59,7 +59,7 @@ class TaskControllerTest extends BaseApiControllerTest
 
         $data = [
             'token' => $token->getData(),
-            'tasks' => [
+            'task' => [
                 'entity' => [
                     'title' => 'test single task',
                     'description' => 'test task description',
@@ -116,7 +116,7 @@ class TaskControllerTest extends BaseApiControllerTest
             ],
         ];
 
-        $testEntity = $this->getEntityManager()->getRepository('TaskBundle:Task')->findOneBy(['title' => 'test task']);
+        $testEntity = $this->getEntityManager()->getRepository('TaskBundle:Task')->findOneBy(['title' => 'test single task']);
         $this->assertNotNull($testEntity);
         $url = '/api/v1/tasks/'.$testEntity->getId();
         $client->request('PUT', $url, $data);

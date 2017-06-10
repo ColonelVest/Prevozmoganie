@@ -61,7 +61,7 @@ class BaseHelper
             foreach ($condition->getDates() as $date) {
                 $days[] = $this->createDateFromString($date);
             }
-        } else {
+        } elseif (!is_null($condition->getBeginDate()) && !is_null($condition->getEndDate())) {
             $end = (clone $condition->getEndDate())->add(new \DateInterval('P1D'));
 
             $period = new \DatePeriod($condition->getBeginDate(), new \DateInterval('P1D'), $end);

@@ -54,22 +54,31 @@ class TaskHandler extends EntityHandler
         $days = $this->helper->getDaysByDateCondition($condition);
         $taskEntries = [];
 
-        /** @var \DateTime $day */
-        foreach ($days as $day) {
-            $deadline = (clone $day)->modify('+' . $condition->getDaysBeforeDeadline() . 'days');
+        if (count($days) > 0) {
+            /** @var \DateTime $day */
+            foreach ($days as $day) {
+                $deadline = (clone $day)->modify('+'.$condition->getDaysBeforeDeadline().'days');
+                $taskEntry = (new TaskEntry())
+                    ->setDate($day)
+                    ->setUser($user)
+                    ->setDeadLine($deadline)
+                    ->setDateCondition($condition)
+                    ->setTask($task);
+                $this->em->persist($taskEntry);
+                $taskEntries[] = $taskEntry;
+            }
+
+            if ($condition->isNewTasksCreate()) {
+                $title = 'Создать новые задачи типа "'.$task->getTitle().'"';
+                $this->createTaskOfCreationNewEntities($condition->getEndDate(), $user, $title);
+            }
+        } else {
             $taskEntry = (new TaskEntry())
-                ->setDate($day)
-                ->setUser($user)
-                ->setDeadLine($deadline)
-                ->setDateCondition($condition)
-                ->setTask($task);
+            ->setUser($user)
+            ->setTask($task)
+            ->setDateCondition($condition);
             $this->em->persist($taskEntry);
             $taskEntries[] = $taskEntry;
-        }
-
-        if ($condition->isNewTasksCreate()) {
-            $title = 'Создать новые задачи типа "'.$task->getTitle().'"';
-            $this->createTaskOfCreationNewEntities($condition->getEndDate(), $user, $title);
         }
 
         $this->em->flush();
