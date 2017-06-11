@@ -11,7 +11,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use TaskBundle\Entity\Period;
 use FOS\RestBundle\View\View;
-use TaskBundle\Form\PeriodType;
 
 class PeriodController extends BaseApiController
 {
@@ -50,7 +49,7 @@ class PeriodController extends BaseApiController
      */
     public function postPeriodAction(Request $request)
     {
-        return $this->createEntity($request, Period::class, PeriodType::class);
+        return $this->createEntity(Period::class, $request);
 
     }
 
@@ -62,7 +61,7 @@ class PeriodController extends BaseApiController
      */
     public function putPeriodAction(Request $request, $periodId)
     {
-        return $this->editEntity($request, $periodId, PeriodType::class);
+        return $this->editEntity($request, $periodId);
     }
 
     /**

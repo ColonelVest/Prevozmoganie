@@ -54,11 +54,7 @@ class TaskControllerTest extends BaseApiControllerTest
 
     public function testPostAction()
     {
-        $client = static::createClient();
-        $token = $this->getUserToken();
-
         $data = [
-            'token' => $token->getData(),
             'task' => [
                 'entity' => [
                     'title' => 'test single task',
@@ -73,11 +69,7 @@ class TaskControllerTest extends BaseApiControllerTest
             ],
         ];
 
-        $url = '/api/v1/tasks';
-        $client->request('POST', $url, $data);
-        $response = $client->getResponse();
-        $this->assertApiResponse($response);
-        $this->assertPostSingleObjectResponse($response, \TaskBundle\Entity\TaskEntry::class);
+        $this->postRequest($data);
     }
 
     /**
@@ -85,17 +77,7 @@ class TaskControllerTest extends BaseApiControllerTest
      */
     public function testGetAction()
     {
-        $client = static::createClient();
-        $token = $this->getUserToken();
-
-        $testEntity = $this->getEntityManager()
-            ->getRepository('TaskBundle:Task')
-            ->findOneBy(['title' => 'test single task']);
-        $this->assertNotNull($testEntity, 'searched task not found');
-        $url = '/api/v1/tasks/'.$testEntity->getId().'?token='.$token->getData();
-        $client->request('GET', $url);
-        $response = $client->getResponse();
-        $this->assertApiResponse($response);
+        $this->getRequest(['title' => 'test single task']);
     }
 
     /**
@@ -130,20 +112,16 @@ class TaskControllerTest extends BaseApiControllerTest
      */
     public function testDeleteAction()
     {
-        $client = static::createClient();
-        $token = $this->getUserToken();
+        $this->deleteRequest(['title' => 'updated single test task']);
+    }
 
-        $testEntity = $this->getEntityManager()
-            ->getRepository('TaskBundle:Task')
-            ->findOneBy(['title' => 'updated single test task']);
-        $this->assertNotNull($testEntity, 'searched task not found');
+    protected function getEntityName()
+    {
+        return \TaskBundle\Entity\Task::class;
+    }
 
-        $url = '/api/v1/tasks/'.$testEntity->getId().'?token='.$token->getData();
-        $client->request('DELETE', $url);
-
-        $response = $client->getResponse();
-        $this->assertApiResponse($response);
-        $decodedResponse = json_decode($response->getContent(), true);
-        $this->assertEquals($testEntity->getId(), $decodedResponse['data']);
+    protected function getUrlEnd()
+    {
+        return 'tasks';
     }
 }

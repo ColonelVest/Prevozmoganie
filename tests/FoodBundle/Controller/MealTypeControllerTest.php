@@ -12,4 +12,14 @@ class MealTypeControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
     {
         $this->gets('mealtypes');
     }
+
+    protected function getEntityName()
+    {
+        // TODO: Implement getEntityName() method.
+    }
+
+    protected function getUrlEnd()
+    {
+        // TODO: Implement getUrlEnd() method.
+    }
 }

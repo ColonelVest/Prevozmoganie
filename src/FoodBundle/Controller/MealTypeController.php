@@ -12,14 +12,13 @@ class MealTypeController extends BaseApiController
 {
     /**
      * @Rest\View()
-     * @param Request $request
      * @return array
      */
-    public function getMealtypesAction(Request $request)
+    public function getMealtypesAction()
     {
         $criteria = Criteria::create();
 
-        return $this->getEntitiesByCriteria($request, $criteria, false);
+        return $this->getEntitiesByCriteria( $criteria, false);
     }
 
     protected function getHandler(): EntityHandler

@@ -12,4 +12,14 @@ class RecipeControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
     {
         $this->gets('recipes');
     }
+
+    protected function getEntityName()
+    {
+        // TODO: Implement getEntityName() method.
+    }
+
+    protected function getUrlEnd()
+    {
+        // TODO: Implement getUrlEnd() method.
+    }
 }

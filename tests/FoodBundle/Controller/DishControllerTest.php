@@ -12,4 +12,14 @@ class DishControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
     {
         $this->gets('dishes');
     }
+
+    protected function getEntityName()
+    {
+        // TODO: Implement getEntityName() method.
+    }
+
+    protected function getUrlEnd()
+    {
+        // TODO: Implement getUrlEnd() method.
+    }
 }

@@ -14,4 +14,14 @@ class ErrorsControllerTest extends BaseApiControllerTest
     {
         $this->gets('errors');
     }
+
+    protected function getEntityName()
+    {
+        // TODO: Implement getEntityName() method.
+    }
+
+    protected function getUrlEnd()
+    {
+        // TODO: Implement getUrlEnd() method.
+    }
 }

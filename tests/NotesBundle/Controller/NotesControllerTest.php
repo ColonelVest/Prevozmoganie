@@ -14,4 +14,14 @@ class NotesControllerTest extends BaseApiControllerTest
     {
         $this->gets('notes');
     }
+
+    protected function getEntityName()
+    {
+        // TODO: Implement getEntityName() method.
+    }
+
+    protected function getUrlEnd()
+    {
+        // TODO: Implement getUrlEnd() method.
+    }
 }

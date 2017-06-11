@@ -12,4 +12,14 @@ class ListenersControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTes
     {
         $this->gets('listeners');
     }
+
+    protected function getEntityName()
+    {
+        // TODO: Implement getEntityName() method.
+    }
+
+    protected function getUrlEnd()
+    {
+        // TODO: Implement getUrlEnd() method.
+    }
 }

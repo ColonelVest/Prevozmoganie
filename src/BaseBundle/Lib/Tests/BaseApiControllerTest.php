@@ -19,6 +19,10 @@ use Symfony\Component\Console\Output\NullOutput;
 
 abstract class BaseApiControllerTest extends WebTestCase
 {
+    abstract protected function getEntityName();
+
+    abstract protected function getUrlEnd();
+
     /**
      * Run console command
      * @param string $name
@@ -63,9 +67,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->initDB();
         $client = static::createClient();
         $token = $this->getUserToken();
-        $url = '/api/v1/'. $entitiesName .'?token=' . $token->getData();
+        $url = '/api/v1/'.$entitiesName.'?token='.$token->getData();
         foreach ($params as $paramName => $value) {
-            $url .= '&' . $paramName . '=' . $value;
+            $url .= '&'.$paramName.'='.$value;
         }
 
         $client->request('GET', $url);
@@ -85,7 +89,7 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertTrue(is_array($decodedResponse['data']), 'response data is not array');
     }
 
-    protected function getUserToken(User $user = null) :Result
+    protected function getUserToken(User $user = null): Result
     {
         $container = $this->getContainer();
 
@@ -113,7 +117,7 @@ abstract class BaseApiControllerTest extends WebTestCase
         $errors = '';
         if (isset($decodedResponse['errors'])) {
             $errorsList = $decodedResponse['errors'];
-            $errors = 'Errors: ' . join(', ', $errorsList);
+            $errors = 'Errors: '.join(', ', $errorsList);
         }
         $this->assertTrue($decodedResponse['success'], $errors);
     }
@@ -125,6 +129,65 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertNotNull($newEntity, $newEntity['id']);
         $entityId = $newEntity['id'];
         $createdObject = $this->getEntityManager()->find($entityName, $entityId);
-        $this->assertNotNull($createdObject, 'new object ' . $entityName . ' with id ' . $entityId . ' not found');
+        $this->assertNotNull($createdObject, 'new object '.$entityName.' with id '.$entityId.' not found');
+    }
+
+    protected function postRequest($data)
+    {
+        $client = static::createClient();
+        $data['token'] = $this->getUserToken()->getData();
+
+        $client->request('POST', '/api/v1/'.$this->getUrlEnd(), $data);
+        $response = $client->getResponse();
+        $this->assertApiResponse($response);
+        $this->assertPostSingleObjectResponse($response, $this->getEntityName());
+    }
+
+    protected function getRequest(array $queryCriteria)
+    {
+        $client = static::createClient();
+        $token = $this->getUserToken();
+
+        $testEntity = $this->getEntityManager()
+            ->getRepository($this->getEntityName())
+            ->findOneBy($queryCriteria);
+        $this->assertNotNull($testEntity, 'searched element not found');
+        $url = '/api/v1/'.$this->getUrlEnd().'/'.$testEntity->getId().'?token='.$token->getData();
+        $client->request('GET', $url);
+        $response = $client->getResponse();
+        $this->assertApiResponse($response);
+    }
+
+    protected function putRequest($queryCriteria, $data)
+    {
+        $client = static::createClient();
+        $data['token'] = $this->getUserToken()->getData();
+
+        $testEntity = $this->getEntityManager()->getRepository($this->getEntityName())->findOneBy($queryCriteria);
+        $this->assertNotNull($testEntity);
+        $url = '/api/v1/'. $this->getUrlEnd() .'/'.$testEntity->getId();
+        $client->request('PUT', $url, $data);
+        $response = $client->getResponse();
+        $this->assertApiResponse($response);
+        $this->assertPostSingleObjectResponse($response, $this->getEntityName());
+    }
+
+    protected function deleteRequest($queryCriteria)
+    {
+        $client = static::createClient();
+        $token = $this->getUserToken();
+
+        $testEntity = $this->getEntityManager()
+            ->getRepository($this->getEntityName())
+            ->findOneBy($queryCriteria);
+        $this->assertNotNull($testEntity, 'searched entity not found');
+
+        $url = '/api/v1/'. $this->getUrlEnd() .'/'.$testEntity->getId().'?token='.$token->getData();
+        $client->request('DELETE', $url);
+
+        $response = $client->getResponse();
+        $this->assertApiResponse($response);
+        $decodedResponse = json_decode($response->getContent(), true);
+        $this->assertEquals($testEntity->getId(), $decodedResponse['data']);
     }
 }

@@ -32,11 +32,11 @@ class TaskEntry extends BaseEntity implements UserReferable
      */
     protected $date;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Period", inversedBy="taskEntry")
-     * @Normal\Entity(className="TaskBundle\Entity\Period")
-     */
-    protected $period;
+//    /**
+//     * @ORM\OneToOne(targetEntity="Period", inversedBy="taskEntry")
+//     * @Normal\Entity(className="TaskBundle\Entity\Period")
+//     */
+//    protected $period;
 
     /**
      * @var bool
@@ -132,24 +132,24 @@ class TaskEntry extends BaseEntity implements UserReferable
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPeriod()
-    {
-        return $this->period;
-    }
-
-    /**
-     * @param mixed $period
-     * @return TaskEntry
-     */
-    public function setPeriod($period)
-    {
-        $this->period = $period;
-
-        return $this;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getPeriod()
+//    {
+//        return $this->period;
+//    }
+//
+//    /**
+//     * @param mixed $period
+//     * @return TaskEntry
+//     */
+//    public function setPeriod($period)
+//    {
+//        $this->period = $period;
+//
+//        return $this;
+//    }
 
     /**
      * @return bool
