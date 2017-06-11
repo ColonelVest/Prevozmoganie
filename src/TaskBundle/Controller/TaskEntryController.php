@@ -55,6 +55,21 @@ class TaskEntryController extends BaseApiController
 
     /**
      * @Rest\View
+     * @Rest\Put("/taskentries/confirm/{id}")
+     * @param TaskEntry $entry
+     * @return array
+     */
+    public function confirmAction(TaskEntry $entry)
+    {
+        $this->getHandler()->edit($entry->setIsCompleted(true));
+        $this->em->flush();
+
+        $normalizedEntry = $this->serializer->fullNormalize($entry);
+        return $this->getResponseByResultObj(Result::createSuccessResult($normalizedEntry));
+    }
+
+    /**
+     * @Rest\View
      * @param Request $request
      * @return array
      */

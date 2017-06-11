@@ -27,7 +27,9 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $sdfsdf = 123;
+        $task = $em->find('TaskBundle:TaskEntry', 78);
+        $reflectionClass = new \ReflectionClass($task);
+        $reflectionClass->getProperties();
 //        $data = [
 //            'title' => 'test task',
 //            'description' => 'test task description',

@@ -30,13 +30,12 @@ class PVNormalizer extends ObjectNormalizer
 
     public function __construct(
         ClassMetadataFactory $factory,
-        NameConverterInterface $nameConverter,
         PropertyAccessorInterface $propertyAccessor,
         PropertyTypeExtractorInterface $propertyTypeExtractor,
         EntityManager $em,
         AnnotationReader $reader
     ) {
-        parent::__construct($factory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
+        parent::__construct($factory, null, $propertyAccessor, $propertyTypeExtractor);
         $this->em = $em;
         $this->reader = $reader;
         $this->propertyTypeExtractor = $propertyTypeExtractor;

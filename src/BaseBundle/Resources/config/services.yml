@@ -31,7 +31,6 @@ services:
     class: BaseBundle\Services\PVNormalizer
     arguments:
       - '@metadata_factory'
-      - '@serializer.name_converter.camel_case_to_snake_case'
       - '@property_accessor'
       - '@doctrine.orm.default_entity_manager.property_info_extractor'
       - '@doctrine.orm.entity_manager'

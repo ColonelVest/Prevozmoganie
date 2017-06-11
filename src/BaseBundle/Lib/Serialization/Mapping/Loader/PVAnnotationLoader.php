@@ -38,7 +38,7 @@ class PVAnnotationLoader implements LoaderInterface
     public function loadClassMetadata(ClassMetadataInterface $classMetadata)
     {
         $reflectionClass = $classMetadata->getReflectionClass();
-        $className = $reflectionClass->name;
+        $className = str_replace('Proxies\__CG__\\', '', $reflectionClass->name);
         $loaded = false;
 
         $attributesMetadata = $classMetadata->getAttributesMetadata();
