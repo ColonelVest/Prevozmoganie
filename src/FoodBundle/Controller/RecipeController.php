@@ -40,7 +40,7 @@ class RecipeController extends BaseApiController
      */
     public function postRecipesAction(Request $request)
     {
-        return $this->createEntity($request, Recipe::class, RecipeType::class, false);
+        return $this->createEntity(Recipe::class, $request);
     }
 
     /**
@@ -51,7 +51,7 @@ class RecipeController extends BaseApiController
      */
     public function putRecipesAction(Request $request, $recipeId)
     {
-        return $this->editEntity($request, $recipeId, RecipeType::class);
+        return $this->editEntity($request, $recipeId);
     }
 
     /**

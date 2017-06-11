@@ -24,6 +24,13 @@ abstract class BaseApiControllerTest extends WebTestCase
     abstract protected function getUrlEnd();
 
     /**
+     * keys: 'postData', 'queryCriteria', 'putData', 'deleteCriteria'
+     *
+     * @return mixed
+     */
+    abstract protected function getCRUDData();
+
+    /**
      * Run console command
      * @param string $name
      * @param array $options
@@ -132,8 +139,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertNotNull($createdObject, 'new object '.$entityName.' with id '.$entityId.' not found');
     }
 
-    protected function postRequest($data)
+    public function testPostAction()
     {
+        $data = $this->getCRUDData()['postData'];
         $client = static::createClient();
         $data['token'] = $this->getUserToken()->getData();
 
@@ -143,14 +151,14 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertPostSingleObjectResponse($response, $this->getEntityName());
     }
 
-    protected function getRequest(array $queryCriteria)
+    public function testGetAction()
     {
         $client = static::createClient();
         $token = $this->getUserToken();
 
         $testEntity = $this->getEntityManager()
             ->getRepository($this->getEntityName())
-            ->findOneBy($queryCriteria);
+            ->findOneBy($this->getCRUDData()['queryCriteria']);
         $this->assertNotNull($testEntity, 'searched element not found');
         $url = '/api/v1/'.$this->getUrlEnd().'/'.$testEntity->getId().'?token='.$token->getData();
         $client->request('GET', $url);
@@ -158,12 +166,13 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertApiResponse($response);
     }
 
-    protected function putRequest($queryCriteria, $data)
+    public function testPutAction()
     {
+        $data = $this->getCRUDData()['putData'];
         $client = static::createClient();
         $data['token'] = $this->getUserToken()->getData();
 
-        $testEntity = $this->getEntityManager()->getRepository($this->getEntityName())->findOneBy($queryCriteria);
+        $testEntity = $this->getEntityManager()->getRepository($this->getEntityName())->findOneBy($this->getCRUDData()['queryCriteria']);
         $this->assertNotNull($testEntity);
         $url = '/api/v1/'. $this->getUrlEnd() .'/'.$testEntity->getId();
         $client->request('PUT', $url, $data);
@@ -172,14 +181,14 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertPostSingleObjectResponse($response, $this->getEntityName());
     }
 
-    protected function deleteRequest($queryCriteria)
+    public function testDeleteAction()
     {
         $client = static::createClient();
         $token = $this->getUserToken();
 
         $testEntity = $this->getEntityManager()
             ->getRepository($this->getEntityName())
-            ->findOneBy($queryCriteria);
+            ->findOneBy($this->getCRUDData()['deleteCriteria']);
         $this->assertNotNull($testEntity, 'searched entity not found');
 
         $url = '/api/v1/'. $this->getUrlEnd() .'/'.$testEntity->getId().'?token='.$token->getData();

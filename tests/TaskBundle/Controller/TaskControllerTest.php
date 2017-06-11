@@ -52,32 +52,12 @@ class TaskControllerTest extends BaseApiControllerTest
         $this->gets('taskentries', $params);
     }
 
-    public function testPostAction()
-    {
-        $data = [
-            'task' => [
-                'entity' => [
-                    'title' => 'test single task',
-                    'description' => 'test task description',
-                    'beginTime' => '15:00',
-                    'endTime' => '17:00',
-                ],
-                'condition' => [
-                    'dates' => [(new \DateTime())->format('dmY')],
-                    'daysBeforeDeadline' => 4,
-                ],
-            ],
-        ];
-
-        $this->postRequest($data);
-    }
-
     /**
      * @depends testPostAction
      */
     public function testGetAction()
     {
-        $this->getRequest(['title' => 'test single task']);
+        $this->testGetAction(['title' => 'test single task']);
     }
 
     /**
@@ -112,7 +92,7 @@ class TaskControllerTest extends BaseApiControllerTest
      */
     public function testDeleteAction()
     {
-        $this->deleteRequest(['title' => 'updated single test task']);
+        $this->testDeleteAction(['title' => 'updated single test task']);
     }
 
     protected function getEntityName()
@@ -123,5 +103,48 @@ class TaskControllerTest extends BaseApiControllerTest
     protected function getUrlEnd()
     {
         return 'tasks';
+    }
+
+    /**
+     * keys: 'postData', 'queryCriteria', 'putData', 'deleteCriteria'
+     *
+     * @return mixed
+     */
+    protected function getCRUDData()
+    {
+        $postData = [
+            'task' => [
+                'entity' => [
+                    'title' => 'test single task',
+                    'description' => 'test task description',
+                    'beginTime' => '15:00',
+                    'endTime' => '17:00',
+                ],
+                'condition' => [
+                    'dates' => [(new \DateTime())->format('dmY')],
+                    'daysBeforeDeadline' => 4,
+                ],
+            ],
+        ];
+
+        $queryCriteria = ['title' => 'test single task'];
+
+        $putData =  [
+            'task' => [
+                'title' => 'updated single test task',
+                'description' => 'updated test task description',
+                'beginTime' => '14:00',
+                'endTime' => '17:00',
+            ],
+        ];
+
+        $deleteCriteria = ['title' => 'updated single test task'];
+
+        return [
+            'postData' => $postData,
+            'queryCriteria' => $queryCriteria,
+            'putData' => $putData,
+            'deleteCriteria' => $deleteCriteria
+        ];
     }
 }

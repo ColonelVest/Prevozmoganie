@@ -23,7 +23,7 @@ class LoadPeriodData extends AbstractFixture implements OrderedFixtureInterface,
     {
         foreach ($this->periods as $index => $item) {
             $period = new Period();
-            $period->setTaskEntry($this->getReference('task'.$index));
+//            $period->setTaskEntry($this->getReference('task'.$index));
             $period->setUser($this->getReference('fixt_admin'));
             $period->setCreatedBy($this->getReference('fixt_admin'));
             $period->setCreatedAt(new \DateTime());

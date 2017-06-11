@@ -50,7 +50,7 @@ class NotesController extends BaseApiController
      */
     public function postNotesAction(Request $request)
     {
-        return $this->createEntity($request, Note::class, NoteType::class);
+        return $this->createEntity(Note::class, $request);
     }
 
     /**
@@ -61,7 +61,7 @@ class NotesController extends BaseApiController
      */
     public function putNoteAction(Request $request, $noteId)
     {
-        return $this->editEntity($request, $noteId, NoteType::class);
+        return $this->editEntity($request, $noteId);
     }
 
     protected function getHandler(): EntityHandler

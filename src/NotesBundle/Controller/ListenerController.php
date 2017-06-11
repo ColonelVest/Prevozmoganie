@@ -25,6 +25,16 @@ class ListenerController extends BaseApiController
     }
 
     /**
+     * @Rest\View()
+     * @param $listenerId
+     * @return array
+     */
+    public function getListenerAction($listenerId)
+    {
+        return $this->getEntityResultById($listenerId);
+    }
+
+    /**
      * @Rest\View
      * @param Request $request
      * @return array

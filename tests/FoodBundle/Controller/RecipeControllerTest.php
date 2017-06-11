@@ -1,12 +1,14 @@
 <?php
 
+use BaseBundle\Lib\Tests\BaseApiControllerTest;
+
 /**
  * Created by PhpStorm.
  * User: danya
  * Date: 04.05.17
  * Time: 22:29
  */
-class RecipeControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
+class RecipeControllerTest extends BaseApiControllerTest
 {
     public function testGetRecipes()
     {
@@ -15,11 +17,24 @@ class RecipeControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTest
 
     protected function getEntityName()
     {
-        // TODO: Implement getEntityName() method.
+        return \FoodBundle\Entity\Recipe::class;
     }
 
     protected function getUrlEnd()
     {
-        // TODO: Implement getUrlEnd() method.
+        return 'recipes';
+    }
+
+    /**
+     * keys: 'postData', 'queryCriteria', '$queryCriteria', 'putData', 'deleteCriteria'
+     *
+     * @return mixed
+     */
+    protected function getCRUDData()
+    {
+//        $postData =
+        return [
+            'postData', 'queryCriteria', '$queryCriteria', 'putData', 'deleteCriteria'
+        ];
     }
 }

@@ -10,9 +10,14 @@ use BaseBundle\Lib\Tests\BaseApiControllerTest;
  */
 class PeriodControllerTest extends BaseApiControllerTest
 {
-    public function testPostPeriodAction()
+    /**
+     * keys: 'postData', 'queryCriteria', 'putData', 'deleteCriteria'
+     *
+     * @return mixed
+     */
+    protected function getCRUDData()
     {
-        $data = [
+        $postData = [
             'period' => [
                 'description' => 'test period',
                 'begin' => '10:00',
@@ -21,34 +26,22 @@ class PeriodControllerTest extends BaseApiControllerTest
             ]
         ];
 
-        $this->postRequest($data);
-    }
+        $queryCriteria = ['description' => 'test period'];
 
-    /**
-     * @depends testPostPeriodAction
-     */
-    public function testGetPeriodAction()
-    {
-        $this->getRequest(['description' => 'test period']);
-    }
-
-    /**
-     * @depends testPostPeriodAction
-     */
-    public function testPutPeriodAction()
-    {
-        $data = [
+        $putData =  [
             'period' => [
                 'description' => 'updated test period',
             ]
         ];
 
-        $this->putRequest(['description' => 'test period'], $data);
-    }
+        $deleteCriteria = ['description' => 'updated test period'];
 
-    public function testDeleteAction()
-    {
-        $this->deleteRequest(['description' => 'updated test period']);
+        return [
+            'postData' => $postData,
+            'queryCriteria' => $queryCriteria,
+            'putData' => $putData,
+            'deleteCriteria' => $deleteCriteria
+        ];
     }
 
     protected function getEntityName()

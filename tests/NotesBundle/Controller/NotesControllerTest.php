@@ -17,11 +17,43 @@ class NotesControllerTest extends BaseApiControllerTest
 
     protected function getEntityName()
     {
-        // TODO: Implement getEntityName() method.
+        return \NotesBundle\Entity\Note::class;
     }
 
     protected function getUrlEnd()
     {
-        // TODO: Implement getUrlEnd() method.
+        return 'notes';
+    }
+
+    /**
+     * keys: 'postData', 'queryCriteria', 'putData', 'deleteCriteria'
+     *
+     * @return mixed
+     */
+    protected function getCRUDData()
+    {
+        $postData = [
+            'note' => [
+                'title' => 'test note',
+                'body' => 'test note body',
+            ]
+        ];
+
+        $queryCriteria = ['title' => 'test note'];
+
+        $putData =  [
+            'note' => [
+                'body' => 'updated test note body',
+            ]
+        ];
+
+        $deleteCriteria = ['title' => 'test note'];
+
+        return [
+            'postData' => $postData,
+            'queryCriteria' => $queryCriteria,
+            'putData' => $putData,
+            'deleteCriteria' => $deleteCriteria
+        ];
     }
 }
