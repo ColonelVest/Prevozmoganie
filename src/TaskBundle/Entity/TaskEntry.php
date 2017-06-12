@@ -47,7 +47,7 @@ class TaskEntry extends BaseEntity implements UserReferable
 
     /**
      * @var Task
-     * @ORM\ManyToOne(targetEntity="TaskBundle\Entity\Task", inversedBy="taskEntries")
+     * @ORM\ManyToOne(targetEntity="TaskBundle\Entity\Task", inversedBy="entries")
      * @Normal\Entity(className="TaskBundle\Entity\Task")
      * @Groups({"full", "concise", "nested"})
      */

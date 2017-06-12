@@ -34,7 +34,7 @@ class RecipeControllerTest extends BaseApiControllerTest
     {
 //        $postData =
         return [
-            'postData', 'queryCriteria', '$queryCriteria', 'putData', 'deleteCriteria'
+            'postData', 'queryCriteria', 'putData', 'deleteCriteria'
         ];
     }
 }

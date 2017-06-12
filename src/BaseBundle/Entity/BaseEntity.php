@@ -5,8 +5,17 @@ namespace BaseBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-class BaseEntity
+abstract class BaseEntity
 {
+    /**
+     * @var integer
+     * @ORM\Id
+     * @Groups({"full", "concise", "nested"})
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
     /**
      * @return mixed
      */
@@ -20,12 +29,14 @@ class BaseEntity
     public function setId($id) {
         $this->id = $id;
     }
-    /**
-     * @var integer
-     * @ORM\Id
-     * @Groups({"full", "concise", "nested"})
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+
+    public function getName()
+    {
+        return strtolower((new \ReflectionClass($this))->getShortName());
+    }
+
+    public static function getShortName()
+    {
+        return strtolower((new \ReflectionClass(static::class))->getShortName());
+    }
 }

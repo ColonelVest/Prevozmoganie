@@ -81,4 +81,21 @@ class BaseHelper
 
         return $days;
     }
+
+    /**
+     * @param $className
+     * @param $interface
+     * @return bool
+     */
+    public function isImplementInterfaceByClassName($className, $interface)
+    {
+        $implementedInterfaces = class_implements($className);
+        foreach ($implementedInterfaces as $implementedInterface) {
+            if ($interface === $implementedInterface) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

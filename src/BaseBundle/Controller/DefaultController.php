@@ -28,8 +28,7 @@ class DefaultController extends Controller
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
         $task = $em->find('TaskBundle:TaskEntry', 78);
-        $reflectionClass = new \ReflectionClass($task);
-        $reflectionClass->getProperties();
+        $result = $task::getShortName();
 //        $data = [
 //            'title' => 'test task',
 //            'description' => 'test task description',

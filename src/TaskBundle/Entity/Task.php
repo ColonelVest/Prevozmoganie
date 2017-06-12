@@ -3,6 +3,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Models\HaveEntriesInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -18,7 +19,7 @@ use BaseBundle\Lib\Serialization\Annotation\Normal;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Task extends BaseEntity
+class Task extends BaseEntity implements HaveEntriesInterface
 {
     use SoftDeleteableEntity;
 
@@ -73,20 +74,20 @@ class Task extends BaseEntity
      * @MaxDepth(1)
      * @Normal\Entity(className="TaskBundle\Entity\TaskEntry", isMultiple=true)
      */
-    private $taskEntries;
+    private $entries;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
-        $this->taskEntries = new ArrayCollection();
+        $this->entries = new ArrayCollection();
     }
 
     /**
      * @return ArrayCollection|TaskEntry[]
      */
-    public function getTaskEntries()
+    public function getEntries()
     {
-        return $this->taskEntries;
+        return $this->entries;
     }
 
     /**
@@ -95,7 +96,7 @@ class Task extends BaseEntity
      */
     public function addTaskEntry(TaskEntry $taskEntry)
     {
-        $this->taskEntries->add($taskEntry);
+        $this->entries->add($taskEntry);
 
         return $this;
     }
@@ -106,7 +107,7 @@ class Task extends BaseEntity
      */
     public function removeTaskEntry(TaskEntry $taskEntry)
     {
-        $this->taskEntries->remove($taskEntry);
+        $this->entries->remove($taskEntry);
 
         return $this;
     }
@@ -237,5 +238,10 @@ class Task extends BaseEntity
     public function setParent($parent)
     {
         $this->parent = $parent;
+    }
+
+    public function getS()
+    {
+
     }
 }

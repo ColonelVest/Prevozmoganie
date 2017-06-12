@@ -9,6 +9,8 @@
 
 namespace BaseBundle\Lib\Tests;
 
+use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Models\HaveEntriesInterface;
 use BaseBundle\Models\Result;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +21,9 @@ use Symfony\Component\Console\Output\NullOutput;
 
 abstract class BaseApiControllerTest extends WebTestCase
 {
+    /**
+     * @return BaseEntity
+     */
     abstract protected function getEntityName();
 
     abstract protected function getUrlEnd();
@@ -129,12 +134,14 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertTrue($decodedResponse['success'], $errors);
     }
 
-    protected function assertPostSingleObjectResponse(Response $response, $entityName)
+    protected function assertPostSingleObjectResponse(Response $response, $entityName, $isPut = false)
     {
         $decodedResponse = json_decode($response->getContent(), true);
         $newEntity = $decodedResponse['data'];
         $this->assertNotNull($newEntity, $newEntity['id']);
-        $entityId = $newEntity['id'];
+        $hasClassEntries = !$isPut && $this->getContainer()->get('base_helper')->isImplementInterfaceByClassName($this->getEntityName(), HaveEntriesInterface::class);
+
+        $entityId = $hasClassEntries ? $newEntity[$this->getEntityName()::getShortName()]['id'] : $newEntity['id'];
         $createdObject = $this->getEntityManager()->find($entityName, $entityId);
         $this->assertNotNull($createdObject, 'new object '.$entityName.' with id '.$entityId.' not found');
     }
@@ -178,7 +185,7 @@ abstract class BaseApiControllerTest extends WebTestCase
         $client->request('PUT', $url, $data);
         $response = $client->getResponse();
         $this->assertApiResponse($response);
-        $this->assertPostSingleObjectResponse($response, $this->getEntityName());
+        $this->assertPostSingleObjectResponse($response, $this->getEntityName(), true);
     }
 
     public function testDeleteAction()

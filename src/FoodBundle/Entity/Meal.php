@@ -3,6 +3,7 @@
 namespace FoodBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Models\HaveEntriesInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation as Serializer;
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="meal")
  */
-class Meal extends BaseEntity
+class Meal extends BaseEntity implements HaveEntriesInterface
 {
     /**
      * @var string
@@ -47,20 +48,20 @@ class Meal extends BaseEntity
      * @ORM\OneToMany(targetEntity="FoodBundle\Entity\MealEntry", mappedBy="meal", cascade={"persist", "remove"})
      * @Serializer\Groups({"full"})
      */
-    private $mealEntries;
+    private $entries;
 
     public function __construct()
     {
         $this->dishes = new ArrayCollection();
-        $this->mealEntries = new ArrayCollection();
+        $this->entries = new ArrayCollection();
     }
 
     /**
      * @return ArrayCollection|MealEntry[]
      */
-    public function getMealEntries()
+    public function getEntries()
     {
-        return $this->mealEntries;
+        return $this->entries;
     }
 
     /**

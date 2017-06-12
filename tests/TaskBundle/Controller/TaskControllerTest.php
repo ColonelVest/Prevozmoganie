@@ -52,49 +52,6 @@ class TaskControllerTest extends BaseApiControllerTest
         $this->gets('taskentries', $params);
     }
 
-    /**
-     * @depends testPostAction
-     */
-    public function testGetAction()
-    {
-        $this->testGetAction(['title' => 'test single task']);
-    }
-
-    /**
-     * @depends testGetAction
-     */
-    public function testPutAction()
-    {
-        $client = static::createClient();
-        $token = $this->getUserToken();
-
-        $data = [
-            'token' => $token->getData(),
-            'task' => [
-                'title' => 'updated single test task',
-                'description' => 'updated test task description',
-                'beginTime' => '14:00',
-                'endTime' => '17:00',
-            ],
-        ];
-
-        $testEntity = $this->getEntityManager()->getRepository('TaskBundle:Task')->findOneBy(['title' => 'test single task']);
-        $this->assertNotNull($testEntity);
-        $url = '/api/v1/tasks/'.$testEntity->getId();
-        $client->request('PUT', $url, $data);
-        $response = $client->getResponse();
-        $this->assertApiResponse($response);
-        $this->assertPostSingleObjectResponse($response, \TaskBundle\Entity\Task::class);
-    }
-
-    /**
-     * @depends testPutAction
-     */
-    public function testDeleteAction()
-    {
-        $this->testDeleteAction(['title' => 'updated single test task']);
-    }
-
     protected function getEntityName()
     {
         return \TaskBundle\Entity\Task::class;

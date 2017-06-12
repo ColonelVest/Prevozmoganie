@@ -2,6 +2,7 @@
 
 namespace BaseBundle\Controller;
 
+use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
@@ -68,9 +69,9 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
 
     protected function createEntity($entityType, Request $request)
     {
+        /** @var BaseEntity $newEntity */
         $newEntity = new $entityType();
-        $entityName = strtolower((new \ReflectionClass($newEntity))->getShortName());
-        $requestData = $request->request->get($entityName);
+        $requestData = $request->request->get($newEntity::getShortName());
         $result = $this->fillEntityByRequestData($newEntity, $requestData);
         if ($result->getIsSuccess()) {
             $result = $this->getHandler()->create($result->getData());
