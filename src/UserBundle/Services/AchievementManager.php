@@ -75,9 +75,10 @@ class AchievementManager
       ELSE 0 END) AS UnCompletedCount,
   user_id,
   fos_user.username
-FROM tasks
-  JOIN fos_user ON fos_user.id = tasks.user_id
-WHERE user_id IS NOT NULL AND tasks.date < :currentDate AND tasks.date >= :beginDate AND user_id IN (:userIds) AND tasks.deleted_at IS NULL
+FROM task_entries
+  JOIN fos_user ON fos_user.id = task_entries.user_id
+  JOIN tasks ON task_entries.task_id = tasks.id
+WHERE task_entries.date BETWEEN :beginDate AND :currentDate AND user_id IN (:userIds) AND tasks.deleted_at IS NULL
 GROUP BY user_id'
         );
         $request->execute(
