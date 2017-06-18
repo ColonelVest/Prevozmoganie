@@ -9,6 +9,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -28,10 +29,17 @@ use UserBundle\Entity\User;
  * Class Challenge
  * @package TaskBundle\Entity
  */
-class Challenge extends BaseEntity
+class Challenge extends BaseEntity implements UserReferable
 {
     use SoftDeleteableEntity;
     use TimestampableEntity;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     * @Groups({"full", "concise", "nested"})
+     */
+    private $isCompleted = false;
 
     /**
      * @var \DateTime
@@ -58,7 +66,7 @@ class Challenge extends BaseEntity
      * @ORM\JoinTable(name="challenges_tasks",
      *     joinColumns={@ORM\JoinColumn(name="challenge_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="task_id", referencedColumnName="id")})
-     * @Groups({"full", "nested"})
+     * @Groups({"full", "nested", "concise"})
      * @MaxDepth(1)
      */
     private $tasks;
@@ -66,7 +74,7 @@ class Challenge extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"full", "nested"})
+     * @Groups({"full", "nested", "concise"})
      * @Assert\NotNull()
      */
     private $award;
@@ -76,6 +84,25 @@ class Challenge extends BaseEntity
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      */
     private $user;
+
+    /**
+     * @return bool
+     */
+    public function isCompleted(): ?bool
+    {
+        return $this->isCompleted;
+    }
+
+    /**
+     * @param bool $isCompleted
+     * @return Challenge
+     */
+    public function setIsCompleted(bool $isCompleted): Challenge
+    {
+        $this->isCompleted = $isCompleted;
+
+        return $this;
+    }
 
     public function __construct()
     {

@@ -28,6 +28,8 @@ class DefaultController extends Controller
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
 
+        $a = [];
+        $result = $a instanceof \Traversable;
         return [];
     }
 }

@@ -184,7 +184,7 @@ class PVNormalizer extends ObjectNormalizer
     public function normalizeNestedEntities($entities)
     {
         $data = [];
-        if (is_array($entities)) {
+        if (is_iterable($entities)) {
             foreach ($entities as $entity) {
                 $data[] = $this->normalizeNested($entity);
             }
