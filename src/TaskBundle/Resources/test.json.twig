@@ -1,43 +1,796 @@
 {
-    "success": true,
-    "data": [
-        {
-            "meal": {
-                "id": 1,
-                "dishes": [
+    "error": {
+        "code": 500,
+        "message": "Internal Server Error",
+        "exception": [
+            {
+                "message": "Unrecognized field: user",
+                "class": "Doctrine\\ORM\\ORMException",
+                "trace": [
                     {
-                        "title": "\u0413\u0440\u0435\u0447\u043a\u0430 \u0441 \u043c\u0430\u0441\u043b\u043e\u043c",
-                        "id": 15
-                    }
-                ],
-                "title": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a \u0433\u0440\u0435\u0447\u043a\u043e\u0439",
-                "mealType": {
-                    "id": 13,
-                    "title": "\u0417\u0430\u0432\u0442\u0440\u0430\u043a"
-                }
-            },
-            "date": "27042017",
-            "isPerformed": false,
-            "id": 11
-        },
-        {
-            "meal": {
-                "id": 2,
-                "dishes": [
+                        "namespace": "",
+                        "short_class": "",
+                        "class": "",
+                        "type": "",
+                        "function": "",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/ORMException.php",
+                        "line": 101,
+                        "args": []
+                    },
                     {
-                        "title": "\u041c\u0430\u043a\u0430\u0440\u043e\u0448\u043a\u0438 \u0441 \u0441\u044b\u0440\u043e\u043c",
-                        "id": 16
+                        "namespace": "Doctrine\\ORM",
+                        "short_class": "ORMException",
+                        "class": "Doctrine\\ORM\\ORMException",
+                        "type": "::",
+                        "function": "unrecognizedField",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/Persisters\/Entity\/BasicEntityPersister.php",
+                        "line": 1704,
+                        "args": [
+                            [
+                                "string",
+                                "user"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM\\Persisters\\Entity",
+                        "short_class": "BasicEntityPersister",
+                        "class": "Doctrine\\ORM\\Persisters\\Entity\\BasicEntityPersister",
+                        "type": "->",
+                        "function": "getSelectConditionStatementColumnSQL",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/Persisters\/Entity\/BasicEntityPersister.php",
+                        "line": 1582,
+                        "args": [
+                            [
+                                "string",
+                                "user"
+                            ],
+                            [
+                                "null",
+                                null
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM\\Persisters\\Entity",
+                        "short_class": "BasicEntityPersister",
+                        "class": "Doctrine\\ORM\\Persisters\\Entity\\BasicEntityPersister",
+                        "type": "->",
+                        "function": "getSelectConditionStatementSQL",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/Persisters\/SqlExpressionVisitor.php",
+                        "line": 78,
+                        "args": [
+                            [
+                                "string",
+                                "user"
+                            ],
+                            [
+                                "object",
+                                "UserBundle\\Entity\\User"
+                            ],
+                            [
+                                "null",
+                                null
+                            ],
+                            [
+                                "string",
+                                "="
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM\\Persisters",
+                        "short_class": "SqlExpressionVisitor",
+                        "class": "Doctrine\\ORM\\Persisters\\SqlExpressionVisitor",
+                        "type": "->",
+                        "function": "walkComparison",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/collections\/lib\/Doctrine\/Common\/Collections\/Expr\/ExpressionVisitor.php",
+                        "line": 70,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Expr\\Comparison"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\Common\\Collections\\Expr",
+                        "short_class": "ExpressionVisitor",
+                        "class": "Doctrine\\Common\\Collections\\Expr\\ExpressionVisitor",
+                        "type": "->",
+                        "function": "dispatch",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/Persisters\/Entity\/BasicEntityPersister.php",
+                        "line": 1573,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Expr\\Comparison"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM\\Persisters\\Entity",
+                        "short_class": "BasicEntityPersister",
+                        "class": "Doctrine\\ORM\\Persisters\\Entity\\BasicEntityPersister",
+                        "type": "->",
+                        "function": "getSelectConditionCriteriaSQL",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/Persisters\/Entity\/BasicEntityPersister.php",
+                        "line": 1057,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Criteria"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM\\Persisters\\Entity",
+                        "short_class": "BasicEntityPersister",
+                        "class": "Doctrine\\ORM\\Persisters\\Entity\\BasicEntityPersister",
+                        "type": "->",
+                        "function": "getSelectSQL",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/Persisters\/Entity\/BasicEntityPersister.php",
+                        "line": 834,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Criteria"
+                            ],
+                            [
+                                "null",
+                                null
+                            ],
+                            [
+                                "null",
+                                null
+                            ],
+                            [
+                                "null",
+                                null
+                            ],
+                            [
+                                "null",
+                                null
+                            ],
+                            [
+                                "array",
+                                []
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM\\Persisters\\Entity",
+                        "short_class": "BasicEntityPersister",
+                        "class": "Doctrine\\ORM\\Persisters\\Entity\\BasicEntityPersister",
+                        "type": "->",
+                        "function": "loadCriteria",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/orm\/lib\/Doctrine\/ORM\/LazyCriteriaCollection.php",
+                        "line": 115,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Criteria"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Doctrine\\ORM",
+                        "short_class": "LazyCriteriaCollection",
+                        "class": "Doctrine\\ORM\\LazyCriteriaCollection",
+                        "type": "->",
+                        "function": "doInitialize",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/collections\/lib\/Doctrine\/Common\/Collections\/AbstractLazyCollection.php",
+                        "line": 332,
+                        "args": []
+                    },
+                    {
+                        "namespace": "Doctrine\\Common\\Collections",
+                        "short_class": "AbstractLazyCollection",
+                        "class": "Doctrine\\Common\\Collections\\AbstractLazyCollection",
+                        "type": "->",
+                        "function": "initialize",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/doctrine\/collections\/lib\/Doctrine\/Common\/Collections\/AbstractLazyCollection.php",
+                        "line": 139,
+                        "args": []
+                    },
+                    {
+                        "namespace": "Doctrine\\Common\\Collections",
+                        "short_class": "AbstractLazyCollection",
+                        "class": "Doctrine\\Common\\Collections\\AbstractLazyCollection",
+                        "type": "->",
+                        "function": "getValues",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/src\/BaseBundle\/Services\/EntityHandler.php",
+                        "line": 48,
+                        "args": []
+                    },
+                    {
+                        "namespace": "BaseBundle\\Services",
+                        "short_class": "EntityHandler",
+                        "class": "BaseBundle\\Services\\EntityHandler",
+                        "type": "->",
+                        "function": "getEntities",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/src\/BaseBundle\/Controller\/BaseApiController.php",
+                        "line": 54,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Criteria"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "BaseBundle\\Controller",
+                        "short_class": "BaseApiController",
+                        "class": "BaseBundle\\Controller\\BaseApiController",
+                        "type": "->",
+                        "function": "getEntitiesByCriteria",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/src\/TaskBundle\/Controller\/ChallengeController.php",
+                        "line": 38,
+                        "args": [
+                            [
+                                "object",
+                                "Doctrine\\Common\\Collections\\Criteria"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "TaskBundle\\Controller",
+                        "short_class": "ChallengeController",
+                        "class": "TaskBundle\\Controller\\ChallengeController",
+                        "type": "->",
+                        "function": "getChallengesAction",
+                        "file": null,
+                        "line": null,
+                        "args": []
+                    },
+                    {
+                        "namespace": "",
+                        "short_class": "",
+                        "class": "",
+                        "type": "",
+                        "function": "call_user_func_array",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/symfony\/symfony\/src\/Symfony\/Component\/HttpKernel\/HttpKernel.php",
+                        "line": 153,
+                        "args": [
+                            [
+                                "array",
+                                [
+                                    [
+                                        "object",
+                                        "TaskBundle\\Controller\\ChallengeController"
+                                    ],
+                                    [
+                                        "string",
+                                        "getChallengesAction"
+                                    ]
+                                ]
+                            ],
+                            [
+                                "array",
+                                []
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Symfony\\Component\\HttpKernel",
+                        "short_class": "HttpKernel",
+                        "class": "Symfony\\Component\\HttpKernel\\HttpKernel",
+                        "type": "->",
+                        "function": "handleRaw",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/symfony\/symfony\/src\/Symfony\/Component\/HttpKernel\/HttpKernel.php",
+                        "line": 68,
+                        "args": [
+                            [
+                                "object",
+                                "Symfony\\Component\\HttpFoundation\\Request"
+                            ],
+                            [
+                                "integer",
+                                1
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Symfony\\Component\\HttpKernel",
+                        "short_class": "HttpKernel",
+                        "class": "Symfony\\Component\\HttpKernel\\HttpKernel",
+                        "type": "->",
+                        "function": "handle",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/symfony\/symfony\/src\/Symfony\/Component\/HttpKernel\/Kernel.php",
+                        "line": 168,
+                        "args": [
+                            [
+                                "object",
+                                "Symfony\\Component\\HttpFoundation\\Request"
+                            ],
+                            [
+                                "integer",
+                                1
+                            ],
+                            [
+                                "boolean",
+                                true
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Symfony\\Component\\HttpKernel",
+                        "short_class": "Kernel",
+                        "class": "Symfony\\Component\\HttpKernel\\Kernel",
+                        "type": "->",
+                        "function": "handle",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/symfony\/symfony\/src\/Symfony\/Component\/HttpKernel\/Client.php",
+                        "line": 62,
+                        "args": [
+                            [
+                                "object",
+                                "Symfony\\Component\\HttpFoundation\\Request"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Symfony\\Component\\HttpKernel",
+                        "short_class": "Client",
+                        "class": "Symfony\\Component\\HttpKernel\\Client",
+                        "type": "->",
+                        "function": "doRequest",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/symfony\/symfony\/src\/Symfony\/Bundle\/FrameworkBundle\/Client.php",
+                        "line": 131,
+                        "args": [
+                            [
+                                "object",
+                                "Symfony\\Component\\HttpFoundation\\Request"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Symfony\\Bundle\\FrameworkBundle",
+                        "short_class": "Client",
+                        "class": "Symfony\\Bundle\\FrameworkBundle\\Client",
+                        "type": "->",
+                        "function": "doRequest",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/vendor\/symfony\/symfony\/src\/Symfony\/Component\/BrowserKit\/Client.php",
+                        "line": 315,
+                        "args": [
+                            [
+                                "object",
+                                "Symfony\\Component\\HttpFoundation\\Request"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "Symfony\\Component\\BrowserKit",
+                        "short_class": "Client",
+                        "class": "Symfony\\Component\\BrowserKit\\Client",
+                        "type": "->",
+                        "function": "request",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/src\/BaseBundle\/Lib\/Tests\/BaseApiControllerTest.php",
+                        "line": 102,
+                        "args": [
+                            [
+                                "string",
+                                "GET"
+                            ],
+                            [
+                                "string",
+                                "http:\/\/localhost\/api\/v1\/challenges?token=angry|$2y$13$o2E0o\/tEtpKPeiyR4OQrTu0A.GxSNF9Jzyiz2T4WD38WdyuJ4AZO2"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "BaseBundle\\Lib\\Tests",
+                        "short_class": "BaseApiControllerTest",
+                        "class": "BaseBundle\\Lib\\Tests\\BaseApiControllerTest",
+                        "type": "->",
+                        "function": "gets",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/tests\/TaskBundle\/Controller\/ChallengeControllerTest.php",
+                        "line": 26,
+                        "args": [
+                            [
+                                "string",
+                                "challenges"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "",
+                        "short_class": "ChallengeControllerTest",
+                        "class": "ChallengeControllerTest",
+                        "type": "->",
+                        "function": "testGetChallenges",
+                        "file": null,
+                        "line": null,
+                        "args": []
+                    },
+                    {
+                        "namespace": "",
+                        "short_class": "ReflectionMethod",
+                        "class": "ReflectionMethod",
+                        "type": "->",
+                        "function": "invokeArgs",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/Framework\/TestCase.php",
+                        "line": 1069,
+                        "args": [
+                            [
+                                "object",
+                                "ChallengeControllerTest"
+                            ],
+                            [
+                                "array",
+                                []
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "PHPUnit\\Framework",
+                        "short_class": "TestCase",
+                        "class": "PHPUnit\\Framework\\TestCase",
+                        "type": "->",
+                        "function": "runTest",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/Framework\/TestCase.php",
+                        "line": 928,
+                        "args": []
+                    },
+                    {
+                        "namespace": "PHPUnit\\Framework",
+                        "short_class": "TestCase",
+                        "class": "PHPUnit\\Framework\\TestCase",
+                        "type": "->",
+                        "function": "runBare",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/Framework\/TestResult.php",
+                        "line": 696,
+                        "args": []
+                    },
+                    {
+                        "namespace": "PHPUnit\\Framework",
+                        "short_class": "TestResult",
+                        "class": "PHPUnit\\Framework\\TestResult",
+                        "type": "->",
+                        "function": "run",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/Framework\/TestCase.php",
+                        "line": 883,
+                        "args": [
+                            [
+                                "object",
+                                "ChallengeControllerTest"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "PHPUnit\\Framework",
+                        "short_class": "TestCase",
+                        "class": "PHPUnit\\Framework\\TestCase",
+                        "type": "->",
+                        "function": "run",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/Framework\/TestSuite.php",
+                        "line": 746,
+                        "args": [
+                            [
+                                "object",
+                                "PHPUnit\\Framework\\TestResult"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "PHPUnit\\Framework",
+                        "short_class": "TestSuite",
+                        "class": "PHPUnit\\Framework\\TestSuite",
+                        "type": "->",
+                        "function": "run",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/TextUI\/TestRunner.php",
+                        "line": 537,
+                        "args": [
+                            [
+                                "object",
+                                "PHPUnit\\Framework\\TestResult"
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "PHPUnit\\TextUI",
+                        "short_class": "TestRunner",
+                        "class": "PHPUnit\\TextUI\\TestRunner",
+                        "type": "->",
+                        "function": "doRun",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/TextUI\/Command.php",
+                        "line": 210,
+                        "args": [
+                            [
+                                "object",
+                                "PHPUnit\\Framework\\TestSuite"
+                            ],
+                            [
+                                "array",
+                                {
+                                    "listGroups": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "listSuites": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "loader": [
+                                        "null",
+                                        null
+                                    ],
+                                    "useDefaultConfiguration": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "loadedExtensions": [
+                                        "array",
+                                        []
+                                    ],
+                                    "notLoadedExtensions": [
+                                        "array",
+                                        []
+                                    ],
+                                    "configuration": [
+                                        "object",
+                                        "PHPUnit\\Util\\Configuration"
+                                    ],
+                                    "printer": [
+                                        "string",
+                                        "PHPUnit\\Util\\Log\\TeamCity"
+                                    ],
+                                    "testSuffixes": [
+                                        "array",
+                                        [
+                                            [
+                                                "string",
+                                                "Test.php"
+                                            ],
+                                            [
+                                                "string",
+                                                ".phpt"
+                                            ]
+                                        ]
+                                    ],
+                                    "debug": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "filter": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "listeners": [
+                                        "array",
+                                        []
+                                    ],
+                                    "backupGlobals": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "bootstrap": [
+                                        "string",
+                                        "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/app\/autoload.php"
+                                    ],
+                                    "colors": [
+                                        "string",
+                                        "auto"
+                                    ],
+                                    "testdoxGroups": [
+                                        "array",
+                                        []
+                                    ],
+                                    "testdoxExcludeGroups": [
+                                        "array",
+                                        []
+                                    ],
+                                    "addUncoveredFilesFromWhitelist": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "backupStaticAttributes": [
+                                        "null",
+                                        null
+                                    ],
+                                    "beStrictAboutChangesToGlobalState": [
+                                        "null",
+                                        null
+                                    ],
+                                    "beStrictAboutResourceUsageDuringSmallTests": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "cacheTokens": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "columns": [
+                                        "integer",
+                                        80
+                                    ],
+                                    "convertDeprecationsToExceptions": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "convertErrorsToExceptions": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "convertNoticesToExceptions": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "convertWarningsToExceptions": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "crap4jThreshold": [
+                                        "integer",
+                                        30
+                                    ],
+                                    "disallowTestOutput": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "disallowTodoAnnotatedTests": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "enforceTimeLimit": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "excludeGroups": [
+                                        "array",
+                                        []
+                                    ],
+                                    "failOnRisky": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "failOnWarning": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "groups": [
+                                        "array",
+                                        []
+                                    ],
+                                    "processIsolation": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "processUncoveredFilesFromWhitelist": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "registerMockObjectsFromTestArgumentsRecursively": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "repeat": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "reportHighLowerBound": [
+                                        "integer",
+                                        90
+                                    ],
+                                    "reportLowUpperBound": [
+                                        "integer",
+                                        50
+                                    ],
+                                    "reportUselessTests": [
+                                        "boolean",
+                                        true
+                                    ],
+                                    "reverseList": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "stopOnError": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "stopOnFailure": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "stopOnIncomplete": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "stopOnRisky": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "stopOnSkipped": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "stopOnWarning": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "strictCoverage": [
+                                        "boolean",
+                                        false
+                                    ],
+                                    "timeoutForLargeTests": [
+                                        "integer",
+                                        60
+                                    ],
+                                    "timeoutForMediumTests": [
+                                        "integer",
+                                        10
+                                    ],
+                                    "timeoutForSmallTests": [
+                                        "integer",
+                                        1
+                                    ],
+                                    "verbose": [
+                                        "boolean",
+                                        false
+                                    ]
+                                }
+                            ],
+                            [
+                                "boolean",
+                                true
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "PHPUnit\\TextUI",
+                        "short_class": "Command",
+                        "class": "PHPUnit\\TextUI\\Command",
+                        "type": "->",
+                        "function": "run",
+                        "file": "phar:\/\/\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar\/phpunit\/TextUI\/Command.php",
+                        "line": 141,
+                        "args": [
+                            [
+                                "array",
+                                [
+                                    [
+                                        "string",
+                                        "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar"
+                                    ],
+                                    [
+                                        "string",
+                                        "--configuration"
+                                    ],
+                                    [
+                                        "string",
+                                        "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/app\/phpunit.xml.dist"
+                                    ],
+                                    [
+                                        "string",
+                                        "ChallengeControllerTest"
+                                    ],
+                                    [
+                                        "string",
+                                        "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/tests\/TaskBundle\/Controller\/ChallengeControllerTest.php"
+                                    ],
+                                    [
+                                        "string",
+                                        "--teamcity"
+                                    ]
+                                ]
+                            ],
+                            [
+                                "boolean",
+                                true
+                            ]
+                        ]
+                    },
+                    {
+                        "namespace": "PHPUnit\\TextUI",
+                        "short_class": "Command",
+                        "class": "PHPUnit\\TextUI\\Command",
+                        "type": "::",
+                        "function": "main",
+                        "file": "\/Users\/danya\/PhpstormProjects\/Prevozmoganie\/phpunit.phar",
+                        "line": 546,
+                        "args": []
                     }
-                ],
-                "title": "\u0423\u0436\u0438\u043d \u043c\u0430\u043a\u0430\u0440\u043e\u0448\u043a\u0430\u043c\u0438",
-                "mealType": {
-                    "id": 15,
-                    "title": "\u0423\u0436\u0438\u043d"
-                }
-            },
-            "date": "27042017",
-            "isPerformed": false,
-            "id": 26
-        }
-    ]
+                ]
+            }
+        ]
+    }
 }

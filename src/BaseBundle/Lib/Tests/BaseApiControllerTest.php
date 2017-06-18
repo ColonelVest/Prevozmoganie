@@ -94,10 +94,7 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->initDB();
         $client = static::createClient();
         $token = $this->getUserToken();
-        $url = '/api/v1/'.$entitiesName.'?token='.$token->getData();
-        foreach ($params as $paramName => $value) {
-            $url .= '&'.$paramName.'='.$value;
-        }
+        $url = '/api/v1/'.$entitiesName.'?token='.$token->getData() . '&' . http_build_query($params);
 
         $client->request('GET', $url);
 

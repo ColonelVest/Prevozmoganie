@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
+use UserBundle\Entity\User;
 
 /**
  * @ORM\Entity()
@@ -57,7 +58,7 @@ class Challenge extends BaseEntity
      * @ORM\JoinTable(name="challenges_tasks",
      *     joinColumns={@ORM\JoinColumn(name="challenge_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="task_id", referencedColumnName="id")})
-     * @Groups({"full", "concise", "nested"})
+     * @Groups({"full", "nested"})
      * @MaxDepth(1)
      */
     private $tasks;
@@ -65,14 +66,39 @@ class Challenge extends BaseEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Groups({"full", "concise", "nested"})
+     * @Groups({"full", "nested"})
      * @Assert\NotNull()
      */
     private $award;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return Challenge
+     */
+    public function setUser(User $user): Challenge
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     /**

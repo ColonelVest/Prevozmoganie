@@ -21,6 +21,11 @@ class ChallengeControllerTest extends \BaseBundle\Lib\Tests\BaseApiControllerTes
         return 'challenges';
     }
 
+    public function testGetChallenges()
+    {
+        return $this->gets('challenges');
+    }
+
     /**
      * keys: 'postData', 'queryCriteria', 'putData', 'deleteCriteria'
      *
