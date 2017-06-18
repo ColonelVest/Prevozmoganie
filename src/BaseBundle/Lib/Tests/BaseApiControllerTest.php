@@ -13,6 +13,7 @@ use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Models\HaveEntriesInterface;
 use BaseBundle\Models\Result;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
 use UserBundle\Entity\User;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -22,10 +23,17 @@ use Symfony\Component\Console\Output\NullOutput;
 abstract class BaseApiControllerTest extends WebTestCase
 {
     /**
-     * @return BaseEntity
+     * @var Container
+     */
+    protected static $container;
+    /**
+     * @return string
      */
     abstract protected function getEntityName();
 
+    /**
+     * @return string
+     */
     abstract protected function getUrlEnd();
 
     /**
@@ -65,7 +73,14 @@ abstract class BaseApiControllerTest extends WebTestCase
 
     protected function getContainer()
     {
-        return static::$kernel->getContainer();
+        if (is_null(self::$container)) {
+            if (is_null(self::$kernel)) {
+                self::bootKernel();
+            }
+            self::$container = static::$kernel->getContainer();
+        }
+
+        return self::$container;
     }
 
     protected function getEntityManager()

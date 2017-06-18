@@ -4,10 +4,7 @@ namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Entity\DateCondition;
-use BaseBundle\Models\ErrorMessages;
-use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
-use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;

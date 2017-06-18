@@ -39,10 +39,10 @@ class LoadDayData extends AbstractFixture implements OrderedFixtureInterface, Co
         $day = new Day();
         $day->setDate(new \DateTime('-1 day'));
 //        $day->setUser($this->getReference('fixt_user2'));
-        $manager->persist($day);
-        $this->setReference('day4', $day);
-
-        $manager->flush();
+//        $manager->persist($day);
+//        $this->setReference('day4', $day);
+//
+//        $manager->flush();
     }
 
     /**

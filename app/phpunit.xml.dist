@@ -38,6 +38,7 @@
             <directory>vendor</directory>
             <directory>module/*/config</directory>
             <directory suffix=".php">../src/BaseBundle/Lib/Tests/*</directory>
+            <directory suffix=".php">../tests/FoodBundle/*</directory>
         </blacklist>
     </filter>
 

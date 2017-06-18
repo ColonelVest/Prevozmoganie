@@ -27,21 +27,6 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
-        $task = $em->find('TaskBundle:TaskEntry', 78);
-        $result = $task::getShortName();
-//        $data = [
-//            'title' => 'test task',
-//            'description' => 'test task description',
-//            'taskEntries' => [12],
-//            'date' => (new \DateTime())->format('dmY'),
-//            'beginTime' => '15:00',
-//            'endTime' => '17:00',
-//        ];
-//        $em->persist(new Task());
-//        $normalizer = $this->get('pv_normalizer');
-//        $task = $this->get('pv_normalizer')->fillEntity(new Task(), $data, false);
-
-//        $em->flush();
 
         return [];
     }
