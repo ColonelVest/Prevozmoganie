@@ -4,6 +4,7 @@ namespace UserBundle\Services;
 
 use BaseBundle\Services\BaseHelper;
 use Doctrine\ORM\EntityManager;
+use TaskBundle\Entity\Challenge;
 use UserBundle\Entity\Achievement;
 use UserBundle\Entity\User;
 
@@ -50,10 +51,10 @@ class AchievementManager
     private function addAchievement(array $usersWithIdKeys, Achievement $achievement)
     {
         $beginDate = (new \DateTime())->sub($achievement->getDateInterval());
-        $statistic = $this->getTaskCompletionStatistic($beginDate, array_keys($usersWithIdKeys));
+        $statistic = $this->getTaskCompletionStatistic($beginDate, new \DateTime(), array_keys($usersWithIdKeys));
 
         foreach ($statistic as $userStatistic) {
-            if ($userStatistic['TaskCount'] > 0  && $userStatistic['UnCompletedCount'] == 0) {
+            if ($userStatistic['TaskCount'] > 0 && $userStatistic['UnCompletedCount'] == 0) {
                 $userId = $userStatistic['user_id'];
                 /** @var User $user */
                 $user = $usersWithIdKeys[$userId];
@@ -62,7 +63,7 @@ class AchievementManager
         }
     }
 
-    private function getTaskCompletionStatistic(\DateTime $beginDate, $userIds)
+    private function getTaskCompletionStatistic(\DateTime $beginDate, \DateTime $endDate, $userIds)
     {
         $request = $this->em->getConnection()->prepare(
             'SELECT
@@ -83,9 +84,9 @@ GROUP BY user_id'
         );
         $request->execute(
             [
-                ':currentDate' => (new \DateTime())->format('Y-m-d'),
+                ':currentDate' => $endDate->format('Y-m-d'),
                 ':beginDate' => $beginDate->format('Y-m-d'),
-                ':userIds' => join(', ', $userIds)
+                ':userIds' => join(', ', $userIds),
             ]
         );
 
