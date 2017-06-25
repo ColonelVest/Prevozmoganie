@@ -84,7 +84,11 @@ class PVNormalizer extends ObjectNormalizer
                 /** @var PVAttributeMetadata $fieldMeta */
                 $fieldMeta = $metadata[$fieldName];
                 if (!is_null($fieldMeta->getDateTimeFormat())) {
-                    $fieldData = \DateTime::createFromFormat($fieldMeta->getDateTimeFormat(), $value);
+                    if ($value == '') {
+                        $fieldData = null;
+                    } else {
+                        $fieldData = \DateTime::createFromFormat($fieldMeta->getDateTimeFormat(), $value);
+                    }
                 } elseif (!is_null($classData = $fieldMeta->getClassData())) {
                     $fieldData = $this->fillEntityField($value, $classData->className, $classData->isMultiple);
                 } else {

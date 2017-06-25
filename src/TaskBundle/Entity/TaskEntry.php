@@ -125,7 +125,7 @@ class TaskEntry extends BaseEntity implements UserReferable
      * @param \DateTime $date
      * @return TaskEntry
      */
-    public function setDate(\DateTime $date): TaskEntry
+    public function setDate(?\DateTime $date): TaskEntry
     {
         $this->date = $date;
 
