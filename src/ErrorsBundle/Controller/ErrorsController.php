@@ -6,7 +6,6 @@ use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use ErrorsBundle\Entity\Error;
-use ErrorsBundle\Form\ErrorType;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 

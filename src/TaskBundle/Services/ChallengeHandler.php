@@ -24,7 +24,7 @@ class ChallengeHandler extends EntityHandler
     {
         $qb = $this->getRepository()->createQueryBuilder('c');
         $qb
-            ->where('c.deletedAt = NULL')
+            ->where('c.deletedAt IS NULL')
 //            ->where('c.end = :currentDate')
             ->andWhere('c.isCompleted = 0');
 //            ->andWhere($qb->expr()->in('c.user', array_keys($usersWithIdKeys)))
@@ -71,6 +71,6 @@ class ChallengeHandler extends EntityHandler
             ]
         );
 
-        return $request->rowCount() > 0;
+        return $request->rowCount() == 0;
     }
 }

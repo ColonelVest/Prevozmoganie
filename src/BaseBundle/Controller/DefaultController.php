@@ -28,8 +28,7 @@ class DefaultController extends Controller
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
 
-        $this->get('challenge_handler')->checkCompleteness();
-
+        $this->get('pv.pv_generator')->generate('BaseBundle\\Entity\\Day');
         return [];
     }
 }

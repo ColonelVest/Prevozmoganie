@@ -1,0 +1,68 @@
+<?php
+
+namespace {{ bundleName }}\Controller;
+
+use BaseBundle\Controller\BaseApiController;
+use BaseBundle\Services\EntityHandler;
+use Doctrine\Common\Collections\Criteria;
+use {{ entityFullName }};
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
+
+class {{ entityName }}Controller extends BaseApiController
+{
+    /**
+     * @Rest\View
+     * @param $id
+     * @return array
+     */
+    public function get{{ entityName }}Action($id)
+    {
+        return $this->getEntityResultById($id);
+    }
+
+    /**
+    * @Rest\View
+    * @return array
+    */
+    public function get{{ entityPluralName }}Action()
+    {
+        return $this->getEntitiesByCriteria(Criteria::create());
+    }
+
+    /**
+    * @Rest\View
+    * @param $id
+    * @return array
+    */
+    public function delete{{ entityName }}Action($id)
+    {
+        return $this->removeEntityById($id);
+    }
+
+    /**
+    * @Rest\View
+    * @param Request $request
+    * @return array
+    */
+    public function post{{ entityPluralName }}Action(Request $request)
+    {
+        return $this->createEntity({{ entityName }}::class, $request);
+    }
+
+    /**
+    * @Rest\View
+    * @param Request $request
+    * @param $id
+    * @return array
+    */
+    public function put{{ entityPluralName }}Action(Request $request, $id)
+    {
+        return $this->editEntity($request, $id);
+    }
+
+    protected function getHandler(): EntityHandler
+    {
+        return $this->get('{{ entityName|lower }}_handler');
+    }
+}

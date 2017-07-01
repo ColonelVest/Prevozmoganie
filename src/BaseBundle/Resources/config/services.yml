@@ -46,3 +46,10 @@ services:
         - '%fos_user.firewall_name%'
     tags:
         - {name: kernel.event_subscriber}
+
+  pv.pv_generator:
+    class: BaseBundle\Services\PVGenerator
+    arguments:
+        - '@filesystem'
+        - '%kernel.root_dir%'
+        - '@service_container'
