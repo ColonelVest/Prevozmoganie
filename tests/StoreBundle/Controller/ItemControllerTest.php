@@ -28,12 +28,12 @@ class ItemControllerTest extends BaseApiControllerTest
     {
         //TODO: Заполнить данными
         $postData = [
-            'Item' => [
+            'item' => [
             ]
         ];
         $queryCriteria = [];
         $putData = [
-            'Item' => []
+            'item' => []
         ];
         $deleteCriteria = [];
 

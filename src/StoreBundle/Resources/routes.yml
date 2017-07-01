@@ -1,0 +1,5 @@
+store_bundle:
+    type: rest
+    prefix: /v1
+    resource: "@StoreBundle/Controller/"
+    name_prefix:  api_v1_

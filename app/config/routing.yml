@@ -1,13 +1,3 @@
-food:
-    resource: "@FoodBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-errors:
-    resource: "@ErrorsBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 note_api:
     type: rest
     prefix: /api
@@ -35,6 +25,11 @@ foods_api:
     type: rest
     prefix: /api
     resource: '@FoodBundle/Resources/config/routes.yml'
+
+store_api:
+    type: rest
+    prefix: /api
+    resource: '@StoreBundle/Resources/config/routes.yml'
 
 users_api:
     type: rest

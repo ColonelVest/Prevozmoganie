@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new ErrorsBundle\ErrorsBundle(),
             new UserBundle\UserBundle(),
             new FoodBundle\FoodBundle(),
+            new StoreBundle\StoreBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
