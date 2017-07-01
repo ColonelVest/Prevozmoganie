@@ -11,12 +11,12 @@ class {{ entityName }}ControllerTest extends BaseApiControllerTest
 
     protected function getEntityName()
     {
-        return \{{ entityFullName }}::class;
+        return \{{ bundleName }}\Entity\{{ entityName }}::class;
     }
 
     protected function getUrlEnd()
     {
-        return '{{ entityPluralName }}';
+        return '{{ entityPluralName|lower }}';
     }
 
     /**

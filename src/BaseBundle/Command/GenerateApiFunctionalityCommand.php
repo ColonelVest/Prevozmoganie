@@ -11,11 +11,12 @@ namespace BaseBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateApiFunctionalityCommand extends GenerateDoctrineCommand
+class GenerateApiFunctionalityCommand extends ContainerAwareCommand
 {
     public function configure()
     {
@@ -28,11 +29,8 @@ class GenerateApiFunctionalityCommand extends GenerateDoctrineCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln($input->getOption('entity'));
         $entity = Validators::validateEntityName($input->getOption('entity'));
-    }
-
-    protected function createGenerator()
-    {
-        return $this->getContainer()->get('pv.pv_generator');
+        $this->getContainer()->get('pv.pv_generator')->generate($entity);
     }
 }

@@ -42,12 +42,11 @@ class PVGenerator extends Generator
     private function initData($entityFullName)
     {
         $this->entityFullName = $entityFullName;
-        $bundleNameEndPosition = strpos($entityFullName, '\\');
-        $bundleName = substr($entityFullName, 0, $bundleNameEndPosition);
+        $delimiterPosition = strpos($entityFullName, ':');
+        $bundleName = substr($entityFullName, 0, $delimiterPosition);
         $this->bundle = $this->container->get('kernel')->getBundle($bundleName);
 
-        $entityNameBeginPosition = strrpos($entityFullName, '\\') + 1;
-        $this->entityName = substr($entityFullName, $entityNameBeginPosition);
+        $this->entityName = substr($entityFullName, $delimiterPosition + 1);
 
         $skeletonDir = $this->rootDir . '/src/BaseBundle/Resources/views/generator';
         $this->setSkeletonDirs([$skeletonDir]);
@@ -69,7 +68,6 @@ class PVGenerator extends Generator
         $this->renderFile('test_controller.php.twig', $target, [
             'bundleName' => $this->bundle->getName(),
             'entityName' => $this->entityName,
-            'entityFullName' => $this->entityFullName,
             'entityPluralName' => Inflector::pluralize($this->entityName)
         ]);
     }
@@ -80,7 +78,6 @@ class PVGenerator extends Generator
         $this->renderFile('controller.php.twig', $target, [
             'bundleName' => $this->bundle->getName(),
             'entityName' => $this->entityName,
-            'entityFullName' => $this->entityFullName,
             'entityPluralName' => Inflector::pluralize($this->entityName)
         ]);
     }
