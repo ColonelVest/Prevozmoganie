@@ -26,7 +26,7 @@ class PVGenerator extends Generator
 
     public function __construct(Filesystem $fileSystem, $rootDir, ContainerInterface $container)
     {
-        $this->rootDir = $rootDir;
+        $this->rootDir = $rootDir . '/..';
         $this->fileSystem = $fileSystem;
         $this->container = $container;
     }
@@ -34,7 +34,7 @@ class PVGenerator extends Generator
     public function generate($entityName)
     {
         $this->initData($entityName);
-        $this->generateController();
+        $this->generateHandler();
     }
 
     private function initData($entityFullName)
@@ -47,28 +47,51 @@ class PVGenerator extends Generator
         $entityNameBeginPosition = strrpos($entityFullName, '\\') + 1;
         $this->entityName = substr($entityFullName, $entityNameBeginPosition);
 
-        $skeletonDir = $this->rootDir . '/../src/BaseBundle/Resources/views/generator';
+        $skeletonDir = $this->rootDir . '/src/BaseBundle/Resources/views/generator';
         $this->setSkeletonDirs([$skeletonDir]);
     }
 
     private function generateHandler()
     {
-        $target = $this->rootDir . '/../src/' . $this->bundle->getName() . '/Services/' . $this->entityName . 'Handler.php';
+        $target = $this->rootDir . '/src/' . $this->bundle->getName() . '/Services/' . $this->entityName . 'Handler.php';
         $this->renderFile('handler.php.twig', $target, [
             'bundleName' => $this->bundle->getName(),
             'entityName' => $this->entityName
         ]);
+        $this->addHandlerToConfig();
     }
 
     private function generateController()
     {
-        $target = $this->rootDir . '/../src/' . $this->bundle->getName() . '/Controller/' . $this->entityName . 'Controller.php';
+        $target = $this->rootDir . '/src/' . $this->bundle->getName() . '/Controller/' . $this->entityName . 'Controller.php';
         $this->renderFile('controller.php.twig', $target, [
             'bundleName' => $this->bundle->getName(),
             'entityName' => $this->entityName,
             'entityFullName' => $this->entityFullName,
             'entityPluralName' => Inflector::pluralize($this->entityName)
         ]);
+    }
+
+    private function addHandlerToConfig()
+    {
+        $configFile = $target = $this->rootDir . '/src/' . $this->bundle->getName() . '/Resources/config/services.yml';
+        $currentContents = file_get_contents($configFile);
+        $newContent = $currentContents . $this->getImportHandlerConfigCode();
+
+        if (false === $this->dump($configFile, $newContent)) {
+            throw new \RuntimeException(sprintf('Could not write file %s ', $configFile));
+        }
+    }
+
+    private function getImportHandlerConfigCode()
+    {
+        $handlerConciseName = $this->entityName . 'Handler';
+        return "\n  " . strtolower($this->entityName) . '_handler:' .
+        "\n    class: ". $this->bundle->getName() .'\\Services\\' . $handlerConciseName . "\n" .
+        '    arguments:
+        - \'@doctrine.orm.entity_manager\'
+        - \'@api_response_formatter\'
+        - \'@validator\'';
     }
 
     private function generateTestClass()
