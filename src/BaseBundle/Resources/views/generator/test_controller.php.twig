@@ -1,0 +1,47 @@
+<?php
+
+use BaseBundle\Lib\Tests\BaseApiControllerTest;
+
+class {{ entityName }}ControllerTest extends BaseApiControllerTest
+{
+    public function testGet{{ entityPluralName }}()
+    {
+        $this->gets('{{ entityPluralName|lower }}');
+    }
+
+    protected function getEntityName()
+    {
+        return \{{ entityFullName }}::class;
+    }
+
+    protected function getUrlEnd()
+    {
+        return '{{ entityPluralName }}';
+    }
+
+    /**
+    * keys: 'postData', 'queryCriteria', 'putData', 'deleteCriteria'
+    *
+    * @return mixed
+    */
+    protected function getCRUDData()
+    {
+        //TODO: Заполнить данными
+        $postData = [
+            '{{ entityName }}' => [
+            ]
+        ];
+        $queryCriteria = [];
+        $putData = [
+            '{{ entityName }}' => []
+        ];
+        $deleteCriteria = [];
+
+        return [
+            'postData' => $postData,
+            'queryCriteria' => $queryCriteria,
+            'putData' => $putData,
+            'deleteCriteria' => $deleteCriteria
+        ];
+    }
+}

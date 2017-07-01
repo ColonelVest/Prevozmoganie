@@ -34,6 +34,8 @@ class PVGenerator extends Generator
     public function generate($entityName)
     {
         $this->initData($entityName);
+        $this->generateControllerTest();
+        $this->generateController();
         $this->generateHandler();
     }
 
@@ -59,6 +61,17 @@ class PVGenerator extends Generator
             'entityName' => $this->entityName
         ]);
         $this->addHandlerToConfig();
+    }
+
+    private function generateControllerTest()
+    {
+        $target = $this->rootDir . '/tests/' . $this->bundle->getName() . '/Controller/' . $this->entityName . 'ControllerTest.php';
+        $this->renderFile('test_controller.php.twig', $target, [
+            'bundleName' => $this->bundle->getName(),
+            'entityName' => $this->entityName,
+            'entityFullName' => $this->entityFullName,
+            'entityPluralName' => Inflector::pluralize($this->entityName)
+        ]);
     }
 
     private function generateController()
@@ -92,10 +105,5 @@ class PVGenerator extends Generator
         - \'@doctrine.orm.entity_manager\'
         - \'@api_response_formatter\'
         - \'@validator\'';
-    }
-
-    private function generateTestClass()
-    {
-        
     }
 }
