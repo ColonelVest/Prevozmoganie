@@ -96,7 +96,7 @@ class PVGenerator extends Generator
     private function getImportHandlerConfigCode()
     {
         $handlerConciseName = $this->entityName . 'Handler';
-        return "\n  " . strtolower($this->entityName) . '_handler:' .
+        return "\n\n  " . strtolower($this->entityName) . '_handler:' .
         "\n    class: ". $this->bundle->getName() .'\\Services\\' . $handlerConciseName . "\n" .
         '    arguments:
         - \'@doctrine.orm.entity_manager\'

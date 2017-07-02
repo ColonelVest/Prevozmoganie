@@ -9,3 +9,17 @@ services:
         - '@doctrine.orm.entity_manager'
         - '@api_response_formatter'
         - '@validator'
+
+  buyitem_handler:
+    class: StoreBundle\Services\BuyItemHandler
+    arguments:
+        - '@doctrine.orm.entity_manager'
+        - '@api_response_formatter'
+        - '@validator'
+
+  itementry_handler:
+    class: StoreBundle\Services\ItemEntryHandler
+    arguments:
+        - '@doctrine.orm.entity_manager'
+        - '@api_response_formatter'
+        - '@validator'
