@@ -23,3 +23,10 @@ services:
         - '@doctrine.orm.entity_manager'
         - '@api_response_formatter'
         - '@validator'
+
+  itemcategory_handler:
+    class: StoreBundle\Services\ItemCategoryHandler
+    arguments:
+        - '@doctrine.orm.entity_manager'
+        - '@api_response_formatter'
+        - '@validator'

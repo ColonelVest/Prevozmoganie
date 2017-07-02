@@ -9,6 +9,7 @@ use BaseBundle\Models\Result;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use UserBundle\Entity\User;
 
@@ -88,8 +89,9 @@ abstract class EntityHandler
         $errors = $this->validator->validate($entity);
         if (count($errors) > 0) {
             $errorCodes = [];
+            /** @var ConstraintViolation $error */
             foreach ($errors as $error) {
-                $errorCodes[] = (int)$error;
+                $errorCodes[] = $error->getCode();
             }
 
             return Result::createErrorResult($errorCodes);

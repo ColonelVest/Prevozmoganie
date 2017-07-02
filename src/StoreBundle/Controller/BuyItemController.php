@@ -25,7 +25,7 @@ class BuyItemController extends BaseApiController
     * @Rest\View
     * @return array
     */
-    public function getBuyItemsAction()
+    public function getBuyitemsAction()
     {
         return $this->getEntitiesByCriteria(Criteria::create());
     }
@@ -45,7 +45,7 @@ class BuyItemController extends BaseApiController
     * @param Request $request
     * @return array
     */
-    public function postBuyItemsAction(Request $request)
+    public function postBuyitemsAction(Request $request)
     {
         return $this->createEntity(BuyItem::class, $request);
     }
@@ -56,7 +56,7 @@ class BuyItemController extends BaseApiController
     * @param $id
     * @return array
     */
-    public function putBuyItemsAction(Request $request, $id)
+    public function putBuyitemsAction(Request $request, $id)
     {
         return $this->editEntity($request, $id);
     }

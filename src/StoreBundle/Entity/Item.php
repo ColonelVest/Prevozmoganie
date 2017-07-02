@@ -14,6 +14,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
  * @ORM\Entity()
@@ -41,12 +42,31 @@ class Item extends BaseEntity
     private $dimension;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var ItemCategory
+     * @ORM\ManyToOne(targetEntity="StoreBundle\Entity\ItemCategory")
+     * @Normal\Entity(className="StoreBundle\Entity\ItemCategory")
      * @Groups({"concise", "full", "nested"})
-     * @Assert\Choice(callback="getItemTypes")
      */
-    private $type;
+    private $category;
+
+    /**
+     * @return ItemCategory
+     */
+    public function getCategory(): ?ItemCategory
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param ItemCategory $category
+     * @return Item
+     */
+    public function setCategory(ItemCategory $category): Item
+    {
+        $this->category = $category;
+
+        return $this;
+    }
 
     /**
      * @return string
@@ -109,10 +129,5 @@ class Item extends BaseEntity
         return [
             'кг', 'г', 'шт', 'л', 'm3', 'уп.'
         ];
-    }
-
-    public static function getItemTypes()
-    {
-        return ['food'];
     }
 }

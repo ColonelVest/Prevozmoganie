@@ -9,6 +9,7 @@ use FoodBundle\Entity\MealType;
 use FoodBundle\Model\RepetitiveMeal;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use StoreBundle\Entity\Item;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +29,6 @@ class DefaultController extends Controller
     {
         $em = $this->get('doctrine.orm.default_entity_manager');
 
-        $this->get('pv.pv_generator')->generate('BaseBundle\\Entity\\Day');
         return [];
     }
 }
