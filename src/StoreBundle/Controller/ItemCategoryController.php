@@ -16,7 +16,7 @@ class ItemCategoryController extends BaseApiController
      * @param $id
      * @return array
      */
-    public function getItemCategoryAction($id)
+    public function getItemcategoryAction($id)
     {
         return $this->getEntityResultById($id);
     }
@@ -25,9 +25,9 @@ class ItemCategoryController extends BaseApiController
     * @Rest\View
     * @return array
     */
-    public function getItemCategoriesAction()
+    public function getItemcategoriesAction()
     {
-        return $this->getEntitiesByCriteria(Criteria::create());
+        return $this->getEntitiesByCriteria(Criteria::create(), false);
     }
 
     /**
@@ -35,7 +35,7 @@ class ItemCategoryController extends BaseApiController
     * @param $id
     * @return array
     */
-    public function deleteItemCategoryAction($id)
+    public function deleteItemcategoryAction($id)
     {
         return $this->removeEntityById($id);
     }
@@ -45,7 +45,7 @@ class ItemCategoryController extends BaseApiController
     * @param Request $request
     * @return array
     */
-    public function postItemCategoriesAction(Request $request)
+    public function postItemcategoriesAction(Request $request)
     {
         return $this->createEntity(ItemCategory::class, $request);
     }
@@ -56,7 +56,7 @@ class ItemCategoryController extends BaseApiController
     * @param $id
     * @return array
     */
-    public function putItemCategoriesAction(Request $request, $id)
+    public function putItemcategoriesAction(Request $request, $id)
     {
         return $this->editEntity($request, $id);
     }

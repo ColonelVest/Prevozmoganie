@@ -16,7 +16,7 @@ class {{ entityName }}Controller extends BaseApiController
      * @param $id
      * @return array
      */
-    public function get{{ entityName }}Action($id)
+    public function get{{ entityName|lower|capitalize }}Action($id)
     {
         return $this->getEntityResultById($id);
     }
@@ -25,7 +25,7 @@ class {{ entityName }}Controller extends BaseApiController
     * @Rest\View
     * @return array
     */
-    public function get{{ entityPluralName }}Action()
+    public function get{{ entityPluralName|lower|capitalize }}Action()
     {
         return $this->getEntitiesByCriteria(Criteria::create());
     }
@@ -35,7 +35,7 @@ class {{ entityName }}Controller extends BaseApiController
     * @param $id
     * @return array
     */
-    public function delete{{ entityName }}Action($id)
+    public function delete{{ entityName|lower|capitalize }}Action($id)
     {
         return $this->removeEntityById($id);
     }
@@ -45,7 +45,7 @@ class {{ entityName }}Controller extends BaseApiController
     * @param Request $request
     * @return array
     */
-    public function post{{ entityPluralName }}Action(Request $request)
+    public function post{{ entityPluralName|lower|capitalize }}Action(Request $request)
     {
         return $this->createEntity({{ entityName }}::class, $request);
     }
@@ -56,7 +56,7 @@ class {{ entityName }}Controller extends BaseApiController
     * @param $id
     * @return array
     */
-    public function put{{ entityPluralName }}Action(Request $request, $id)
+    public function put{{ entityPluralName|lower|capitalize }}Action(Request $request, $id)
     {
         return $this->editEntity($request, $id);
     }

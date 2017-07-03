@@ -16,7 +16,7 @@ class BuyItemController extends BaseApiController
      * @param $id
      * @return array
      */
-    public function getBuyItemAction($id)
+    public function getBuyitemAction($id)
     {
         return $this->getEntityResultById($id);
     }
@@ -35,7 +35,7 @@ class BuyItemController extends BaseApiController
     * @param $id
     * @return array
     */
-    public function deleteBuyItemAction($id)
+    public function deleteBuyitemAction($id)
     {
         return $this->removeEntityById($id);
     }

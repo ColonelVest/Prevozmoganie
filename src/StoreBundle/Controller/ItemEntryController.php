@@ -16,7 +16,7 @@ class ItemEntryController extends BaseApiController
      * @param $id
      * @return array
      */
-    public function getItemEntryAction($id)
+    public function getItementryAction($id)
     {
         return $this->getEntityResultById($id);
     }
@@ -25,7 +25,7 @@ class ItemEntryController extends BaseApiController
     * @Rest\View
     * @return array
     */
-    public function getItemEntriesAction()
+    public function getItementriesAction()
     {
         return $this->getEntitiesByCriteria(Criteria::create());
     }
@@ -35,7 +35,7 @@ class ItemEntryController extends BaseApiController
     * @param $id
     * @return array
     */
-    public function deleteItemEntryAction($id)
+    public function deleteItementryAction($id)
     {
         return $this->removeEntityById($id);
     }
@@ -45,7 +45,7 @@ class ItemEntryController extends BaseApiController
     * @param Request $request
     * @return array
     */
-    public function postItemEntriesAction(Request $request)
+    public function postItementriesAction(Request $request)
     {
         return $this->createEntity(ItemEntry::class, $request);
     }
@@ -56,7 +56,7 @@ class ItemEntryController extends BaseApiController
     * @param $id
     * @return array
     */
-    public function putItemEntriesAction(Request $request, $id)
+    public function putItementriesAction(Request $request, $id)
     {
         return $this->editEntity($request, $id);
     }
