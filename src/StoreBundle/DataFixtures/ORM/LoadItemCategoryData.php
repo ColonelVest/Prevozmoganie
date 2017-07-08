@@ -24,6 +24,7 @@ class LoadItemCategoryData extends AbstractFixture implements OrderedFixtureInte
         ['title' => 'medicines', 'icon' => 'local_hospital'],
         ['title' => 'other', 'icon' => 'shopping_cart'],
         ['title' => 'technical', 'icon' => 'computer'],
+        ['title' => 'household good', 'icon' => 'home']
     ];
 
     /**
