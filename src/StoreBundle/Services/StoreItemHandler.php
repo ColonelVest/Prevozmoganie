@@ -6,10 +6,10 @@ use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityRepository;
 
-class ItemEntryHandler extends EntityHandler
+class StoreItemHandler extends EntityHandler
 {
     protected function getRepository(): EntityRepository
     {
-        return $this->em->getRepository('StoreBundle:ItemEntry');
+        return $this->em->getRepository('StoreItem.php');
     }
 }

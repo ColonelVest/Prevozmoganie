@@ -5,7 +5,7 @@ namespace StoreBundle\Controller;
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
-use StoreBundle\Entity\ItemEntry;
+use StoreBundle\Entity\StoreItem;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -47,7 +47,7 @@ class ItemEntryController extends BaseApiController
     */
     public function postItementriesAction(Request $request)
     {
-        return $this->createEntity(ItemEntry::class, $request);
+        return $this->createEntity(StoreItem::class, $request);
     }
 
     /**

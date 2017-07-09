@@ -2,21 +2,21 @@
 
 use BaseBundle\Lib\Tests\BaseApiControllerTest;
 
-class ItemEntryControllerTest extends BaseApiControllerTest
+class StoreItemControllerTest extends BaseApiControllerTest
 {
     public function testGetItemEntries()
     {
-        $this->gets('itementries');
+        $this->gets('storeitems');
     }
 
     protected function getEntityName()
     {
-        return \StoreBundle\Entity\ItemEntry::class;
+        return \StoreBundle\Entity\StoreItem::class;
     }
 
     protected function getUrlEnd()
     {
-        return 'itementries';
+        return 'storeitems';
     }
 
     /**
@@ -28,12 +28,12 @@ class ItemEntryControllerTest extends BaseApiControllerTest
     {
         //TODO: Заполнить данными
         $postData = [
-            'itementry' => [
+            'storeitem' => [
             ]
         ];
         $queryCriteria = [];
         $putData = [
-            'itementry' => []
+            'storeitem' => []
         ];
         $deleteCriteria = [];
 

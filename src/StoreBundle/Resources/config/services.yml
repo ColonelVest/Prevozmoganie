@@ -18,7 +18,7 @@ services:
         - '@validator'
 
   itementry_handler:
-    class: StoreBundle\Services\ItemEntryHandler
+    class: StoreBundle\Services\StoreItemHandler
     arguments:
         - '@doctrine.orm.entity_manager'
         - '@api_response_formatter'

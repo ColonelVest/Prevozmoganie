@@ -51,6 +51,31 @@ class BuyItem extends BaseEntity implements UserReferable
     private $user;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $isBought = false;
+
+    /**
+     * @return bool
+     */
+    public function isBought(): ?bool
+    {
+        return $this->isBought;
+    }
+
+    /**
+     * @param bool $isBought
+     * @return BuyItem
+     */
+    public function setIsBought(bool $isBought): BuyItem
+    {
+        $this->isBought = $isBought;
+
+        return $this;
+    }
+
+    /**
      * @return Item
      */
     public function getItem(): ?Item

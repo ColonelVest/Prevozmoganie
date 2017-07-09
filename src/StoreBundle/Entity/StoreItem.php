@@ -27,7 +27,7 @@ use UserBundle\Entity\User;
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class ItemEntry extends BaseEntity implements UserReferable
+class StoreItem extends BaseEntity implements UserReferable
 {
     use SoftDeleteableEntity;
     /**
@@ -61,9 +61,9 @@ class ItemEntry extends BaseEntity implements UserReferable
 
     /**
      * @param Item $item
-     * @return ItemEntry
+     * @return StoreItem
      */
-    public function setItem(Item $item): ItemEntry
+    public function setItem(Item $item): StoreItem
     {
         $this->item = $item;
 
@@ -80,9 +80,9 @@ class ItemEntry extends BaseEntity implements UserReferable
 
     /**
      * @param User $user
-     * @return ItemEntry
+     * @return StoreItem
      */
-    public function setUser(User $user): ItemEntry
+    public function setUser(User $user): StoreItem
     {
         $this->user = $user;
 
@@ -99,9 +99,9 @@ class ItemEntry extends BaseEntity implements UserReferable
 
     /**
      * @param float $quantity
-     * @return ItemEntry
+     * @return StoreItem
      */
-    public function setQuantity(float $quantity): ItemEntry
+    public function setQuantity(float $quantity): StoreItem
     {
         $this->quantity = $quantity;
 

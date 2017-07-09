@@ -17,7 +17,7 @@ use UserBundle\Entity\User;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="TaskBundle\Entity\TaskEntryRepository")
  * @ORM\Table(name="task_entries")
  * Class TaskEntry
  * @package TaskBundle\Entity
