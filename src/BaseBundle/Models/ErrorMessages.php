@@ -29,9 +29,9 @@ class ErrorMessages
     const INCORRECT_PASSWORD = 10;
     const INCORRECT_TOKEN = 11;
     const NOT_AUTHORIZED = 12;
-    const TOKEN_MISSING = 15;
     const PERMISSION_DENIED = 13;
     const MEALS_DATE_INCORRECT = 14;
+    const TOKEN_MISSING = 15;
 
     public function getErrorMessageByCode($code)
     {
@@ -55,12 +55,13 @@ class ErrorMessages
         5 => 'period_not_exists',
         6 => 'period_date_incorrect',
         7 => 'requested_task_not_exists',
-        8 => 'requested_error_not_esists',
+        8 => 'requested_error_not_exists',
         9 => 'unknown_username',
         10 => 'incorrect_password',
         11 => 'incorrect_token',
         12 => 'not_authorized',
         13 => 'permission_denied',
-        14 => 'meals_date_incorrect'
+        14 => 'meals_date_incorrect',
+        15 => 'token_missing'
     ];
 }

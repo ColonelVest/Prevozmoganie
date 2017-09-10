@@ -2,6 +2,7 @@
 
 namespace BaseBundle\Services;
 
+use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use UserBundle\Services\UserHandler;
 
@@ -40,6 +41,10 @@ class UserTokenHandler
     
     public function getUserByToken($token)
     {
+        if (is_null($token)) {
+            return Result::createErrorResult(ErrorMessages::TOKEN_MISSING);
+        }
+
         $result = $this->decode($token);
         if ($result->getIsSuccess()) {
             $userData = $result->getData();

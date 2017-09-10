@@ -33,14 +33,20 @@ class SecurityController extends FOSRestController
 
     /**
      * @Rest\View
-     * @Rest\Get("is_authorized/{token}")
-     * @param $token
+     * @Rest\Post("is_authorized")
+     * @param Request $request
      * @return Result
      */
-    public function isAuthorizedAction($token)
+    public function isAuthorizedAction(Request $request)
     {
+        $token = $request->get('token');
         $result = $this->get('token_handler')->isTokenCorrect($token);
         $resultResponse = (new Result())->setIsSuccess($result->getIsSuccess());
+        if (!$result->getIsSuccess()) {
+            foreach ($result->getErrors() as $error) {
+                $resultResponse->addError($error);
+            }
+        }
 
         return $this->get('api_response_formatter')->createResponseFromResultObj($resultResponse);
     }

@@ -56,7 +56,7 @@ class User extends BaseUser
 
     /**
      * @var string
-     * @ORM\Column()
+     * @ORM\Column(nullable=true)
      * @Serializer\Groups({"full", "concise"})
      */
     private $displayedName;

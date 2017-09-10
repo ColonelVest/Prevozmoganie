@@ -6,4 +6,8 @@ incorrect_schedule_begin_time: Некорректное время начала 
 period_not_exists: Период не существует
 period_date_incorrect: Дата периода некорректна
 requested_task_not_exists: Запрашиваемая задача не существует
-requested_error_not_esists: Запрашиваемая ошибка не существует
+requested_error_not_exists: Запрашиваемая ошибка не существует
+unknown_username: Пользователь не существует
+incorrect_password: Некорректный пароль
+not_authorized: Пользователь не авторизован
+permission_denied: Доступ запрещен

@@ -38,10 +38,10 @@ class ApiResponseFormatter
         return $this;
     }
 
-    public function addResponseMessage(int $errorCode, $messageType = null)
+    public function addResponseMessage($errorCode, $messageType = null)
     {
         $messageType = $messageType ? $messageType : ($this->isSuccess ? 'warnings' : 'errors');
-        $this->response[$messageType][] = $this->messageHandler->getErrorMessageByCode($errorCode);
+        $this->response[$messageType][] = is_int($errorCode) ? $this->messageHandler->getErrorMessageByCode($errorCode) : $errorCode;
 
         return $this;
     }
