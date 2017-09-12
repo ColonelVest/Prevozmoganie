@@ -28,6 +28,7 @@ class AchievementCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getContainer()->get('achievement_manager')->generate();
+        $numberOfAchievements = $this->getContainer()->get('achievement_manager')->generate();
+        $output->writeln($numberOfAchievements . ' achievements was generated');
     }
 }

@@ -23,6 +23,7 @@ class AchievementManager
 
     /**
      * @param User[] $users
+     * @return int
      */
     public function generate(array $users = [])
     {
@@ -37,21 +38,26 @@ class AchievementManager
             ->getRepository('UserBundle:Achievement')
             ->findBy(['classType' => 'task']);
 
+        $numberOfAchievements = 0;
         foreach ($taskAchievements as $achievement) {
-            $this->addAchievement($usersArrayWithIdKeys, $achievement);
+            $numberOfAchievements += $this->addAchievement($usersArrayWithIdKeys, $achievement);
         }
 
         $this->em->flush();
+
+        return $numberOfAchievements;
     }
 
     /**
      * @param array $usersWithIdKeys
      * @param Achievement $achievement
+     * @return int
      */
     private function addAchievement(array $usersWithIdKeys, Achievement $achievement)
     {
         $beginDate = (new \DateTime())->sub($achievement->getDateInterval());
         $statistic = $this->getTaskCompletionStatistic($beginDate, new \DateTime(), array_keys($usersWithIdKeys));
+        $numberOfAchievements = 0;
 
         foreach ($statistic as $userStatistic) {
             if ($userStatistic['TaskCount'] > 0 && $userStatistic['UnCompletedCount'] == 0) {
@@ -59,8 +65,11 @@ class AchievementManager
                 /** @var User $user */
                 $user = $usersWithIdKeys[$userId];
                 $user->addAchievement($achievement);
+                $numberOfAchievements++;
             }
         }
+
+        return $numberOfAchievements;
     }
 
     private function getTaskCompletionStatistic(\DateTime $beginDate, \DateTime $endDate, $userIds)
