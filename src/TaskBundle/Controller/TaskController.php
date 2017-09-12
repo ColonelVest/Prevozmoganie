@@ -39,8 +39,10 @@ class TaskController extends BaseApiController
     public function getTasksAction()
     {
         $criteria = Criteria::create();
+        $expression = Criteria::expr();
+        $criteria->where($expression->eq('type', Task::RECURRING_TYPE));
 
-        return $this->getEntitiesByCriteria($criteria, false);
+        return $this->getEntitiesByCriteria($criteria, true);
     }
 
     /**
@@ -86,6 +88,7 @@ class TaskController extends BaseApiController
         if ($result->getIsSuccess()) {
             /** @var Task $task */
             $task = $result->getData();
+            $task->setType(Task::RECURRING_TYPE);
             $result = $this->fillEntityByRequestData(new DateCondition(), $tasksData['condition']);
             if ($result->getIsSuccess()) {
                 $result = $this->get('task_handler')

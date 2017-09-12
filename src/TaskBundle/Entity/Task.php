@@ -3,6 +3,7 @@
 namespace TaskBundle\Entity;
 
 use BaseBundle\Entity\BaseEntity;
+use BaseBundle\Entity\UserReferable;
 use BaseBundle\Models\HaveEntriesInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -12,15 +13,19 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use BaseBundle\Lib\Serialization\Annotation\Normal;
+use UserBundle\Entity\User;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="TaskRepository")
  * @ORM\Table(name="tasks")
  * @Gedmo\Loggable()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
-class Task extends BaseEntity implements HaveEntriesInterface
+class Task extends BaseEntity implements HaveEntriesInterface, UserReferable
 {
+    const REGULAR_TYPE = 'regular';
+    const RECURRING_TYPE = 'recurring';
+
     use SoftDeleteableEntity;
 
     /**
@@ -75,6 +80,18 @@ class Task extends BaseEntity implements HaveEntriesInterface
      * @Normal\Entity(className="TaskBundle\Entity\TaskEntry", isMultiple=true)
      */
     private $entries;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     */
+    protected $user;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    protected $type = self::REGULAR_TYPE;
 
     public function __construct()
     {
@@ -240,8 +257,42 @@ class Task extends BaseEntity implements HaveEntriesInterface
         $this->parent = $parent;
     }
 
-    public function getS()
+    /**
+     * @return User
+     */
+    public function getUser(): ?User
     {
-
+        return $this->user;
     }
+
+    /**
+     * @param User $user
+     * @return Task
+     */
+    public function setUser(User $user): Task
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Task
+     */
+    public function setType(string $type): Task
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 }
