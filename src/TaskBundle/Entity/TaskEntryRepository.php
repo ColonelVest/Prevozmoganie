@@ -13,4 +13,19 @@ use UserBundle\Entity\User;
  */
 class TaskEntryRepository extends EntityRepository
 {
+    public function getLastUncompleted(array $tasksIds)
+    {
+        $request = $this->getEntityManager()->getConnection()->prepare(
+            'SELECT task_id, id, date
+FROM task_entries
+WHERE task_entries.task_id IN (:tasksIds) AND task_entries IS NULL
+GROUP BY task_entries.task_id LIMIT 1'
+        );
+        $request->execute(
+            [
+            ]
+        );
+
+        return $request->fetchAll();
+    }
 }

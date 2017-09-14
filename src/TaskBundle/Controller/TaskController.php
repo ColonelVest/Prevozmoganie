@@ -76,6 +76,19 @@ class TaskController extends BaseApiController
     }
 
     /**
+     * @Rest\View
+     * @Rest\Post("tasks_line_lengths")
+     * @param Request $request
+     * @return array
+     */
+    public function getTasksStatisticAction(Request $request)
+    {
+        $requestedTasksIds = $request->request->get('tasksIds');
+
+        return ['data' => $request->request->get('tasksIds')];
+    }
+
+    /**
      * @param Request $request
      * @param $name
      * @param bool $returnSingle

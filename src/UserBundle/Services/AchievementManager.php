@@ -56,7 +56,9 @@ class AchievementManager
     private function addAchievement(array $usersWithIdKeys, Achievement $achievement)
     {
         $beginDate = (new \DateTime())->sub($achievement->getDateInterval());
-        $statistic = $this->getTaskCompletionStatistic($beginDate, new \DateTime(), array_keys($usersWithIdKeys));
+        $statistic = $this->em
+            ->getRepository('TaskBundle:Task')
+            ->getTaskCompletionStatistic($beginDate, new \DateTime(), array_keys($usersWithIdKeys));
         $numberOfAchievements = 0;
 
         foreach ($statistic as $userStatistic) {
@@ -70,35 +72,5 @@ class AchievementManager
         }
 
         return $numberOfAchievements;
-    }
-
-    private function getTaskCompletionStatistic(\DateTime $beginDate, \DateTime $endDate, $userIds)
-    {
-        $request = $this->em->getConnection()->prepare(
-            'SELECT
-  count(*) AS TaskCount,
-  SUM(CASE WHEN is_completed = 1
-    THEN 1
-      ELSE 0 END) AS CompletedCount,
-  SUM(CASE WHEN is_completed = 0
-    THEN 1
-      ELSE 0 END) AS UnCompletedCount,
-  task_entries.user_id AS user_id,
-  fos_user.username
-FROM task_entries
-  JOIN fos_user ON fos_user.id = task_entries.user_id
-  JOIN tasks ON task_entries.task_id = tasks.id
-WHERE task_entries.date BETWEEN :beginDate AND :currentDate AND task_entries.user_id IN (:userIds) AND tasks.deleted_at IS NULL
-GROUP BY task_entries.user_id'
-        );
-        $request->execute(
-            [
-                ':currentDate' => $endDate->format('Y-m-d'),
-                ':beginDate' => $beginDate->format('Y-m-d'),
-                ':userIds' => join(', ', $userIds),
-            ]
-        );
-
-        return $request->fetchAll();
     }
 }
