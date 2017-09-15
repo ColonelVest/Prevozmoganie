@@ -4,6 +4,8 @@ namespace TaskBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Entity\DateCondition;
+use BaseBundle\Models\ErrorMessages;
+use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\Common\Collections\Criteria;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -79,13 +81,26 @@ class TaskController extends BaseApiController
      * @Rest\View
      * @Rest\Post("tasks_line_lengths")
      * @param Request $request
-     * @return array
+     * @return array|Result
      */
     public function getTasksStatisticAction(Request $request)
     {
-        $requestedTasksIds = $request->request->get('tasksIds');
+        $taskIds = $request->request->get('tasksIds');
+        $date = $this->getDateFromRequest($request, 'date');
+        if (!$date) {
+            return Result::createErrorResult(ErrorMessages::INCORRECT_DATE_FORMAT);
+        }
 
-        return ['data' => $request->request->get('tasksIds')];
+        $linesLengths = $this->em
+            ->getRepository('TaskBundle:TaskEntry')
+            ->getTaskLinesLengths($taskIds, $date);
+
+        $result = [];
+        foreach ($linesLengths as $lineLength) {
+            $result[$lineLength['task_id']] = $lineLength['lineLength'];
+        }
+
+        return $this->getResponseByResultObj(Result::createSuccessResult($result));
     }
 
     /**

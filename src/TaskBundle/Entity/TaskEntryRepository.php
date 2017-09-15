@@ -13,16 +13,32 @@ use UserBundle\Entity\User;
  */
 class TaskEntryRepository extends EntityRepository
 {
-    public function getLastUncompleted(array $tasksIds)
+    /**
+     * @param array $tasksIds
+     * @param \DateTime $date
+     * @return array
+     */
+    public function getTaskLinesLengths(array $tasksIds, \DateTime $date = null)
     {
+        $date = $date ?? new \DateTime();
         $request = $this->getEntityManager()->getConnection()->prepare(
-            'SELECT task_id, id, date
-FROM task_entries
-WHERE task_entries.task_id IN (:tasksIds) AND task_entries IS NULL
-GROUP BY task_entries.task_id LIMIT 1'
+            'SELECT
+  x.task_id,
+  count(*) AS lineLength
+FROM task_entries x
+  JOIN (SELECT
+          task_id,
+          MAX(date) AS max_date
+        FROM task_entries
+        WHERE is_completed = 0 AND date < :date AND task_id IN (:tasksIds)
+        GROUP BY task_id) y ON x.task_id = y.task_id
+WHERE date > y.max_date AND date < :date
+GROUP BY task_id'
         );
         $request->execute(
             [
+                ':tasksIds' => join(',', $tasksIds),
+                ':date' => $date->format('Y-m-d')
             ]
         );
 
