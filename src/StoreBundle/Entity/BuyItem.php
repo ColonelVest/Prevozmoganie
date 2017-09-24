@@ -52,6 +52,7 @@ class BuyItem extends BaseEntity implements UserReferable
 
     /**
      * @var bool
+     * @Groups({"concise", "nested", "full"})
      * @ORM\Column(type="boolean")
      */
     private $isBought = false;

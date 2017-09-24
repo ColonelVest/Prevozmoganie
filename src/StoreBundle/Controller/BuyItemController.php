@@ -27,7 +27,10 @@ class BuyItemController extends BaseApiController
     */
     public function getBuyitemsAction()
     {
-        return $this->getEntitiesByCriteria(Criteria::create());
+        $expr = Criteria::expr();
+        $criteria = (Criteria::create())->where($expr->eq('isBought', false));
+
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
