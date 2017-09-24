@@ -71,25 +71,6 @@ class Item extends BaseEntity
     /**
      * @return string
      */
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     * @return Item
-     */
-    public function setType(string $type): Item
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getDimension(): ?string
     {
         return $this->dimension;
@@ -127,7 +108,7 @@ class Item extends BaseEntity
 
     public static function getDimensionsList() {
         return [
-            'кг', 'г', 'шт', 'л', 'm3', 'уп.'
+            'кг', 'г', 'шт', 'л', 'm3', 'уп.', 'бут.'
         ];
     }
 }

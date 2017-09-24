@@ -49,22 +49,22 @@ class ChallengeHandler extends EntityHandler
             },
             $challenge->getTasks()->toArray()
         );
+        $taskIdsString = join(',', $taskIds);
 
         $request = $this->em->getConnection()->prepare(
-            '
+            "
             SELECT id
             FROM task_entries AS te
             WHERE
               te.is_completed = 0 
-              AND te.task_id IN (:taskIds) 
+              AND te.task_id IN ($taskIdsString) 
               AND te.user_id = :userId 
               AND (te.date BETWEEN :beginDate AND :endDate)
-            LIMIT 1'
+            LIMIT 1"
         );
 
         $request->execute(
             [
-                ':taskIds' => join(',', $taskIds),
                 ':userId' => $challenge->getId(),
                 ':beginDate' => $challenge->getBegin()->format('Y-m-d'),
                 ':endDate' => $challenge->getEnd()->format('Y-m-d'),

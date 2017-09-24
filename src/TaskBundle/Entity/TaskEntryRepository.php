@@ -20,9 +20,10 @@ class TaskEntryRepository extends EntityRepository
      */
     public function getTaskLinesLengths(array $tasksIds, \DateTime $date = null)
     {
-        $date = $date ?? new \DateTime();
+        $date = $date ?? new \DateTime('midnight');
+        $tasksIdsString = join(',', $tasksIds);
         $request = $this->getEntityManager()->getConnection()->prepare(
-            'SELECT
+            "SELECT
   x.task_id,
   count(*) AS lineLength
 FROM task_entries x
@@ -30,14 +31,13 @@ FROM task_entries x
           task_id,
           MAX(date) AS max_date
         FROM task_entries
-        WHERE is_completed = 0 AND date < :date AND task_id IN (:tasksIds)
+        WHERE is_completed = 0 AND date < :date
         GROUP BY task_id) y ON x.task_id = y.task_id
-WHERE date > y.max_date AND date < :date
-GROUP BY task_id'
+WHERE date > y.max_date AND date < :date AND  y.task_id IN ($tasksIdsString)
+GROUP BY x.task_id"
         );
         $request->execute(
             [
-                ':tasksIds' => join(',', $tasksIds),
                 ':date' => $date->format('Y-m-d')
             ]
         );

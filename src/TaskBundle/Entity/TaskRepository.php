@@ -14,8 +14,9 @@ class TaskRepository extends EntityRepository
 {
     public function getTaskCompletionStatistic(\DateTime $beginDate, \DateTime $endDate, $userIds)
     {
+        $userIdsString = join(', ', $userIds);
         $request = $this->getEntityManager()->getConnection()->prepare(
-            'SELECT
+            "SELECT
   count(*) AS TaskCount,
   SUM(CASE WHEN is_completed = 1
     THEN 1
@@ -28,14 +29,13 @@ class TaskRepository extends EntityRepository
 FROM task_entries
   JOIN fos_user ON fos_user.id = task_entries.user_id
   JOIN tasks ON task_entries.task_id = tasks.id
-WHERE task_entries.date BETWEEN :beginDate AND :currentDate AND task_entries.user_id IN (:userIds) AND tasks.deleted_at IS NULL
-GROUP BY task_entries.user_id'
+WHERE task_entries.date BETWEEN :beginDate AND :currentDate AND task_entries.user_id IN ($userIdsString) AND tasks.deleted_at IS NULL
+GROUP BY task_entries.user_id"
         );
         $request->execute(
             [
                 ':currentDate' => $endDate->format('Y-m-d'),
                 ':beginDate' => $beginDate->format('Y-m-d'),
-                ':userIds' => join(', ', $userIds),
             ]
         );
 
