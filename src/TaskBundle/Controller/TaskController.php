@@ -104,6 +104,22 @@ class TaskController extends BaseApiController
     }
 
     /**
+     * @Rest\View
+     * @Rest\Get("length_of_completed_tasks")
+     * @param Request $request
+     * @return array|Result
+     */
+    public function getLengthOfCompletedTasksInDaysAction(Request $request)
+    {
+        $date = $this->getDateFromRequest($request, 'date');
+        if (!$date) {
+            return Result::createErrorResult(ErrorMessages::INCORRECT_DATE_FORMAT);
+        }
+
+        return $this->get('task_entry_handler')->getLengthOfCompletedTasksInDays($date, $this->getUser());
+    }
+
+    /**
      * @param Request $request
      * @param $name
      * @param bool $returnSingle

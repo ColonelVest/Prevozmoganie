@@ -44,4 +44,21 @@ GROUP BY x.task_id"
 
         return $request->fetchAll();
     }
+
+    public function getLastDayWithUncompletedTask(\DateTime $date, User $user)
+    {
+        $request = $this->getEntityManager()->getConnection()->prepare(
+            "SELECT MAX(date) as uncompleted_day
+FROM task_entries
+WHERE date < :date AND is_completed = 0 AND user_id = :user_id"
+        );
+        $request->execute(
+            [
+                ':date' => $date->format('Y-m-d'),
+                ':user_id' => $user->getId()
+            ]
+        );
+
+        return $request->fetch()['uncompleted_day'];
+    }
 }

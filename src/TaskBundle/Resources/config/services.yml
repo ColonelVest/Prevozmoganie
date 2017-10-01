@@ -16,6 +16,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@api_response_formatter'
             - '@validator'
+            - '@base_helper'
 
     challenge_handler:
         class: TaskBundle\Services\ChallengeHandler
