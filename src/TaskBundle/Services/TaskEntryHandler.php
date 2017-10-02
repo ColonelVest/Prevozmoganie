@@ -47,6 +47,6 @@ class TaskEntryHandler extends EntityHandler
             return Result::createSuccessResult(0);
         }
 
-        return Result::createSuccessResult($date->diff($uncompletedDay)->d);
+        return Result::createSuccessResult($date->diff($uncompletedDay)->d - 1);
     }
 }

@@ -90,6 +90,9 @@ class TaskController extends BaseApiController
         if (!$date) {
             return Result::createErrorResult(ErrorMessages::INCORRECT_DATE_FORMAT);
         }
+        if (count($taskIds) == 0) {
+            return Result::createSuccessResult([]);
+        }
 
         $linesLengths = $this->em
             ->getRepository('TaskBundle:TaskEntry')
