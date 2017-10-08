@@ -131,7 +131,12 @@ class TaskController extends BaseApiController
     private function generateWithEntries(Request $request, $name, $returnSingle = false)
     {
         $tasksData = $request->request->get($name);
-        $result = $this->fillEntityByRequestData(new Task(), $tasksData['entity']);
+        if (isset($tasksData['entity']['id'])) {
+            $taskId = $tasksData['entity']['id'];
+            $result = $this->getHandler()->getById($taskId);
+        } else {
+            $result = $this->fillEntityByRequestData(new Task(), $tasksData['entity']);
+        }
         if ($result->getIsSuccess()) {
             /** @var Task $task */
             $task = $result->getData();
