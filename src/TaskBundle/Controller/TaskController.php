@@ -64,7 +64,7 @@ class TaskController extends BaseApiController
      */
     public function postTasksAction(Request $request)
     {
-        return $this->generateWithEntries($request, 'task', true);
+        return $this->generateWithEntries($request, 'task');
     }
 
     /**
@@ -125,12 +125,12 @@ class TaskController extends BaseApiController
     /**
      * @param Request $request
      * @param $name
-     * @param bool $returnSingle
      * @return array
      */
-    private function generateWithEntries(Request $request, $name, $returnSingle = false)
+    private function generateWithEntries(Request $request, $name)
     {
         $tasksData = $request->request->get($name);
+
         if (isset($tasksData['entity']['id'])) {
             $taskId = $tasksData['entity']['id'];
             $result = $this->getHandler()->getById($taskId);
@@ -140,11 +140,16 @@ class TaskController extends BaseApiController
         if ($result->getIsSuccess()) {
             /** @var Task $task */
             $task = $result->getData();
-            $task->setType(Task::RECURRING_TYPE);
+            $taskType = isset($tasksData['condition']['dates']) && count($tasksData['condition']['dates']) === 1
+                ? Task::REGULAR_TYPE
+                : Task::RECURRING_TYPE;
+            $task->setType($taskType);
+
             $result = $this->fillEntityByRequestData(new DateCondition(), $tasksData['condition']);
+
             if ($result->getIsSuccess()) {
                 $result = $this->get('task_handler')
-                    ->generateRepetitiveTasks($result->getData(), $task, $this->getUser(), $returnSingle);
+                    ->generateRepetitiveTasks($result->getData(), $task, $this->getUser());
             }
         }
 
