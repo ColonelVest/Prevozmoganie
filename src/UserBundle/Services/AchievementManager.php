@@ -55,10 +55,11 @@ class AchievementManager
      */
     private function addAchievement(array $usersWithIdKeys, Achievement $achievement)
     {
-        $beginDate = (new \DateTime())->sub($achievement->getDateInterval());
+        $endDate = new \DateTime('midnight');
+        $beginDate = (clone $endDate)->sub($achievement->getDateInterval());
         $statistic = $this->em
             ->getRepository('TaskBundle:Task')
-            ->getTaskCompletionStatistic($beginDate, new \DateTime(), array_keys($usersWithIdKeys));
+            ->getTaskCompletionStatistic($beginDate, $endDate, array_keys($usersWithIdKeys));
         $numberOfAchievements = 0;
 
         foreach ($statistic as $userStatistic) {
