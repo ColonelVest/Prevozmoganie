@@ -25,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ItemCategory extends BaseEntity
 {
+    const UNDEFINED_CATEGORY_TITLE = 'undefined';
     use SoftDeleteableEntity;
 
     /**

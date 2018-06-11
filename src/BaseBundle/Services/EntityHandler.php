@@ -74,9 +74,9 @@ abstract class EntityHandler
         return $result;
     }
 
-    public function create(BaseEntity $entity): Result
+    public function create(BaseEntity $entity, $isFlush = true): Result
     {
-        return $this->validateEntityAndGetResult($entity);
+        return $this->validateEntityAndGetResult($entity, $isFlush);
     }
 
     public function edit(BaseEntity $entity): Result
@@ -84,7 +84,13 @@ abstract class EntityHandler
         return $this->validateEntityAndGetResult($entity);
     }
 
-    protected function validateEntityAndGetResult($entity)
+    /**
+     * @param $entity
+     * @param bool $flush
+     * @return Result
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function validateEntityAndGetResult($entity, $flush = true)
     {
         $errors = $this->validator->validate($entity);
         if (count($errors) > 0) {
@@ -98,7 +104,9 @@ abstract class EntityHandler
         }
 
         $this->em->persist($entity);
-        $this->em->flush();
+        if ($flush) {
+            $this->em->flush();
+        }
 
         return Result::createSuccessResult($entity);
     }

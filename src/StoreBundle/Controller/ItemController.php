@@ -41,21 +41,24 @@ class ItemController extends BaseApiController
     }
 
     /**
-    * @Rest\View
-    * @param Request $request
-    * @return array
-    */
+     * @Rest\View
+     * @param Request $request
+     * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     */
     public function postItemsAction(Request $request)
     {
         return $this->createEntity(Item::class, $request);
     }
 
     /**
-    * @Rest\View
-    * @param Request $request
-    * @param $id
-    * @return array
-    */
+     * @Rest\View
+     * @param Request $request
+     * @param $id
+     * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \ReflectionException
+     */
     public function putItemsAction(Request $request, $id)
     {
         return $this->editEntity($request, $id);

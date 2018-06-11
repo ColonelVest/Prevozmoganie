@@ -30,3 +30,17 @@ services:
         - '@doctrine.orm.entity_manager'
         - '@api_response_formatter'
         - '@validator'
+  receipt_handler:
+    class: StoreBundle\Services\ReceiptHandler
+    arguments:
+        - '@doctrine.orm.entity_manager'
+        - '@api_response_formatter'
+        - '@validator'
+        - '@buyitem_handler'
+        - '@item_handler'
+
+  store_http:
+    class: StoreBundle\Services\StoreHttp
+    arguments:
+        - '%receipt_check_username%'
+        - '%receipt_check_password%'

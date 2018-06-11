@@ -67,6 +67,12 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         return $this->getResponseByResultObj($result);
     }
 
+    /**
+     * @param $entityType
+     * @param Request $request
+     * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     */
     protected function createEntity($entityType, Request $request)
     {
         /** @var BaseEntity $newEntity */
@@ -81,11 +87,23 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         return $this->getResponseByResultObj($result);
     }
 
+    /**
+     * @param $entity
+     * @return string
+     * @throws \ReflectionException
+     */
     protected function getEntityName($entity)
     {
         return strtolower((new \ReflectionClass($entity))->getShortName());
     }
 
+    /**
+     * @param Request $request
+     * @param $entityId
+     * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \ReflectionException
+     */
     protected function editEntity(Request $request, $entityId)
     {
         $handler = $this->getHandler();
@@ -123,11 +141,13 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
      * @param $requestData
      * @param array $unMappedFields
      * @return Result
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
      */
     protected function fillEntityByRequestData($entity, $requestData, $unMappedFields = []): Result {
         if ($entity instanceof UserReferable) {
             $entity->setUser($this->getUser());
         }
+
         $this->get('pv_normalizer')->fillEntity($entity, $requestData, $unMappedFields);
         if (!($errors = $this->get('validator')->validate($entity))) {
             $result = Result::createErrorResult();

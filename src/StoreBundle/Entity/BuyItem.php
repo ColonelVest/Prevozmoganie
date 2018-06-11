@@ -58,6 +58,12 @@ class BuyItem extends BaseEntity implements UserReferable
     private $isBought = false;
 
     /**
+     * @var Receipt
+     * @ORM\ManyToOne(targetEntity="StoreBundle\Entity\Receipt", inversedBy="items")
+     */
+    private $receipt;
+
+    /**
      * @return bool
      */
     public function isBought(): ?bool
@@ -133,4 +139,22 @@ class BuyItem extends BaseEntity implements UserReferable
         return $this;
     }
 
+    /**
+     * @return Receipt
+     */
+    public function getReceipt(): ?Receipt
+    {
+        return $this->receipt;
+    }
+
+    /**
+     * @param Receipt $receipt
+     * @return BuyItem
+     */
+    public function setReceipt(Receipt $receipt): BuyItem
+    {
+        $this->receipt = $receipt;
+
+        return $this;
+    }
 }

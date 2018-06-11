@@ -108,7 +108,7 @@ class Item extends BaseEntity
 
     public static function getDimensionsList() {
         return [
-            'кг', 'г', 'шт', 'л', 'm3', 'уп.', 'бут.'
+            'кг', 'г', 'шт', 'л', 'm3', 'уп.', 'бут.', '?'
         ];
     }
 }
