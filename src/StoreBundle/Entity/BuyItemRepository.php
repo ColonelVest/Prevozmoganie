@@ -20,6 +20,7 @@ class BuyItemRepository extends EntityRepository
             ->andWhere('bi.item IS NOT NULL')
             ->setParameter('title', $title)
             ->setMaxResults(1)
-            ->getQuery();
+            ->getQuery()
+            ->execute();
     }
 }
