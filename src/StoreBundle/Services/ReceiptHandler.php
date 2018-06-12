@@ -69,9 +69,10 @@ class ReceiptHandler extends EntityHandler
                     ->setReceipt($receipt);
 
                 /** @var BuyItem $existedBuyItem */
-                $existedBuyItem = $this->em
+                $existedBuyItems = $this->em
                     ->getRepository('StoreBundle:BuyItem')
                     ->getByTitleWithItem($buyItem->getTitle());
+                $existedBuyItem = empty($existedBuyItems) ? null : $existedBuyItems[0];
 
                 if (!is_null($existedBuyItem) && !is_null($existedBuyItem->getItem())) {
                     $buyItem->setItem($existedBuyItem->getItem());
