@@ -9,6 +9,7 @@ services:
         - '@doctrine.orm.entity_manager'
         - '@api_response_formatter'
         - '@validator'
+        - '@buyitem_handler'
 
   buyitem_handler:
     class: StoreBundle\Services\BuyItemHandler

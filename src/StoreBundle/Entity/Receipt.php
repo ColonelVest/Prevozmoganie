@@ -53,6 +53,42 @@ class Receipt extends BaseEntity implements UserReferable
      */
     private $fiscalNumber;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $storeInn;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $storeName;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $storeAddress;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $cashier;
+
+    /**
+     * @var float
+     * @ORM\Column(type="float")
+     */
+    private $cashTotalSum;
+
+    /**
+     * @var float
+     * @ORM\Column(type="float")
+     */
+    private $ecashTotalSum;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -141,6 +177,120 @@ class Receipt extends BaseEntity implements UserReferable
     public function setFiscalNumber(int $fiscalNumber): Receipt
     {
         $this->fiscalNumber = $fiscalNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreInn(): ?string
+    {
+        return $this->storeInn;
+    }
+
+    /**
+     * @param string $storeInn
+     * @return Receipt
+     */
+    public function setStoreInn(string $storeInn): Receipt
+    {
+        $this->storeInn = $storeInn;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreName(): ?string
+    {
+        return $this->storeName;
+    }
+
+    /**
+     * @param string $storeName
+     * @return Receipt
+     */
+    public function setStoreName(string $storeName): Receipt
+    {
+        $this->storeName = $storeName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreAddress(): ?string
+    {
+        return $this->storeAddress;
+    }
+
+    /**
+     * @param string $storeAddress
+     * @return Receipt
+     */
+    public function setStoreAddress(string $storeAddress): Receipt
+    {
+        $this->storeAddress = $storeAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCashier(): ?string
+    {
+        return $this->cashier;
+    }
+
+    /**
+     * @param string $cashier
+     * @return Receipt
+     */
+    public function setCashier(string $cashier): Receipt
+    {
+        $this->cashier = $cashier;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCashTotalSum(): ?float
+    {
+        return $this->cashTotalSum;
+    }
+
+    /**
+     * @param float $cashTotalSum
+     * @return Receipt
+     */
+    public function setCashTotalSum(float $cashTotalSum): Receipt
+    {
+        $this->cashTotalSum = $cashTotalSum;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getEcashTotalSum(): ?float
+    {
+        return $this->ecashTotalSum;
+    }
+
+    /**
+     * @param float $ecashTotalSum
+     * @return Receipt
+     */
+    public function setEcashTotalSum(float $ecashTotalSum): Receipt
+    {
+        $this->ecashTotalSum = $ecashTotalSum;
 
         return $this;
     }

@@ -51,6 +51,12 @@ abstract class EntityHandler
         return Result::createSuccessResult($entities);
     }
 
+    /**
+     * @param BaseEntity $entity
+     * @return Result
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function remove(BaseEntity $entity)
     {
         $id = $entity->getId();
@@ -74,14 +80,28 @@ abstract class EntityHandler
         return $result;
     }
 
+    /**
+     * @param BaseEntity $entity
+     * @param bool $isFlush
+     * @return Result
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function create(BaseEntity $entity, $isFlush = true): Result
     {
         return $this->validateEntityAndGetResult($entity, $isFlush);
     }
 
-    public function edit(BaseEntity $entity): Result
+    /**
+     * @param BaseEntity $entity
+     * @param bool $withFlush
+     * @return Result
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function edit(BaseEntity $entity, $withFlush = true): Result
     {
-        return $this->validateEntityAndGetResult($entity);
+        return $this->validateEntityAndGetResult($entity, $withFlush);
     }
 
     /**
@@ -89,6 +109,7 @@ abstract class EntityHandler
      * @param bool $flush
      * @return Result
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
      */
     protected function validateEntityAndGetResult($entity, $flush = true)
     {

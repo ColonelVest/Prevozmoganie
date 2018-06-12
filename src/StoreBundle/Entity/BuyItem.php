@@ -64,6 +64,12 @@ class BuyItem extends BaseEntity implements UserReferable
     private $receipt;
 
     /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $title;
+
+    /**
      * @return bool
      */
     public function isBought(): ?bool
@@ -154,6 +160,25 @@ class BuyItem extends BaseEntity implements UserReferable
     public function setReceipt(Receipt $receipt): BuyItem
     {
         $this->receipt = $receipt;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return BuyItem
+     */
+    public function setTitle(string $title): BuyItem
+    {
+        $this->title = $title;
 
         return $this;
     }

@@ -32,7 +32,8 @@ class ReceiptHandler extends EntityHandler
     /**
      * @param array $fmsData
      * @param User $user
-     * @return null|object|Receipt
+     * @return Result
+     * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function saveByFMSData(array $fmsData, User $user)
@@ -50,17 +51,31 @@ class ReceiptHandler extends EntityHandler
                 ->setFiscalNumber($receiptData['fiscalDriveNumber'])
                 ->setTotalSum($receiptData['totalSum'] / 100)
                 ->setUser($user)
+                ->setCashier($receiptData['operator'])
+                ->setCashTotalSum($receiptData['cashTotalSum'])
+                ->setEcashTotalSum($receiptData['ecashTotalSum'])
+                ->setStoreInn($receiptData['userInn'])
+                ->setStoreAddress($receiptData['retailPlaceAddress'])
+                ->setStoreName($receiptData['user'])
                 ->setDateTime(\DateTime::createFromFormat('Y-m-d\TH:i:s', $receiptData['dateTime']));
             $this->em->persist($receipt);
 
             foreach ($receiptData['items'] as $buyItemData) {
-                $item = $this->itemHandler->findOrCreate($buyItemData['name']);
                 $buyItem = (new BuyItem())
                     ->setUser($user)
                     ->setIsBought(true)
                     ->setQuantity($buyItemData['quantity'])
-                    ->setReceipt($receipt)
-                    ->setItem($item);
+                    ->setTitle($buyItemData['name'])
+                    ->setReceipt($receipt);
+
+                /** @var BuyItem $existedBuyItem */
+                $existedBuyItem = $this->em
+                    ->getRepository('StoreBundle:BuyItem')
+                    ->getByTitleWithItem($buyItem->getTitle());
+
+                if (!is_null($existedBuyItem) && !is_null($existedBuyItem->getItem())) {
+                    $buyItem->setItem($existedBuyItem->getItem());
+                }
                 $receipt->addItem($buyItem);
 
                 $buyItemCreationResult = $this->buyItemHandler->create($buyItem, false);
