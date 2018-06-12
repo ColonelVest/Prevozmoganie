@@ -66,6 +66,7 @@ class BuyItem extends BaseEntity implements UserReferable
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"concise", "nested", "full"})
      */
     private $title;
 
