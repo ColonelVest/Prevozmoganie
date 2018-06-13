@@ -55,9 +55,15 @@ class ReceiptHandler extends EntityHandler
                 ->setCashTotalSum($receiptData['cashTotalSum'])
                 ->setEcashTotalSum($receiptData['ecashTotalSum'])
                 ->setStoreInn($receiptData['userInn'])
-                ->setStoreAddress($receiptData['retailPlaceAddress'])
-                ->setStoreName($receiptData['user'])
                 ->setDateTime(\DateTime::createFromFormat('Y-m-d\TH:i:s', $receiptData['dateTime']));
+
+            if (isset($receiptData['retailPlaceAddress'])) {
+                $receipt->setStoreAddress($receiptData['retailPlaceAddress']);
+            }
+            if (isset($receiptData['user'])) {
+                $receipt->setStoreName($receiptData['user']);
+            }
+
             $this->em->persist($receipt);
 
             foreach ($receiptData['items'] as $buyItemData) {
