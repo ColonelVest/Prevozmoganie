@@ -36,6 +36,7 @@ class StoreHttp
             RequestOptions::HEADERS => [
                 'Authorization' => $this->getAuthString()
             ],
+            RequestOptions::HTTP_ERRORS => false
         ]);
 
         return $response->getStatusCode() === 204
@@ -58,7 +59,8 @@ class StoreHttp
                 'Authorization' => $this->getAuthString(),
                 'Device-Id' => '',
                 'Device-os' => ''
-            ]
+            ],
+            RequestOptions::HTTP_ERRORS => false
         ]);
 
         return $response->getStatusCode() === 200
