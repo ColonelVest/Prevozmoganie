@@ -32,21 +32,23 @@ class ErrorMessages
     const PERMISSION_DENIED = 13;
     const MEALS_DATE_INCORRECT = 14;
     const TOKEN_MISSING = 15;
+    const MANDATORY_PARAM_IS_MISSING = 16;
+    const FNS_HTTPS_FAIL = 17;
 
-    public function getErrorMessageByCode($code)
+    public function getErrorMessageByCode($code, $params = [])
     {
-        if (!isset(self::$errors[$code])) {
-            $errorId = self::$errors[0];
+        if (!isset(self::$errorMessagesTransIds[$code])) {
+            $errorId = self::$errorMessagesTransIds[0];
         } else {
             //TODO: Добавить всякой информации
             $this->logger->error('Unexpected error');
-            $errorId = self::$errors[$code];
+            $errorId = self::$errorMessagesTransIds[$code];
         }
 
-        return $this->translator->trans($errorId);
+        return $this->translator->trans($errorId, $params);
     }
 
-    private static $errors = [
+    private static $errorMessagesTransIds = [
         0 => 'unexpected_error',
         1 => 'not_exists',
         2 => 'incorrect_date',
@@ -62,6 +64,8 @@ class ErrorMessages
         12 => 'not_authorized',
         13 => 'permission_denied',
         14 => 'meals_date_incorrect',
-        15 => 'token_missing'
+        15 => 'token_missing',
+        16 => 'mandatory_param_is_missing',
+        17 => 'fns_request_fail'
     ];
 }

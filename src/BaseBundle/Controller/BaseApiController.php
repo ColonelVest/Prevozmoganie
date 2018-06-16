@@ -60,6 +60,12 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         return $this->getResponseByResultObj($result);
     }
 
+    /**
+     * @param $id
+     * @return array
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     protected function removeEntityById($id)
     {
         $result = $this->getHandler()->removeById($id, $this->getUser());
@@ -72,6 +78,8 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
      * @param Request $request
      * @return array
      * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function createEntity($entityType, Request $request)
     {
@@ -126,11 +134,21 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
         return $this->getResponseByResultObj($result);
     }
 
+    /**
+     * @param Result $result
+     * @return array
+     */
     protected function getResponseByResultObj(Result $result)
     {
         return $this->get('api_response_formatter')->createResponseFromResultObj($result);
     }
 
+    /**
+     * @param Request $request
+     * @param $propertyName
+     * @param string $format
+     * @return bool|\DateTime
+     */
     protected function getDateFromRequest(Request $request, $propertyName, $format = 'dmY')
     {
         return $this->get('base_helper')->createDateFromString($request->get($propertyName), $format);

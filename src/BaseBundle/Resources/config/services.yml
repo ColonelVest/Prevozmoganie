@@ -2,6 +2,7 @@ services:
   api_response_formatter:
     class: BaseBundle\Services\ApiResponseFormatter
     arguments: ['@error_message_handler']
+    shared: false
 
   error_message_handler:
     class: BaseBundle\Models\ErrorMessages

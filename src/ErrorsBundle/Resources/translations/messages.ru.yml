@@ -11,3 +11,5 @@ unknown_username: Пользователь не существует
 incorrect_password: Некорректный пароль
 not_authorized: Пользователь не авторизован
 permission_denied: Доступ запрещен
+mandatory_param_is_missing: 'Отсутствует обязательный параметр "%paramName%"'
+fns_request_fail: 'Ошибка при получении данных с сайта proverkacheka'

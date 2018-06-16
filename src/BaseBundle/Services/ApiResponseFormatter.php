@@ -4,11 +4,12 @@ namespace BaseBundle\Services;
 
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ApiResponseFormatter
 {
     /** @var  bool $isSuccess */
-    private $isSuccess;
+    private $isSuccess = true;
     private $response;
     /** @var  ErrorMessages $messageHandler */
     private $messageHandler;
@@ -16,6 +17,14 @@ class ApiResponseFormatter
     public function __construct(ErrorMessages $messageHandler)
     {
         $this->messageHandler = $messageHandler;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess()
+    {
+        return $this->isSuccess;
     }
 
     public function createSuccessResponse()
@@ -38,10 +47,16 @@ class ApiResponseFormatter
         return $this;
     }
 
-    public function addResponseMessage($errorCode, $messageType = null)
+    /**
+     * @param $errorCode
+     * @param array $params
+     * @param null $messageType
+     * @return ApiResponseFormatter
+     */
+    public function addResponseMessage($errorCode, $params = [], $messageType = null)
     {
         $messageType = $messageType ? $messageType : ($this->isSuccess ? 'warnings' : 'errors');
-        $this->response[$messageType][] = is_int($errorCode) ? $this->messageHandler->getErrorMessageByCode($errorCode) : $errorCode;
+        $this->response[$messageType][] = is_int($errorCode) ? $this->messageHandler->getErrorMessageByCode($errorCode, $params) : $errorCode;
 
         return $this;
     }
@@ -73,6 +88,25 @@ class ApiResponseFormatter
         return $this->getResponse();
     }
 
+    /**
+     * @param ParameterBag $bag
+     * @param array $params
+     * @return ApiResponseFormatter
+     */
+    public function checkMandatoryParameters(ParameterBag $bag, array $params)
+    {
+        foreach ($params as $paramName) {
+            if (!$bag->has($paramName)) {
+                $this->addResponseMessage(ErrorMessages::MANDATORY_PARAM_IS_MISSING, ['%paramName%' => $paramName]);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
     public function getResponse()
     {
         return $this->response;

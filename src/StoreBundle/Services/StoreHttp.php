@@ -2,6 +2,8 @@
 
 namespace StoreBundle\Services;
 
+use BaseBundle\Models\ErrorMessages;
+use BaseBundle\Models\Result;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
@@ -17,28 +19,51 @@ class StoreHttp
         $this->receiptCheckUsername = $receiptCheckUsername;
         $this->receiptCheckPwd = $receiptCheckPwd;
     }
+
+    /**
+     * @param string $fiscalNumber
+     * @param string $fiscalDocNumber
+     * @param string $fiscalDocumentBasis
+     * @param string $datetime
+     * @param int $sumInKop
+     * @return Result
+     */
     public function checkReceipt(string $fiscalNumber, string $fiscalDocNumber, string $fiscalDocumentBasis, string $datetime, int $sumInKop)
     {
         $url = "https://proverkacheka.nalog.ru:9999/v1/ofds/*/inns/*/fss/{$fiscalNumber}/operations/1/tickets/{$fiscalDocNumber}?fiscalSign={$fiscalDocumentBasis}&date={$datetime}&sum={$sumInKop}";
 
-        return $this->guzzleClient->get($url, [
+        $response = $this->guzzleClient->get($url, [
             RequestOptions::HEADERS => [
                 'Authorization' => $this->getAuthString()
-            ]
+            ],
         ]);
+
+        return $response->getStatusCode() === 204
+            ? Result::createSuccessResult()
+            : Result::createErrorResult(ErrorMessages::FNS_HTTPS_FAIL);
     }
 
+    /**
+     * @param string $fiscalNumber
+     * @param string $fiscalDocNumber
+     * @param string $fiscalDocumentBasis
+     * @return Result
+     */
     public function getReceiptDetails(string $fiscalNumber, string $fiscalDocNumber, string $fiscalDocumentBasis)
     {
         $url = "https://proverkacheka.nalog.ru:9999/v1/inns/*/kkts/*/fss/{$fiscalNumber}/tickets/{$fiscalDocNumber}?fiscalSign={$fiscalDocumentBasis}&sendToEmail=no";
 
-        return $this->guzzleClient->get($url, [
+        $response = $this->guzzleClient->get($url, [
             RequestOptions::HEADERS => [
                 'Authorization' => $this->getAuthString(),
                 'Device-Id' => '',
                 'Device-os' => ''
             ]
         ]);
+
+        return $response->getStatusCode() === 200
+            ? Result::createSuccessResult(json_decode($response->getBody(), true))
+            : Result::createErrorResult(ErrorMessages::FNS_HTTPS_FAIL);
     }
 
     /**

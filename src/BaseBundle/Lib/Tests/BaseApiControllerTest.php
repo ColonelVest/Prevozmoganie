@@ -9,7 +9,6 @@
 
 namespace BaseBundle\Lib\Tests;
 
-use BaseBundle\Entity\BaseEntity;
 use BaseBundle\Models\HaveEntriesInterface;
 use BaseBundle\Models\Result;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -47,6 +46,7 @@ abstract class BaseApiControllerTest extends WebTestCase
      * Run console command
      * @param string $name
      * @param array $options
+     * @throws \Exception
      */
     public static function command(string $name, $options = [])
     {
@@ -60,11 +60,17 @@ abstract class BaseApiControllerTest extends WebTestCase
         $application->run($input, $output);
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function clearDB()
     {
         self::command('doctrine:schema:drop');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function initDB()
     {
         self::command('doctrine:schema:update', ['--force' => true]);
@@ -88,6 +94,11 @@ abstract class BaseApiControllerTest extends WebTestCase
         return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 
+    /**
+     * @param $entitiesName
+     * @param array $params
+     * @throws \Exception
+     */
     protected function gets($entitiesName, $params = [])
     {
         self::clearDB();
@@ -146,6 +157,12 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertTrue($decodedResponse['success'], $errors);
     }
 
+    /**
+     * @param Response $response
+     * @param $entityName
+     * @param bool $isPut
+     * @throws \Exception
+     */
     protected function assertPostSingleObjectResponse(Response $response, $entityName, $isPut = false)
     {
         $decodedResponse = json_decode($response->getContent(), true);
@@ -158,6 +175,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertNotNull($createdObject, 'new object '.$entityName.' with id '.$entityId.' not found');
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testPostAction()
     {
         $data = $this->getCRUDData()['postData'];
@@ -170,6 +190,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertPostSingleObjectResponse($response, $this->getEntityName());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testGetAction()
     {
         $client = static::createClient();
@@ -185,6 +208,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertApiResponse($response);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testPutAction()
     {
         $data = $this->getCRUDData()['putData'];
@@ -200,6 +226,9 @@ abstract class BaseApiControllerTest extends WebTestCase
         $this->assertPostSingleObjectResponse($response, $this->getEntityName(), true);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testDeleteAction()
     {
         $client = static::createClient();

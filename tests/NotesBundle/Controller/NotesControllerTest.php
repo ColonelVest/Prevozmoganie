@@ -10,6 +10,9 @@ use BaseBundle\Lib\Tests\BaseApiControllerTest;
  */
 class NotesControllerTest extends BaseApiControllerTest
 {
+    /**
+     * @throws Exception
+     */
     public function testGetNotes()
     {
         $this->gets('notes');

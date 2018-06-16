@@ -99,14 +99,28 @@ class ReceiptHandler extends EntityHandler
         return Result::createSuccessResult($receipt);
     }
 
-    public function saveByReceiptData(ParameterBag $requestParams)
+    /**
+     * @param ParameterBag $bag
+     * @param User $user
+     * @return Result
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function saveByReceiptData(ParameterBag $bag, User $user)
     {
-//        $this->responseFormatter
-//        $this->storeHttp->checkReceipt($requestParams->)
-        $response = $this->storeHttp
-            ->getReceiptDetails($requestParams->get('fn'), $requestParams->get('i'), $requestParams->get('fp'));
-        $fmsData = json_decode((string)$response->getBody(), true);
-        $receiptResult = $this->saveByFMSData($fmsData, $this->getUser());
+        $result = $this->storeHttp
+            ->checkReceipt($bag->get('fn'), $bag->get('i'), $bag->get('fp'), $bag->get('t'), $bag->getInt('s'));
+        if (!$result->getIsSuccess()) {
+            return $result;
+        }
+
+        $result = $this->storeHttp
+            ->getReceiptDetails($bag->get('fn'), $bag->get('i'), $bag->get('fp'));
+        if (!$result->getIsSuccess()) {
+            return $result;
+        }
+
+        return $this->saveByFMSData($result->getData(), $user);
     }
 
     /**
