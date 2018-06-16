@@ -108,8 +108,9 @@ class ReceiptHandler extends EntityHandler
      */
     public function saveByReceiptData(ParameterBag $bag, User $user)
     {
+        $sumInKops =  100 * (float)$bag->get('s');
         $result = $this->storeHttp
-            ->checkReceipt($bag->get('fn'), $bag->get('i'), $bag->get('fp'), $bag->get('t'), $bag->getInt('s'));
+            ->checkReceipt($bag->get('fn'), $bag->get('i'), $bag->get('fp'), $bag->get('t'), $sumInKops);
         if (!$result->getIsSuccess()) {
             return $result;
         }
