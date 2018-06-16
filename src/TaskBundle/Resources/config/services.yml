@@ -1,12 +1,11 @@
 services:
     period_handler:
         class: TaskBundle\Services\PeriodHandler
-        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+        arguments: ['@doctrine.orm.entity_manager', '@validator']
     task_handler:
         class: TaskBundle\Services\TaskHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'
             - '@base_helper'
 
@@ -14,7 +13,6 @@ services:
         class: TaskBundle\Services\TaskEntryHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'
             - '@base_helper'
 
@@ -22,5 +20,4 @@ services:
         class: TaskBundle\Services\ChallengeHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'

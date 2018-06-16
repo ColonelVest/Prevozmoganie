@@ -1,29 +1,23 @@
 services:
-    food.services.ingredient_normalizer:
-        class: FoodBundle\Services\IngredientNormalizer
-        arguments: ['@metadata_factory']
     food.services.ingredient_handler:
         class: FoodBundle\Services\IngredientHandler
-        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+        arguments: ['@doctrine.orm.entity_manager', '@validator']
     food.services.dish_handler:
         class: FoodBundle\Services\DishHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'
 
     food.services.recipe_handler:
         class: FoodBundle\Services\RecipeHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'
 
     food.services.meal_handler:
         class: FoodBundle\Services\MealHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'
             - '@base_helper'
             - '@task_handler'
@@ -32,7 +26,6 @@ services:
         class: FoodBundle\Services\MealTypeHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'
 
     food.services.recipe_subscriber:

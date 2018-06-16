@@ -14,6 +14,11 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Doctrine\Common\Inflector\Inflector;
 
+/**
+ * Service for generation template code for new entity
+ * Class PVGenerator
+ * @package BaseBundle\Services
+ */
 class PVGenerator extends Generator
 {
     private $entityFullName;
@@ -100,7 +105,6 @@ class PVGenerator extends Generator
         "\n    class: ". $this->bundle->getName() .'\\Services\\' . $handlerConciseName . "\n" .
         '    arguments:
         - \'@doctrine.orm.entity_manager\'
-        - \'@api_response_formatter\'
         - \'@validator\'';
     }
 }

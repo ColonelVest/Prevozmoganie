@@ -2,7 +2,6 @@
 
 namespace NotesBundle\Services;
 
-
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityRepository;
 

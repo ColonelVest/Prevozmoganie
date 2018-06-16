@@ -23,11 +23,10 @@ class TaskEntryHandler extends EntityHandler
 
     public function __construct(
         EntityManager $em,
-        ApiResponseFormatter $responseFormatter,
         RecursiveValidator $validator,
         BaseHelper $helper
     ) {
-        parent::__construct($em, $responseFormatter, $validator);
+        parent::__construct($em, $validator);
         $this->helper = $helper;
     }
 

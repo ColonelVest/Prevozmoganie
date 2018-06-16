@@ -29,19 +29,17 @@ class MealHandler extends EntityHandler
     /**
      * MealHandler constructor.
      * @param EntityManager $em
-     * @param ApiResponseFormatter $responseFormatter
      * @param RecursiveValidator $validator
      * @param BaseHelper $helper
      * @param TaskHandler $taskHandler
      */
     public function __construct(
         EntityManager $em,
-        ApiResponseFormatter $responseFormatter,
         RecursiveValidator $validator,
         BaseHelper $helper,
         TaskHandler $taskHandler
     ) {
-        parent::__construct($em, $responseFormatter, $validator);
+        parent::__construct($em, $validator);
         $this->helper = $helper;
         $this->taskHandler = $taskHandler;
     }

@@ -3,12 +3,12 @@
 namespace StoreBundle\Services;
 
 use BaseBundle\Models\Result;
-use BaseBundle\Services\ApiResponseFormatter;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use StoreBundle\Entity\BuyItem;
 use StoreBundle\Entity\Receipt;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use UserBundle\Entity\User;
 
@@ -16,17 +16,19 @@ class ReceiptHandler extends EntityHandler
 {
     private $itemHandler;
     private $buyItemHandler;
+    private $storeHttp;
 
     public function __construct(EntityManager $em,
-        ApiResponseFormatter $responseFormatter,
         RecursiveValidator $validator,
         BuyItemHandler $buyItemHandler,
-        ItemHandler $itemHandler
+        ItemHandler $itemHandler,
+        StoreHttp $storeHttp
     )
     {
-        parent::__construct($em, $responseFormatter, $validator);
+        parent::__construct($em, $validator);
         $this->buyItemHandler = $buyItemHandler;
         $this->itemHandler = $itemHandler;
+        $this->storeHttp = $storeHttp;
     }
 
     /**
@@ -96,6 +98,17 @@ class ReceiptHandler extends EntityHandler
 
         return Result::createSuccessResult($receipt);
     }
+
+    public function saveByReceiptData(ParameterBag $requestParams)
+    {
+//        $this->responseFormatter
+//        $this->storeHttp->checkReceipt($requestParams->)
+        $response = $this->storeHttp
+            ->getReceiptDetails($requestParams->get('fn'), $requestParams->get('i'), $requestParams->get('fp'));
+        $fmsData = json_decode((string)$response->getBody(), true);
+        $receiptResult = $this->saveByFMSData($fmsData, $this->getUser());
+    }
+
     /**
      * @return EntityRepository
      */

@@ -7,7 +7,6 @@ services:
     class: StoreBundle\Services\ItemHandler
     arguments:
         - '@doctrine.orm.entity_manager'
-        - '@api_response_formatter'
         - '@validator'
         - '@buyitem_handler'
 
@@ -15,30 +14,27 @@ services:
     class: StoreBundle\Services\BuyItemHandler
     arguments:
         - '@doctrine.orm.entity_manager'
-        - '@api_response_formatter'
         - '@validator'
 
   itementry_handler:
     class: StoreBundle\Services\StoreItemHandler
     arguments:
         - '@doctrine.orm.entity_manager'
-        - '@api_response_formatter'
         - '@validator'
 
   itemcategory_handler:
     class: StoreBundle\Services\ItemCategoryHandler
     arguments:
         - '@doctrine.orm.entity_manager'
-        - '@api_response_formatter'
         - '@validator'
   receipt_handler:
     class: StoreBundle\Services\ReceiptHandler
     arguments:
         - '@doctrine.orm.entity_manager'
-        - '@api_response_formatter'
         - '@validator'
         - '@buyitem_handler'
         - '@item_handler'
+        - '@store_http'
 
   store_http:
     class: StoreBundle\Services\StoreHttp

@@ -102,6 +102,8 @@ abstract class BaseApiController extends FOSRestController implements TokenAuthe
      * @param $entityId
      * @return array
      * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \ReflectionException
      */
     protected function editEntity(Request $request, $entityId)

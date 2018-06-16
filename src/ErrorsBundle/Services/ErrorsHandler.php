@@ -2,7 +2,6 @@
 
 namespace ErrorsBundle\Services;
 
-
 use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityRepository;

@@ -1,11 +1,10 @@
 services:
     listeners_handler:
         class: NotesBundle\Services\ListenersHandler
-        arguments: ['@doctrine.orm.entity_manager', '@api_response_formatter', '@validator']
+        arguments: ['@doctrine.orm.entity_manager', '@validator']
 
     notes_handler:
         class: NotesBundle\Services\NotesHandler
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@api_response_formatter'
             - '@validator'

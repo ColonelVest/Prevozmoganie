@@ -2,7 +2,6 @@
 
 namespace StoreBundle\Services;
 
-use BaseBundle\Services\ApiResponseFormatter;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -15,12 +14,11 @@ class ItemHandler extends EntityHandler
     private $buyItemHandler;
 
     public function __construct(EntityManager $em,
-        ApiResponseFormatter $responseFormatter,
         RecursiveValidator $validator,
         BuyItemHandler $buyItemHandler
     )
     {
-        parent::__construct($em, $responseFormatter, $validator);
+        parent::__construct($em, $validator);
         $this->buyItemHandler = $buyItemHandler;
     }
 

@@ -10,27 +10,22 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use UserBundle\Entity\User;
 
 abstract class EntityHandler
 {
     /** @var  EntityManager $em */
     protected $em;
-    /** @var  ApiResponseFormatter $responseFormatter */
-    protected $responseFormatter;
-    /** @var  RecursiveValidator $validator */
     protected $validator;
     protected $notExistsMessage = ErrorMessages::REQUESTED_DATA_NOT_EXISTS;
     const DATE_FORMAT = 'dmY';
 
     public function __construct(
         EntityManager $em,
-        ApiResponseFormatter $responseFormatter,
-        RecursiveValidator $validator
+        ValidatorInterface $validator
     ) {
         $this->em = $em;
-        $this->responseFormatter = $responseFormatter;
         $this->validator = $validator;
     }
 
@@ -66,6 +61,13 @@ abstract class EntityHandler
         return Result::createSuccessResult($id);
     }
 
+    /**
+     * @param $id
+     * @param User $user
+     * @return Result
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function removeById($id, User $user)
     {
         $result = $this->getById($id);
