@@ -27,9 +27,10 @@ class ReceiptController extends BaseApiController
             return $responseFormatter->createErrorResponse()->getResponse();
         }
 
-        $result = $this->getHandler()->saveByReceiptData($queryParams, $this->getUser());
+        $result = $this->getHandler()
+            ->saveByReceiptData($queryParams, $this->getUser());
 
-        return $this->getResponseByResultObj($result);
+        return $this->getResponseByResultObj($this->normalizeByResult($result));
     }
 
     /**
