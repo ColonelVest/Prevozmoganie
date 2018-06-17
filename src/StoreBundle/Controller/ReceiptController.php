@@ -4,6 +4,7 @@ namespace StoreBundle\Controller;
 
 use BaseBundle\Controller\BaseApiController;
 use BaseBundle\Services\EntityHandler;
+use Doctrine\Common\Collections\Criteria;
 use StoreBundle\Services\ReceiptHandler;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -31,6 +32,17 @@ class ReceiptController extends BaseApiController
             ->saveByReceiptData($queryParams, $this->getUser());
 
         return $this->getResponseByResultObj($this->normalizeByResult($result));
+    }
+
+    /**
+     * @Rest\View
+     * @return array
+     */
+    public function getReceiptsAction()
+    {
+        $criteria = Criteria::create();
+
+        return $this->getEntitiesByCriteria($criteria);
     }
 
     /**
