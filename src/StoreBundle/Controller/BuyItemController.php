@@ -34,31 +34,40 @@ class BuyItemController extends BaseApiController
     }
 
     /**
-    * @Rest\View
-    * @param $id
-    * @return array
-    */
+     * @Rest\View
+     * @param $id
+     * @return array
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function deleteBuyitemAction($id)
     {
         return $this->removeEntityById($id);
     }
 
     /**
-    * @Rest\View
-    * @param Request $request
-    * @return array
-    */
+     * @Rest\View
+     * @param Request $request
+     * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function postBuyitemsAction(Request $request)
     {
         return $this->createEntity(BuyItem::class, $request);
     }
 
     /**
-    * @Rest\View
-    * @param Request $request
-    * @param $id
-    * @return array
-    */
+     * @Rest\View
+     * @param Request $request
+     * @param $id
+     * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
+     */
     public function putBuyitemsAction(Request $request, $id)
     {
         return $this->editEntity($request, $id);

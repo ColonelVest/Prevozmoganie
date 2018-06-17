@@ -56,24 +56,28 @@ class Receipt extends BaseEntity implements UserReferable
     /**
      * @var string
      * @ORM\Column(type="string")
+     * @Groups({"full", "nested"})
      */
     private $storeInn;
 
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full", "nested"})
      */
     private $storeName;
 
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full", "nested"})
      */
     private $storeAddress;
 
     /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
+     * @Groups({"full", "nested"})
      */
     private $cashier;
 
