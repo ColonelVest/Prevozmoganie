@@ -2,6 +2,7 @@
 
 namespace StoreBundle\Services;
 
+use BaseBundle\Models\ErrorMessages;
 use BaseBundle\Models\Result;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
@@ -108,17 +109,18 @@ class ReceiptHandler extends EntityHandler
      */
     public function saveByReceiptData(ParameterBag $bag, User $user)
     {
-        $sumInKops =  100 * (float)$bag->get('s');
-        $result = $this->storeHttp
-            ->checkReceipt($bag->get('fn'), $bag->get('i'), $bag->get('fp'), $bag->get('t'), $sumInKops);
-        if (!$result->getIsSuccess()) {
-            return $result;
+        //Because of a lot of errors in proverkachecka api, make some number of attempts
+        $numberOfAttempts = 3;
+        for ($i = 0; $i < $numberOfAttempts; $i++) {
+            $result = $this->storeHttp
+                ->getReceiptDetails($bag->get('fn'), $bag->get('i'), $bag->get('fp'));
+            if ($result->getIsSuccess()) {
+                break;
+            }
         }
 
-        $result = $this->storeHttp
-            ->getReceiptDetails($bag->get('fn'), $bag->get('i'), $bag->get('fp'));
-        if (!$result->getIsSuccess()) {
-            return $result;
+        if (!isset($result) || !$result->getIsSuccess()) {
+            return Result::createErrorResult(ErrorMessages::FNS_HTTPS_FAIL);
         }
 
         return $this->saveByFMSData($result->getData(), $user);
