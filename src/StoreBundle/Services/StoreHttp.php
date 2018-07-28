@@ -63,7 +63,7 @@ class StoreHttp
             RequestOptions::HTTP_ERRORS => false
         ]);
 
-        return in_array($response->getStatusCode(), [200, 202])
+        return $response->getStatusCode() === 200
             ? Result::createSuccessResult(json_decode($response->getBody(), true))
             : Result::createErrorResult(ErrorMessages::FNS_HTTPS_FAIL);
     }
