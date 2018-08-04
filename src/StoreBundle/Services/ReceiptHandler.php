@@ -109,6 +109,11 @@ class ReceiptHandler extends EntityHandler
      */
     public function saveByReceiptData(ParameterBag $bag, User $user)
     {
+        $receipt = $this->getRepository()->findOneBy(['fiscalNumber' => $bag->get('fn')]);
+        if (!is_null($receipt)) {
+            return Result::createSuccessResult($receipt);
+        }
+
         //Because of a lot of errors in proverkachecka api, make some number of attempts
         $numberOfAttempts = 3;
         for ($i = 0; $i < $numberOfAttempts; $i++) {
