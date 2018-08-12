@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="ReceiptRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)"
  * @Gedmo\Loggable
  */
@@ -52,6 +52,20 @@ class Receipt extends BaseEntity implements UserReferable
      * @Groups({"concise", "full", "nested"})
      */
     private $fiscalNumber;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Groups({"concise", "full", "nested"})
+     */
+    private $fiscalDocumentNumber;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer")
+     * @Groups({"concise", "full", "nested"})
+     */
+    private $fpd;
 
     /**
      * @var string
@@ -96,6 +110,44 @@ class Receipt extends BaseEntity implements UserReferable
     public function __construct()
     {
         $this->items = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getFiscalDocumentNumber(): ?int
+    {
+        return $this->fiscalDocumentNumber;
+    }
+
+    /**
+     * @param int $fiscalDocumentNumber
+     * @return Receipt
+     */
+    public function setFiscalDocumentNumber(int $fiscalDocumentNumber): Receipt
+    {
+        $this->fiscalDocumentNumber = $fiscalDocumentNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFpd(): ?int
+    {
+        return $this->fpd;
+    }
+
+    /**
+     * @param int $fpd
+     * @return Receipt
+     */
+    public function setFpd(int $fpd): Receipt
+    {
+        $this->fpd = $fpd;
+
+        return $this;
     }
 
     /**

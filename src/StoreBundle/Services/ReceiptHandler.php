@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use StoreBundle\Entity\BuyItem;
 use StoreBundle\Entity\Receipt;
+use StoreBundle\Entity\ReceiptRepository;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 use UserBundle\Entity\User;
@@ -19,13 +20,13 @@ class ReceiptHandler extends EntityHandler
     private $buyItemHandler;
     private $storeHttp;
 
-    public function __construct(EntityManager $em,
+    public function __construct(
+        EntityManager $em,
         RecursiveValidator $validator,
         BuyItemHandler $buyItemHandler,
         ItemHandler $itemHandler,
         StoreHttp $storeHttp
-    )
-    {
+    ) {
         parent::__construct($em, $validator);
         $this->buyItemHandler = $buyItemHandler;
         $this->itemHandler = $itemHandler;
@@ -46,56 +47,57 @@ class ReceiptHandler extends EntityHandler
         }
 
         $receiptData = $fmsData['document']['receipt'];
-        $receipt = $this->getRepository()->findOneBy(['fiscalNumber' => $receiptData['fiscalDriveNumber']]);
+        $fiscalNumber = $receiptData['fiscalDriveNumber'];
+        $fiscalDocumentNumber = $receiptData['fiscalDocumentNumber'];
+        $fpd = $receiptData['fiscalSign'];
 
-        if (is_null($receipt)) {
+        $receipt = (new Receipt())
+            ->setFiscalNumber($fiscalNumber)
+            ->setFiscalDocumentNumber($fiscalDocumentNumber)
+            ->setFpd($fpd)
+            ->setTotalSum($receiptData['totalSum'] / 100)
+            ->setUser($user)
+            ->setCashier($receiptData['operator'])
+            ->setCashTotalSum($receiptData['cashTotalSum'])
+            ->setEcashTotalSum($receiptData['ecashTotalSum'])
+            ->setStoreInn($receiptData['userInn'])
+            ->setDateTime(\DateTime::createFromFormat('Y-m-d\TH:i:s', $receiptData['dateTime']));
 
-            $receipt = (new Receipt())
-                ->setFiscalNumber($receiptData['fiscalDriveNumber'])
-                ->setTotalSum($receiptData['totalSum'] / 100)
-                ->setUser($user)
-                ->setCashier($receiptData['operator'])
-                ->setCashTotalSum($receiptData['cashTotalSum'])
-                ->setEcashTotalSum($receiptData['ecashTotalSum'])
-                ->setStoreInn($receiptData['userInn'])
-                ->setDateTime(\DateTime::createFromFormat('Y-m-d\TH:i:s', $receiptData['dateTime']));
-
-            if (isset($receiptData['retailPlaceAddress'])) {
-                $receipt->setStoreAddress($receiptData['retailPlaceAddress']);
-            }
-            if (isset($receiptData['user'])) {
-                $receipt->setStoreName($receiptData['user']);
-            }
-
-            $this->em->persist($receipt);
-
-            foreach ($receiptData['items'] as $buyItemData) {
-                $buyItem = (new BuyItem())
-                    ->setUser($user)
-                    ->setIsBought(true)
-                    ->setQuantity($buyItemData['quantity'])
-                    ->setTitle($buyItemData['name'])
-                    ->setReceipt($receipt);
-
-                /** @var BuyItem $existedBuyItem */
-                $existedBuyItems = $this->em
-                    ->getRepository('StoreBundle:BuyItem')
-                    ->getByTitleWithItem($buyItem->getTitle());
-                $existedBuyItem = empty($existedBuyItems) ? null : $existedBuyItems[0];
-
-                if (!is_null($existedBuyItem) && !is_null($existedBuyItem->getItem())) {
-                    $buyItem->setItem($existedBuyItem->getItem());
-                }
-                $receipt->addItem($buyItem);
-
-                $buyItemCreationResult = $this->buyItemHandler->create($buyItem, false);
-                if (!$buyItemCreationResult->getIsSuccess()) {
-                    throw new \RuntimeException('Default buy item is not valid!');
-                }
-            }
-
-            $this->em->flush();
+        if (isset($receiptData['retailPlaceAddress'])) {
+            $receipt->setStoreAddress($receiptData['retailPlaceAddress']);
         }
+        if (isset($receiptData['user'])) {
+            $receipt->setStoreName($receiptData['user']);
+        }
+
+        $this->em->persist($receipt);
+
+        foreach ($receiptData['items'] as $buyItemData) {
+            $buyItem = (new BuyItem())
+                ->setUser($user)
+                ->setIsBought(true)
+                ->setQuantity($buyItemData['quantity'])
+                ->setTitle($buyItemData['name'])
+                ->setReceipt($receipt);
+
+            /** @var BuyItem $existedBuyItem */
+            $existedBuyItems = $this->em
+                ->getRepository('StoreBundle:BuyItem')
+                ->getByTitleWithItem($buyItem->getTitle());
+            $existedBuyItem = empty($existedBuyItems) ? null : $existedBuyItems[0];
+
+            if (!is_null($existedBuyItem) && !is_null($existedBuyItem->getItem())) {
+                $buyItem->setItem($existedBuyItem->getItem());
+            }
+            $receipt->addItem($buyItem);
+
+            $buyItemCreationResult = $this->buyItemHandler->create($buyItem, false);
+            if (!$buyItemCreationResult->getIsSuccess()) {
+                throw new \RuntimeException('Default buy item is not valid!');
+            }
+        }
+
+        $this->em->flush();
 
         return Result::createSuccessResult($receipt);
     }
@@ -109,16 +111,23 @@ class ReceiptHandler extends EntityHandler
      */
     public function saveByReceiptData(ParameterBag $bag, User $user)
     {
-        $receipt = $this->getRepository()->findOneBy(['fiscalNumber' => $bag->get('fn')]);
+        $fiscalNumber = $bag->get('fn');
+        $fiscalDocumentNumber = $bag->get('i');
+        $fpd = $bag->get('fp');
+
+        $receipt = $this
+            ->getRepository()
+            ->findExistingReceipt($fiscalNumber, $fiscalDocumentNumber, $fpd);
         if (!is_null($receipt)) {
             return Result::createSuccessResult($receipt);
         }
 
+        //TODO: Add check of returned code
         //Because of a lot of errors in proverkachecka api, make some number of attempts
         $numberOfAttempts = 3;
         for ($i = 0; $i < $numberOfAttempts; $i++) {
             $result = $this->storeHttp
-                ->getReceiptDetails($bag->get('fn'), $bag->get('i'), $bag->get('fp'));
+                ->getReceiptDetails($fiscalNumber, $fiscalDocumentNumber, $fpd);
             if ($result->getIsSuccess()) {
                 break;
             }
@@ -132,7 +141,7 @@ class ReceiptHandler extends EntityHandler
     }
 
     /**
-     * @return EntityRepository
+     * @return ReceiptRepository
      */
     protected function getRepository(): EntityRepository
     {
