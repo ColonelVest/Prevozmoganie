@@ -27,13 +27,13 @@ class TaskEntryRepository extends EntityRepository
   x.task_id,
   count(*) AS lineLength
 FROM task_entries x
-  JOIN (SELECT
+  LEFT JOIN (SELECT
           task_id,
           MAX(date) AS max_date
         FROM task_entries
         WHERE is_completed = 0 AND date < :date
         GROUP BY task_id) y ON x.task_id = y.task_id
-WHERE date > y.max_date AND date < :date AND  y.task_id IN ($tasksIdsString)
+WHERE (y.max_date IS NULL OR date > y.max_date) AND date < :date AND  y.task_id IN ($tasksIdsString)
 GROUP BY x.task_id"
         );
         $request->execute(
@@ -41,7 +41,6 @@ GROUP BY x.task_id"
                 ':date' => $date->format('Y-m-d')
             ]
         );
-
         return $request->fetchAll();
     }
 
