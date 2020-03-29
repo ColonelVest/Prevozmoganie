@@ -33,7 +33,7 @@ class TaskListPusherCommand extends ContainerAwareCommand
 
         $expr = Criteria::expr();
         $criteria = Criteria::create();
-        $criteria->where($expr->andX($expr->eq('date', new \DateTime('midnight + 1 day')), $expr->eq('isCompleted', false)));
+        $criteria->where($expr->andX($expr->eq('date', new \DateTime('midnight')), $expr->eq('isCompleted', false)));
         $userResult = $this->getContainer()->get('user_handler')->getUser('angry');
 
         /** @var User $user */
