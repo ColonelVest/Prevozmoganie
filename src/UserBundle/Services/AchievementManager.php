@@ -23,7 +23,10 @@ class AchievementManager
 
     /**
      * @param User[] $users
+     *
      * @return int
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function generate(array $users = [])
     {
@@ -49,9 +52,11 @@ class AchievementManager
     }
 
     /**
-     * @param array $usersWithIdKeys
+     * @param array       $usersWithIdKeys
      * @param Achievement $achievement
+     *
      * @return int
+     * @throws \Exception
      */
     private function addAchievement(array $usersWithIdKeys, Achievement $achievement)
     {

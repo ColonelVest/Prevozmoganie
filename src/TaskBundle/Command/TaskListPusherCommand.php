@@ -47,7 +47,7 @@ class TaskListPusherCommand extends ContainerAwareCommand
         foreach ($res->getData() as $taskNumber => $taskEntry) {
             $tasksList .= ($taskNumber + 1) . '. ' . $taskEntry->getTask()->getTitle() . "\n";
         }
-        $text = 'Tasks for today: ' . urlencode("\n" . $tasksList);
+        $text = 'Outstanding tasks for today: ' . urlencode("\n" . $tasksList);
 
         $url = "https://api.telegram.org/bot$botToken/sendMessage?chat_id=$personalChatId&text=$text&parse_mode=HTML";
 
