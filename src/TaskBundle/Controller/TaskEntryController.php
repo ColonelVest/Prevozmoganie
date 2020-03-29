@@ -46,6 +46,7 @@ class TaskEntryController extends BaseApiController
                 return $this->getResponseByResultObj($result);
             }
         }
+
         $expr = Criteria::expr();
         $criteria = Criteria::create();
         $criteria->where($expr->andX($expr->eq('date', $date), $expr->eq('isCompleted', false)));
@@ -56,8 +57,12 @@ class TaskEntryController extends BaseApiController
     /**
      * @Rest\View
      * @Rest\Put("/taskentries/confirm/{id}")
+     *
      * @param TaskEntry $entry
+     *
      * @return array
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function confirmAction(TaskEntry $entry)
     {
@@ -70,18 +75,27 @@ class TaskEntryController extends BaseApiController
 
     /**
      * @Rest\View
+     *
      * @param Request $request
+     *
      * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function postTaskentriesAction(Request $request)
     {
-        return $this->createEntity($request, TaskEntry::class, TaskEntryType::class);
+        return $this->createEntity($request, TaskEntry::class);
     }
 
     /**
      * @Rest\View
+     *
      * @param $taskEntryId
+     *
      * @return array
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function deleteTaskentryAction($taskEntryId)
     {
@@ -90,13 +104,19 @@ class TaskEntryController extends BaseApiController
 
     /**
      * @Rest\View
+     *
      * @param Request $request
-     * @param $taskEntryId
+     * @param         $taskEntryId
+     *
      * @return array
+     * @throws \BaseBundle\Lib\Serialization\NormalizationException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \ReflectionException
      */
     public function putTaskentriesAction(Request $request, $taskEntryId)
     {
-        return $this->editEntity($request, $taskEntryId, TaskEntryType::class);
+        return $this->editEntity($request, $taskEntryId);
     }
     
     protected function getHandler(): EntityHandler

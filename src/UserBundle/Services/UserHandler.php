@@ -28,7 +28,12 @@ class UserHandler
         return $this->em->getRepository('UserBundle:User');
     }
 
-    public function getUser($username, $password, $isPlainPassword = false)
+    /**
+     * @param $username
+     *
+     * @return Result|User
+     */
+    public function getUser($username)
     {
         /** @var User $user */
         $user = $this->getRepository()->findOneBy(['username' => $username]);
@@ -36,7 +41,18 @@ class UserHandler
             return Result::createErrorResult(ErrorMessages::UNKNOWN_USERNAME);
         }
 
+        return Result::createSuccessResult($user);
+    }
 
+    /**
+     * @param User   $user
+     * @param string $password
+     * @param bool   $isPlainPassword
+     *
+     * @return Result
+     */
+    public function checkUserPassword(User $user, string $password, $isPlainPassword = false)
+    {
         if (($isPlainPassword && $this->passwordEncoder->isPasswordValid($user, $password))
             || (!$isPlainPassword && $user->getPassword() == $password)
         ) {

@@ -2,25 +2,25 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@TaskBundle/Resources/config/services.yml" }
-    - { resource: "@BaseBundle/Resources/config/services.yml" }
-    - { resource: "@NotesBundle/Resources/config/services.yml" }
-    - { resource: "@ErrorsBundle/Resources/config/services.yml" }
-    - { resource: "@UserBundle/Resources/config/services.yml" }
-    - { resource: "@FoodBundle/Resources/config/services.yml" }
-    - { resource: "@StoreBundle/Resources/config/services.yml" }
+    - { resource: '@TaskBundle/Resources/config/services.yml' }
+    - { resource: '@BaseBundle/Resources/config/services.yml' }
+    - { resource: '@NotesBundle/Resources/config/services.yml' }
+    - { resource: '@ErrorsBundle/Resources/config/services.yml' }
+    - { resource: '@UserBundle/Resources/config/services.yml' }
+    - { resource: '@FoodBundle/Resources/config/services.yml' }
+    - { resource: '@StoreBundle/Resources/config/services.yml' }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: ru
+    locale: 'ru'
 
 framework:
     #esi:             ~
-    translator:      { fallbacks: ["%locale%"] }
-    secret:          "%secret%"
+    translator:      { fallbacks: ['%locale%'] }
+    secret:          '%secret%'
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
@@ -28,7 +28,7 @@ framework:
     #serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale:  "%locale%"
+    default_locale:  '%locale%'
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
@@ -42,28 +42,28 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
+    debug:            '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
 
 # Doctrine Configuration
 doctrine:
     dbal:
         driver:   pdo_mysql
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
+        host:     '%database_host%'
+        port:     '%database_port%'
+        dbname:   '%database_name%'
+        user:     '%database_user%'
+        password: '%database_password%'
         charset:  UTF8
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #     e.g. database_path: '%kernel.root_dir%/data/data.db3'
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
-        #     path:     "%database_path%"
+        #     path:     '%database_path%'
 
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_generate_proxy_classes: '%kernel.debug%'
         entity_managers:
             default:
                 naming_strategy: doctrine.orm.naming_strategy.underscore
@@ -72,25 +72,25 @@ doctrine:
                     gedmo_translatable:
                         type: annotation
                         prefix: Gedmo\Translatable\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity'
                         alias: GedmoTranslatable # (optional) it will default to the name set for the mapping
                         is_bundle: false
                     gedmo_translator:
                         type: annotation
                         prefix: Gedmo\Translator\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity'
                         alias: GedmoTranslator # (optional) it will default to the name set for the mapping
                         is_bundle: false
                     gedmo_loggable:
                         type: annotation
                         prefix: Gedmo\Loggable\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
                         alias: GedmoLoggable # (optional) it will default to the name set for the mappingmapping
                         is_bundle: false
                     gedmo_tree:
                         type: annotation
                         prefix: Gedmo\Tree\Entity
-                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                        dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
                         alias: GedmoTree # (optional) it will default to the name set for the mapping
                         is_bundle: false
                 filters:
@@ -99,7 +99,7 @@ doctrine:
                         enabled: true
 
 stof_doctrine_extensions:
-    default_locale: %locale%
+    default_locale: '%locale%'
     orm:
         default:
             softdeleteable: true
@@ -109,10 +109,10 @@ stof_doctrine_extensions:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
+    transport: '%mailer_transport%'
+    host:      '%mailer_host%'
+    username:  '%mailer_user%'
+    password:  '%mailer_password%'
     spool:     { type: memory }
 
 fos_user:

@@ -9,12 +9,11 @@
 namespace TaskBundle\Services;
 
 use BaseBundle\Models\Result;
-use BaseBundle\Services\ApiResponseFormatter;
 use BaseBundle\Services\BaseHelper;
 use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use UserBundle\Entity\User;
 
 class TaskEntryHandler extends EntityHandler
@@ -23,7 +22,7 @@ class TaskEntryHandler extends EntityHandler
 
     public function __construct(
         EntityManager $em,
-        RecursiveValidator $validator,
+        ValidatorInterface $validator,
         BaseHelper $helper
     ) {
         parent::__construct($em, $validator);

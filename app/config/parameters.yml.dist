@@ -20,3 +20,5 @@ parameters:
 
     receipt_check_username: ''
     receipt_check_password: ''
+    dzdorbot_token: ''
+    personal_chat_id:

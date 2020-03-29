@@ -48,7 +48,13 @@ class UserTokenHandler
         $result = $this->decode($token);
         if ($result->getIsSuccess()) {
             $userData = $result->getData();
-            $result = $this->userHandler->getUser($userData['username'], $userData['password']);
+            $result = $this->userHandler->getUser($userData['username']);
+
+            if (!$result->getIsSuccess()) {
+                return $result;
+            }
+
+            $result = $this->userHandler->checkUserPassword($result->getData(), $userData['password']);
         }
 
         return $result;
