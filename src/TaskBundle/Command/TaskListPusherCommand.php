@@ -41,6 +41,11 @@ class TaskListPusherCommand extends ContainerAwareCommand
 
         $criteria->andWhere(Criteria::expr()->eq('user', $user));
         $res = $this->getContainer()->get('task_entry_handler')->getEntities($criteria);
+        if (empty($res->getData())) {
+            $output->writeln('There are no unfinished tasks for today.');
+
+            return;
+        }
 
         $tasksList = '';
         /** @var TaskEntry $taskEntry */
