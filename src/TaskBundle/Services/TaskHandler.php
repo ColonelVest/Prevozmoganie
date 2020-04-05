@@ -11,6 +11,7 @@ use BaseBundle\Services\EntityHandler;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Validator\RecursiveValidator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use TaskBundle\Entity\Task;
 use TaskBundle\Entity\TaskEntry;
 use UserBundle\Entity\User;
@@ -25,7 +26,7 @@ class TaskHandler extends EntityHandler
 
     public function __construct(
         EntityManager $em,
-        RecursiveValidator $validator,
+        ValidatorInterface $validator,
         BaseHelper $helper
     ) {
         parent::__construct($em, $validator);

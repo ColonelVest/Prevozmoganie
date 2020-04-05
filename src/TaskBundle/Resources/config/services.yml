@@ -21,3 +21,11 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@validator'
+
+    outstanding_tasks_source:
+        class: TaskBundle\Services\OutstandingTasksSource
+        arguments:
+            - '@task_entry_handler'
+            - '@user_handler'
+        tags:
+            - 'notification_source'
