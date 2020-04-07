@@ -2,9 +2,9 @@
 
 namespace TaskBundle\Services;
 
-use BaseBundle\Command\Pusher\Notification;
-use BaseBundle\Command\Pusher\NotificationSourceInterface;
 use Doctrine\Common\Collections\Criteria;
+use PusherBundle\Dto\Notification;
+use PusherBundle\Services\NotificationSourceInterface;
 use TaskBundle\Entity\TaskEntry;
 use UserBundle\Entity\User;
 use UserBundle\Services\UserHandler;

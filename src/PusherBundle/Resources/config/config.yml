@@ -1,2 +1,3 @@
 imports:
+  - pusher_settings.yml
   - services.yml

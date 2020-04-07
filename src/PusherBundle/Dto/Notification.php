@@ -1,6 +1,6 @@
 <?php
 
-namespace BaseBundle\Command\Pusher;
+namespace PusherBundle\Dto;
 
 class Notification
 {

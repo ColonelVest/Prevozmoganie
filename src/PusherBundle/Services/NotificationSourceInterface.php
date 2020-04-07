@@ -1,6 +1,8 @@
 <?php
 
-namespace BaseBundle\Command\Pusher;
+namespace PusherBundle\Services;
+
+use PusherBundle\Dto\Notification;
 
 interface NotificationSourceInterface
 {

@@ -54,8 +54,3 @@ services:
         - '@filesystem'
         - '%kernel.root_dir%'
         - '@service_container'
-
-  pv.settings_source:
-    class: BaseBundle\Services\SettingsSource
-    arguments:
-      - '%pusher_settings%'

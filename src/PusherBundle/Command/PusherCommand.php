@@ -1,14 +1,15 @@
 <?php
 
-namespace BaseBundle\Command\Pusher;
+namespace PusherBundle\Command;
 
+use DateTime;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
+use PusherBundle\Services\NotificationSourceInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TaskBundle\Entity\TaskEntry;
 
 class PusherCommand extends ContainerAwareCommand
 {
@@ -28,7 +29,7 @@ class PusherCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('cron_push')
+            ->setName('pusher:cron_push')
             ->setDescription('Pushes messages using settings');
     }
 
@@ -37,10 +38,10 @@ class PusherCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $this
             ->addSource($this->getContainer()->get('outstanding_tasks_source'))
-            ->addSource($this->getContainer()->get('pv.settings_source'));
+            ->addSource($this->getContainer()->get('settings_source'));
 
         foreach ($this->sources as $source) {
             foreach ($source->getNotifications() as $notification) {

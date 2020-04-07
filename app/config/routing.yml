@@ -1,3 +1,8 @@
+pusher:
+    resource: "@PusherBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 note_api:
     type: rest
     prefix: /api

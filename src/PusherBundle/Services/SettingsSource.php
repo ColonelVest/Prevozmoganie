@@ -1,9 +1,8 @@
 <?php
 
-namespace BaseBundle\Services;
+namespace PusherBundle\Services;
 
-use BaseBundle\Command\Pusher\Notification;
-use BaseBundle\Command\Pusher\NotificationSourceInterface;
+use PusherBundle\Dto\Notification;
 
 class SettingsSource implements NotificationSourceInterface
 {

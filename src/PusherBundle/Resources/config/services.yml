@@ -1,0 +1,5 @@
+services:
+  settings_source:
+    class: PusherBundle\Services\SettingsSource
+    arguments:
+      - '%pusher_settings%'
